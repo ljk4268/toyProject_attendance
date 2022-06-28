@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "date-arithmetic": "^4.1.0",
+    "date-fns": "^2.28.0",
+    "moment": "^2.29.3",
+    "react-big-calendar": "^0.40.2",
+    "react-datepicker": "^4.8.0"
+  }
+}

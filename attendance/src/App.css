@@ -1,0 +1,50 @@
+@import '~@fullcalendar/daygrid/main.css';
+
+.App {
+  text-align: center;
+  padding: 30px;
+  font-family: 'Raleway', sans-serif;
+}
+
+.fc .fc-col-header-cell-cushion {
+  display: block;
+  padding: 2px 4px;
+  background-color: #e6f0f4;
+}
+
+/* .fc-h-event .fc-event-title-container{
+  background-color: #b0bec5;
+} */
+
+.fc-daygrid-event-dot {
+  border: calc(var(--fc-daygrid-event-dot-width, 8px) / 2) solid var(--fc-event-border-color, red)
+}
+
+.fc-daygrid-event-harness {
+  padding-left: 5px;
+}
+.fc-h-event {
+  width: 70%;
+  font-size: 12px;
+  text-align: center;
+  background-color: #fff59d;
+  border: none;
+}
+.fc-event-title {
+  font-family: 'Nanum Gothic', sans-serif;
+  color: rgb(41, 39, 39);
+  font-weight: 500;  
+}
+
+.fc-daygrid-dot-event .fc-event-title {
+  font-family: 'Nanum Gothic', sans-serif;
+  font-size: 12px;
+}
+
+.fc-daygrid-dot-event .fc-event-time {
+  font-family: 'Nanum Gothic', sans-serif;
+  font-size: 12px;
+}
+
+
+
