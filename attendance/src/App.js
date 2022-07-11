@@ -1,29 +1,58 @@
-import React from 'react'
+import React, { useState } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction"
+import Popup from './component/popUp'
+import Login from './component/login'
+
+
 import './App.css';
 
+
 function App() {
+  const [mode, setMode] = useState('LOGIN')
+  const [open, setOpen] = useState(false)
+  const [date, setDate] = useState("")
+
+  const handleDateClick = (e) => { 
+    setOpen(true)
+    setDate(e.dateStr)
+  }
+
+  let content = null;
+
+  if( mode === 'LOGIN' ) {
+    content = <Login setMode={setMode}></Login>
+    
+  } else if ( mode === 'Calendar'){
+    content = 
+    <FullCalendar
+      plugins={[ dayGridPlugin, interactionPlugin]}
+      dateClick={handleDateClick}
+      initialView="dayGridMonth"
+      weekends={true}
+      events={[
+        { title: '출석', 
+          start: '2022-07-09'},
+    ]}
+  />
+  }
+
   return (
     <div className="App">
-      <FullCalendar
-        plugins={[ dayGridPlugin, interactionPlugin]}
-        dateClick={handleDateClick}
-        initialView="dayGridMonth"
-        weekends={true}
-        events={[
-          { title: '이자경출석', 
-            start: '2022-06-08T19:00:00'},
-        ]}
-      />
+
+      {content}
+      
+      <Popup open={open} setOpen={setOpen} date={date}></Popup>
+
     </div>
   );
 }
 
-const handleDateClick = (e) => { 
-  alert(e.dateStr)
-}
+
+
+
+
 
 
 export default App;

@@ -24,16 +24,16 @@
   padding-left: 5px;
 }
 .fc-h-event {
-  width: 70%;
+  width: 40%;
   font-size: 12px;
   text-align: center;
-  background-color: #fff59d;
+  background-color: #f8eb76;
   border: none;
 }
 .fc-event-title {
   font-family: 'Nanum Gothic', sans-serif;
   color: rgb(41, 39, 39);
-  font-weight: 500;  
+  font-weight: 700;  
 }
 
 .fc-daygrid-dot-event .fc-event-title {
@@ -46,5 +46,19 @@
   font-size: 12px;
 }
 
+/* 주말 색깔 지정 */
+.fc-day-sat {
+  color: blue;
+}
+.fc-day-sun {
+  color: red;
+}
+
+
+/* 로그인 */
+.kakao-login {
+  cursor: pointer;
+  vertical-align: middle;
+}
 
 
