@@ -15,53 +15,26 @@ import './App.css';
 function App() {
   
 
-  const [mode, setMode] = useState('LOGIN')
   const [open, setOpen] = useState(false)
   const [date, setDate] = useState("")
-  const [change, setChange] = useState('true')
 
   const handleDateClick = (e) => { 
     setOpen(true)
     setDate(e.dateStr)
   }
 
-  useEffect(()=>{
-    console.log(mode)
-    console.log('확인중')
-  }, [mode])
-
-  let content = null;
-
-
-  if( mode === 'LOGIN' ) {
-    content = <Login setMode={setMode}></Login>
-    
-  } else if( mode === 'Kakao' ) {
-    content = ''
-  } else if ( mode === 'Calendar'){
-    content = 
-    <FullCalendar
-      plugins={[ dayGridPlugin, interactionPlugin]}
-      dateClick={handleDateClick}
-      initialView="dayGridMonth"
-      weekends={true}
-      events={[
-        { title: '출석', 
-          start: '2022-07-09'},
-    ]}
-  />
-  }
 
   return (
-    <div className="App">
+      <div className="App">
+    
 
       <Routes>
         {/* 로그인페이지 */}
         <Route path="/" element={<Login/>}/>
 
         {/* 카카오톡 뭔가를 받는 페이지 */}
-        <Route path="/auth/kakao/callback" 
-        element={<Kakao setMode={setMode}/>}/>
+        <Route path="/oauth/kakao/callback" 
+        element={<Kakao/>}/>
 
         {/* 메인페이지 */}
         <Route path="/main" element={

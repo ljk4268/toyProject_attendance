@@ -64,6 +64,9 @@ html {
 }
 
 /* 로그인 */
+a {
+  display: block;
+}
 .kakao-login {
   position: absolute;
   top: 50%;
