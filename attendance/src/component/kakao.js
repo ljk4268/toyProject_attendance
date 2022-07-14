@@ -1,10 +1,9 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { unstable_HistoryRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Kakao(){
-  const [user_id, setUserId] = useState();
-  const [nickName, setNickName] = useState();
+  let navigate = useNavigate();
 
   useEffect(()=>{
     async function kakaoToken(){
@@ -32,19 +31,19 @@ function Kakao(){
     let _kakaoId = userData.id;
     let _nickname = userData.properties.nickname;
 
-    const loginData = await axios.post('http://3.36.247.2/sign-in', {
+    const loginData = await axios.post('/sign-in', {
       "email": _email,
       "isAutoLogin": false,
       "kakaoId": _kakaoId,
       "nickname" : _nickname
-    })
+    },)
 
-    console.log(loginData)
+    const session = await axios.post('/session')
 
-    const session = await axios.post('http://3.36.247.2/session')
-
-    console.log(session)
-
+    if(session.data.success === 'ok') {
+      return navigate('/main')
+    }
+    
   }
   kakaoToken()
     
@@ -53,7 +52,7 @@ function Kakao(){
   return(
 
     <div>
-      안녕하세요
+      로그인 중 입니다. 
     </div>
 
   )

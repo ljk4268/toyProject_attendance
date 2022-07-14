@@ -32,7 +32,7 @@ function App() {
         {/* 로그인페이지 */}
         <Route path="/" element={<Login/>}/>
 
-        {/* 카카오톡 뭔가를 받는 페이지 */}
+        {/* 카카오톡로그인을 위해 카카오서버와 통신하는 페이지 */}
         <Route path="/oauth/kakao/callback" 
         element={<Kakao/>}/>
 
