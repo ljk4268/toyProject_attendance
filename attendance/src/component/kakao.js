@@ -1,9 +1,14 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { userDate }from './../store'
+import Stack from '@mui/material/Stack';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function Kakao(){
   let navigate = useNavigate();
+  let dispatch = useDispatch()
 
   useEffect(()=>{
     async function kakaoToken(){
@@ -41,7 +46,11 @@ function Kakao(){
     const session = await axios.post('/session')
 
     if(session.data.success === 'ok') {
+
+      dispatch(userDate({kakaoId: _kakaoId, nickname: _nickname, email: _email}))
+
       return navigate('/main')
+
     }
     
   }
@@ -51,9 +60,11 @@ function Kakao(){
 
   return(
 
-    <div>
-      로그인 중 입니다. 
-    </div>
+    <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
+      <CircularProgress color="secondary" />
+      <CircularProgress color="success" />
+      <CircularProgress color="inherit" />
+    </Stack>
 
   )
 }
