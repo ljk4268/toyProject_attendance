@@ -4,7 +4,10 @@ import interactionPlugin from "@fullcalendar/interaction"
 import Popup from './popUp'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeMonth } from './../store'
+import { changeMonth, changObj } from './../store'
+import { saveAttendList } from '../module/attendList'
+
+
 
 function MainPage(){
 
@@ -39,13 +42,25 @@ function MainPage(){
     $eventAttList.push(tempObj)
 
   }
-  console.log('궁금',$eventAttList)
+  //console.log('궁금',$eventAttList)
 
   let dispatch = useDispatch()
 
   useEffect(()=>{
     dispatch(changeMonth({year: year, month: month}))
   },[month])
+
+// useEffect사용시 async,await 사용방법
+  useEffect(() => {
+    async function fetchData() {
+      let attListObj = await saveAttendList(calendarYear, calendarMonth)
+
+      dispatch(changObj(attListObj))
+    }
+    fetchData();
+  }); 
+  
+
   
   return(
     <>
