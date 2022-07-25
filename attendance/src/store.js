@@ -33,7 +33,6 @@ let $attObj = createSlice({
       let newState = {...state}
       newState = action.payload
       return newState
-      // state.push(action.payload)
     }
   }
 })

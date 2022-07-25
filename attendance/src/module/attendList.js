@@ -1,5 +1,3 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { changObj } from '../store';
 import axios from 'axios';
 
 // 함수를 변수 안에 넣는다. 
@@ -8,7 +6,7 @@ export async function saveAttendList(calendarYear, calendarMonth){
 
   // 출석이 등록되고 나면 리스트 받기. 
   const list = await axios.get('/atndn/list')
-
+  console.log('확인중',list)
   // 요소의 달과 리덕스 안의 현재 달을 비교 
   // 비교해서 true면 그 날짜는 우리가 써야하는 날짜 
   // 우리가 써야하는 날짜들을 객체안에 넣어둠 

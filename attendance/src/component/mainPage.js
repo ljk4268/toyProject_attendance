@@ -42,23 +42,19 @@ function MainPage(){
     $eventAttList.push(tempObj)
 
   }
-  //console.log('궁금',$eventAttList)
 
   let dispatch = useDispatch()
 
   useEffect(()=>{
+    async function fetchData() {
+      let attListObj = await saveAttendList(year, month)
+      dispatch(changObj(attListObj))
+  }
+  fetchData();
+
     dispatch(changeMonth({year: year, month: month}))
   },[month])
 
-// useEffect사용시 async,await 사용방법
-  useEffect(() => {
-    async function fetchData() {
-      let attListObj = await saveAttendList(calendarYear, calendarMonth)
-
-      dispatch(changObj(attListObj))
-    }
-    fetchData();
-  }); 
   
 
   
