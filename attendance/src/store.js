@@ -25,11 +25,11 @@ let month = createSlice({
   }
 })
 
-let $attObj = createSlice({
+let $attArray = createSlice({
   name : '$attObj',
-  initialState: {},
+  initialState: [],
   reducers: {
-    changObj(state,action){
+    changArray(state,action){
       let newState = {...state}
       newState = action.payload
       return newState
@@ -42,7 +42,7 @@ let $attObj = createSlice({
 
 export let { userDate } = user.actions
 export let { changeMonth } = month.actions
-export let { changObj } = $attObj.actions
+export let { changArray } = $attArray.actions
 
 
 // 변수 등록하는 공간 
@@ -51,6 +51,6 @@ export default configureStore({
   reducer: { 
     user: user.reducer,
     month: month.reducer,
-    $attObj: $attObj.reducer
+    $attArray: $attArray.reducer
   }
 })

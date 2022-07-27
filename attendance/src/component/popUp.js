@@ -4,28 +4,52 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import Avatar from '@mui/material/Avatar';
+import { blue } from '@mui/material/colors';
+import PersonIcon from '@mui/icons-material/Person';
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { changObj } from "./../store";
+import { changArray } from "./../store";
 import { saveAttendList } from "../module/attendList";
 
 function Popup(props) {
   const date = props.date;
+  console.log(date)
 
   let state = useSelector((state) => {
     return state.month;
   });
+  let state2 = useSelector((state) => {
+    return state.$attArray;
+  });
+
   let calendarMonth = state.month;
   let calendarYear = state.year;
+  console.log('상세페이지', state2)
 
   let dispatch = useDispatch();
-
+  const emails = ['이자경', '오창현'];
   return (
     <Dialog open={props.open}>
-      <DialogTitle>타이틀</DialogTitle>
+      <DialogTitle> 누가누가 참석했나~ 😏 </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          여기는 해당날짜 참석자들이 보여집니다.
+          <List sx={{ pt: 0 }}>
+            {emails.map((email) => (
+              <ListItem key={email}>
+                <ListItemAvatar>
+                  <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+                    <PersonIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={email} />
+              </ListItem>
+            ))}
+          </List>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -43,9 +67,12 @@ function Popup(props) {
             props.setOpen(false);
 
             // 출석이 등록되고 나면 리스트 받기.
-            let attListObj = await saveAttendList(calendarYear, calendarMonth);
+            let attListArray = await saveAttendList(
+              calendarYear,
+              calendarMonth
+            );
 
-            dispatch(changObj(attListObj));
+            dispatch(changArray(attListArray));
           }}
         >
           출석하기
