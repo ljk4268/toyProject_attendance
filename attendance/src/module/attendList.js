@@ -12,10 +12,9 @@ export async function saveAttendList(calendarYear, calendarMonth){
   
   // attList : 데이터에서 받아온 배열  
   let attList = list.data.attendanceList
-  console.log('리스트받는 함수', attList)
 
-  let attListArray = [];
-  let attListObj = {}
+
+  let attListObj = {}; 
 
   // attList : 데이터에서 받아온 배열 반복문
   attList.forEach(function(att){
@@ -29,33 +28,35 @@ export async function saveAttendList(calendarYear, calendarMonth){
     if (calendarYear == attYear && calendarMonth == attMonth){
       // 이 if문 안에는 '년'과 '달'로 걸러진 애들만 들어옴 
 
-      // attListObj 객체에 들어가야할 데이터
-          // {
-          //   { date: 2022-06-24, count: 1, nickname:[] },
-          //   { date: 2022-06-24, count: 1, nickname:[] },
-          //   { date: 2022-06-24, count: 1, nickname:[] },
-          // }
-      //{ date: 2022-06-24, count: 1, name:[] }
+      // attListArray 배열에 들어가야할 데이터
+      // { 키값(날짜) : {count , 사람이름들} ,
+      // 키값(날짜) : {count , 사람이름들} , 
+      // 키값(날짜) : {count , 사람이름들} , 
+      // 키값(날짜) : {count , 사람이름들} ,  }
+
+      //{ 
+      //  2022-06-24:{ count: 1, name:[] },
+      //  2022-06-25:{ count: 1, name:[] }
+      // }
 
       
-      if (Object.values(attListObj).includes(att.attendanceDate) == false) {
-        attListObj['date'] = att.attendanceDate;
-        attListObj['count'] = 1;
-        attListObj['name'] = [att.nickname];
+      if (Object.keys(attListObj).includes(att.attendanceDate) == false) {
+        attListObj[att.attendanceDate] = {count : 1, name : [att.nickname]} 
 
       } else {
-        attListObj['count'] += 1;
-        attListObj['name'].push(att.nickname);
+        attListObj[att.attendanceDate].count += 1;
+        attListObj[att.attendanceDate].name.push(att.nickname);
       }
+
       // 너는 이것을 무조건 잘 기억해야해. 
       // 깊은복사를 생각하지 못했던 실수였는데 
       // 어떤 원인이였고 어떻게 해결해야했느닞~~~~ 면접떄!
-      attListArray.push({...attListObj});
+
     }
 
   })
 
-  return attListArray;
+  return attListObj;
 
 }
 

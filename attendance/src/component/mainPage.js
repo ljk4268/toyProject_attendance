@@ -1,86 +1,88 @@
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from "@fullcalendar/interaction"
-import Popup from './popUp'
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { changeMonth, changArray } from './../store'
-import { saveAttendList } from '../module/attendList'
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import Fab from '@mui/material/Fab';
+import MenuIcon from '@mui/icons-material/Menu';
+import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
+import MoreIcon from '@mui/icons-material/MoreVert';
 
 
 
-function MainPage(){
 
-  const [open, setOpen] = useState(false)
-  const [date, setDate] = useState("")
-  const [month, setMonth] = useState("")
-  const [year, setYear] = useState("")
-
-  const handleDateClick = (e) => { 
-    setOpen(true)
-    setDate(e.dateStr)
-  }
-
-  // redux store에서 state 가져다쓰기 
-  // redux store를 가져와주는 useSelector()
-  let state = useSelector((state)=>{ return state })
-  let calendarMonth = state.month.month;
-  let calendarYear = state.month.year;
-  let $attArray = state.$attArray;
-  let $eventAttList = [];
-  let dispatch = useDispatch();
-
-
-  $attArray.forEach(function(attArray, i){
-
-      let tempObj = {};
-
-      tempObj['title'] = attArray.count;
-      tempObj['start'] = attArray.date;
-
-      $eventAttList.push(tempObj)
-    })
+function MainPage() {
   
+  const StyledFab = styled(Fab)({
+    position: 'absolute',
+    zIndex: 1,
+    top: -30,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
+  });
+
+  return (
+    <div className="main-container">
+      
+      <React.Fragment>
+        <Box sx={{ flexGrow: 1 }}>
+
+        {/* 상단 navbar */}
+          <AppBar position="static">
+
+            <Toolbar style={{ backgroundColor: "#fbfbf9", color: "#000" }}>
+
+              <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" color="inherit" align="center" component="div" >
+              시작이 반
+              </Typography>
+
+            </Toolbar>
+
+          </AppBar>
+
+        </Box> 
+
+        {/* 하단 navbar */}
+        {/* css fixed padding 구글검색해서 찾음  */}
+        <AppBar position="fixed" sx={{ top: 'auto', bottom: 0 }} style={{ width: 'calc(80% - 64px)', right: 'auto', backgroundColor: "#fbfbf9", color: "#000"}} >
+          <Toolbar >
+
+            <IconButton color="inherit" aria-label="open drawer">
+              <MenuIcon />
+            </IconButton>
+
+            <StyledFab color="inherit" aria-label="add" 
+            style={{ backgroundColor: '#f8eb76', color: '#fbfbf9' }}>
+              <AddIcon sx={{ fontSize: 38 }} />
+            </StyledFab>
+
+            <Box sx={{ flexGrow: 1 }} />
+
+            <IconButton color="inherit">
+              <SearchIcon />
+            </IconButton>
+
+            <IconButton color="inherit">
+              <MoreIcon />
+            </IconButton>
+
+          </Toolbar>
+        </AppBar>
+
+    </React.Fragment>
   
+    </div>
+  );
 
-  useEffect(()=>{
-    async function fetchData() {
-      let attListArray = await saveAttendList(year, month)
-      dispatch(changArray(attListArray))
-  }
-  fetchData();
 
-    dispatch(changeMonth({year: year, month: month}))
+}
 
-  },[month])
-
-  
-
-  
-  return(
-    <>
-      <button>{calendarMonth} {calendarYear}</button>
-      <FullCalendar
-          datesSet={(arg) => {
-            console.log(arg)
-            let argTitle = arg.view.title.split(' ');
-            setYear(argTitle[0].replace('년',''))
-            setMonth(argTitle[1].replace('월',''))
-        }
-      }
-          plugins={[ dayGridPlugin, interactionPlugin]}
-          dateClick={handleDateClick}
-          initialView="dayGridMonth"
-          weekends={true}
-          events={$eventAttList}
-          titleFormat = {function(date){
-            return `${date.date.year}년 ${String(date.date.month + 1).padStart(2,'0')}월`
-          }}
-        
-      />  
-      <Popup open={open} setOpen={setOpen} date={date}></Popup>
-    </>
-  )
-};
 
 export default MainPage;
