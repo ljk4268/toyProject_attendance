@@ -11,6 +11,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import { blue } from '@mui/material/colors';
 import PersonIcon from '@mui/icons-material/Person';
+import EmojiPeopleOutlinedIcon from '@mui/icons-material/EmojiPeopleOutlined';
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { changObj, changeNameArray } from "./../store";
@@ -46,6 +47,10 @@ function Popup(props) {
       let newNames = [...names]
       newNames = namesArray
       setNames(newNames)
+    } else {
+      let newNames = [...names]
+      newNames = []
+      setNames(newNames)
     }
   }, [date])
 
@@ -64,7 +69,7 @@ function Popup(props) {
               <ListItem key={i}>
                 <ListItemAvatar>
                   <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-                    <PersonIcon />
+                    <EmojiPeopleOutlinedIcon />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText primary={name} />

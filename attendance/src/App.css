@@ -2,6 +2,9 @@
 /* 구글폰트  */
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dongle&family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dongle&family=Playfair+Display&family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dongle&family=Fuzzy+Bubbles&family=Playfair+Display&family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dongle&family=Fuzzy+Bubbles&family=Grape+Nuts&family=Playfair+Display&family=Source+Sans+Pro&display=swap');
 
 
 html {
@@ -10,10 +13,11 @@ html {
 }
 .App {
   text-align: center;
-  padding: 40px;
-  font-family: 'Source Sans Pro', 'Dongle', sans-serif ;
+  /* padding: 40px; */
+  font-family: 'Source Sans Pro', sans-serif ;
   height: 100%;
   box-sizing: border-box;
+
 }
 
 .fc .fc-col-header-cell-cushion {
@@ -103,12 +107,46 @@ a {
 
 /* 메인페이지 CSS */
 .main-container{
-  width: 80%;
-  height:800px;
-  padding: 0;
+  width: 100%;
+  height:900px;
   margin: 0 auto;
   background-color: pink;
 }
 
+/* .css-hyum1k-MuiToolbar-root {
+  color: #000;
+  background-color: #fbfbf9;
+  width: calc(80% - 64px);
+  
+  /* right: auto;
+  background-color: #fbfbf9;
+  color: #000 */
 
 
+.main-top{
+  /* background-color: bisque; */
+  height: 60%;
+  padding: 0 20px 30px 20px;
+  display: flex;
+  justify-content : space-between
+}
+
+.greeting {
+  font-size: 10vw;
+  font-family: 'Grape Nuts', serif;
+  font-weight: 700;
+  box-shadow: inset 0 -15px 0 rgb(251, 249, 115);
+
+}
+.greeting2{
+  font-size: 10vw;
+  font-family: 'Grape Nuts', serif;
+  font-weight: 700;
+  box-shadow: inset 0 -15px 0 rgb(251, 249, 115);
+  display: inline-block;
+}
+.catImg {
+  width: 100px;
+  height: 100px;
+  border-radius: 40%;
+}

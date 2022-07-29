@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeMonth, changObj } from "../store";
 import { saveAttendList } from "../module/attendList";
+import MainBar from "./mainBar";
+
 
 function CalendarPage() {
   const [open, setOpen] = useState(false);
@@ -23,6 +25,11 @@ function CalendarPage() {
   let $eventAttList = [];
   let dispatch = useDispatch();
 
+  // let calendar = new FullCalendar.Calendar(calendarEl, {
+  //   contentHeight: 600
+  // });
+
+  // calendar.setOption('contentHeight', 650)
 
   for (var key in $attListObj) {
     let tempObj = {};
@@ -50,7 +57,11 @@ function CalendarPage() {
 
   return (
     <>
+      <MainBar />
       <FullCalendar
+
+        height = {'auto'}
+
         datesSet={(arg) => {
           let argTitle = arg.view.title.split(" ");
           setYear(argTitle[0].replace("년", ""));
@@ -60,7 +71,20 @@ function CalendarPage() {
         dateClick={handleDateClick}
         initialView="dayGridMonth"
         weekends={true}
+        // 7월 29일 업데이트 내용.... 슈바
+        eventClick={(info)=> {
+          // 2022-06-29
+            let year = info.event.start.getFullYear();
+            let month = String(info.event.start.getMonth()+1).padStart(2,'0')
+            let date = String(info.event.start.getDate()).padStart(2,'0')
+
+            let returnDate = `${year}-${month}-${date}`
+            setOpen(true)
+            setDate(returnDate)
+          }
+        }
         events={$eventAttList}
+        
         titleFormat={function (date) {
           return `${date.date.year}년 ${String(date.date.month + 1).padStart(
             2,
@@ -69,6 +93,7 @@ function CalendarPage() {
         }}
       />
       <Popup open={open} setOpen={setOpen} date={date}></Popup>
+      
     </>
   );
 }
