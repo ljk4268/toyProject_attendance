@@ -13,21 +13,16 @@ function CalendarPage() {
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
 
-  const handleDateClick = (e) => {
-    setOpen(true);
-    setDate(e.dateStr);
-  };
-
   // redux store에서 state 가져다쓰기
   // redux store를 가져와주는 useSelector()
   let state = useSelector((state) => {
     return state;
   });
-  let calendarMonth = state.month.month;
-  let calendarYear = state.month.year;
+  
   let $attListObj = state.$attListObj;
   let $eventAttList = [];
   let dispatch = useDispatch();
+
 
   for (var key in $attListObj) {
     let tempObj = {};
@@ -45,6 +40,13 @@ function CalendarPage() {
 
     dispatch(changeMonth({ year: year, month: month }));
   }, [month]);
+
+
+  const handleDateClick = (e) => {
+    setOpen(true);
+    setDate(e.dateStr);
+  };
+  
 
   return (
     <>

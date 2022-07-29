@@ -1,3 +1,4 @@
+import { create } from '@mui/material/styles/createTransitions'
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 
 
@@ -43,12 +44,25 @@ let $attListObj = createSlice({
   }
 })
 
+let $attNames = createSlice({
+  name : '$attNames',
+  initialState: [],
+  reducers: {
+    changeNameArray(state, action){
+      let newState = {...state}
+      newState = action.payload
+      return newState
+    }
+  }
+})
+
 
 
 
 export let { userDate } = user.actions
 export let { changeMonth } = month.actions
 export let { changObj } = $attListObj.actions
+export let { changeNameArray } = $attNames.actions
 
 
 // 변수 등록하는 공간 
@@ -57,6 +71,7 @@ export default configureStore({
   reducer: { 
     user: user.reducer,
     month: month.reducer,
-    $attListObj: $attListObj.reducer
+    $attListObj: $attListObj.reducer,
+    $attNames : $attNames.reducer
   }
 })

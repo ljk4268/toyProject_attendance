@@ -49,7 +49,7 @@ function Kakao(){
 
       dispatch(userDate({kakaoId: _kakaoId, nickname: _nickname, email: _email}))
 
-      return navigate('/main')
+      return navigate('/calendar')
 
     }
     

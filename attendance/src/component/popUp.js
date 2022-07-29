@@ -13,44 +13,61 @@ import { blue } from '@mui/material/colors';
 import PersonIcon from '@mui/icons-material/Person';
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { changObj } from "./../store";
+import { changObj, changeNameArray } from "./../store";
 import { saveAttendList } from "../module/attendList";
+import { useEffect, useState } from "react";
 
 // 테스트중
-import Box from '@mui/material/Box';
-import Input from '@mui/material/Input';
-import PlaceIcon from '@mui/icons-material/Place';
+
 
 function Popup(props) {
+
   const date = props.date;
 
   let state = useSelector((state) => {
     return state.month;
   });
-  let state2 = useSelector((state) => {
+  let $attListObj = useSelector((state) => {
     return state.$attListObj;
   });
+  let dispatch = useDispatch();
 
   let calendarMonth = state.month;
   let calendarYear = state.year;
 
+  let [names, setNames] = useState([]);
 
-  let dispatch = useDispatch();
-  const emails = ['이자경', '오창현'];
+
+  // Cannot update a component (`CalendarPage`) while rendering a different component 을 만남. if문으로만 작성했을 떄. 
+
+  useEffect(()=>{
+    if ($attListObj[date] !== undefined) {
+      let namesArray = ($attListObj[date].name)
+      let newNames = [...names]
+      newNames = namesArray
+      setNames(newNames)
+    }
+  }, [date])
+
+
+  useEffect(()=>{
+    dispatch(changeNameArray(names))
+  }, [names])
+
   return (
     <Dialog open={props.open}>
       <DialogTitle> 누가누가 참석했나~ 😏 </DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          <List sx={{ pt: 0 }}>
-            {emails.map((email) => (
-              <ListItem key={email}>
+        <DialogContentText component="div">
+          <List sx={{ pt: 0 }} >
+            {names.map((name,i) => (
+              <ListItem key={i}>
                 <ListItemAvatar>
                   <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
                     <PersonIcon />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={email} />
+                <ListItemText primary={name} />
               </ListItem>
             ))}
           </List>
@@ -60,6 +77,8 @@ function Popup(props) {
         {/* 출석하기 버튼 눌렀을 때 출석등록함.  27 - 31/*/}
         {/* 비동기 데이터전송과 결과값 받는것을 동기식으로 바꿈 async와 await을 써서.  */}
         {/* 왜 썼냐고? 코드 깔끔하게 할라고 / 여러 비동기식을 보낼때는 이렇게 쓰는게 더 깔끔하다.  */}
+
+
 
           <Button
             variant="outlined"
