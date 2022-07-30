@@ -1,4 +1,4 @@
-import { create } from '@mui/material/styles/createTransitions'
+
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 
 
@@ -14,6 +14,7 @@ let user = createSlice({
     }
   }
 })
+
 
 let month = createSlice({
   name : 'month',
@@ -72,6 +73,6 @@ export default configureStore({
     user: user.reducer,
     month: month.reducer,
     $attListObj: $attListObj.reducer,
-    $attNames : $attNames.reducer
+    $attNames : $attNames.reducer,
   }
 })

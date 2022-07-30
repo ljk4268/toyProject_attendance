@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { userDate }from './../store'
 import Stack from '@mui/material/Stack';
@@ -8,7 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 function Kakao(){
   let navigate = useNavigate();
-  let dispatch = useDispatch()
+  let dispatch = useDispatch();
 
   useEffect(()=>{
     async function kakaoToken(){
