@@ -31,6 +31,7 @@ function Popup(props) {
   let $attListObj = useSelector((state) => {
     return state.$attListObj;
   });
+
   let dispatch = useDispatch();
 
   let calendarMonth = state.month;
@@ -39,11 +40,10 @@ function Popup(props) {
   let [names, setNames] = useState([]);
 
 
-  // Cannot update a component (`CalendarPage`) while rendering a different component 을 만남. if문으로만 작성했을 떄. 
-
   useEffect(()=>{
     if ($attListObj[date] !== undefined) {
-      let namesArray = ($attListObj[date].name)
+      let namesArray = $attListObj[date].name
+      console.log(namesArray)
       let newNames = [...names]
       newNames = namesArray
       setNames(newNames)
@@ -52,7 +52,21 @@ function Popup(props) {
       newNames = []
       setNames(newNames)
     }
-  }, [date])
+  }, [date, $attListObj])
+
+  // useEffect(()=>{
+  //   if ($attListObj[date] !== undefined) {
+  //     let namesArray = $attListObj[date].name
+  //     console.log(namesArray)
+  //     let newNames = [...names]
+  //     newNames = namesArray
+  //     setNames(newNames)
+  //   } else {
+  //     let newNames = [...names]
+  //     newNames = []
+  //     setNames(newNames)
+  //   }
+  // }, [$attListObj])
 
 
   useEffect(()=>{
@@ -79,12 +93,7 @@ function Popup(props) {
         </DialogContentText>
       </DialogContent>
       <DialogActions style={{justifyContent: 'center'}}>
-        {/* 출석하기 버튼 눌렀을 때 출석등록함.  27 - 31/*/}
-        {/* 비동기 데이터전송과 결과값 받는것을 동기식으로 바꿈 async와 await을 써서.  */}
-        {/* 왜 썼냐고? 코드 깔끔하게 할라고 / 여러 비동기식을 보낼때는 이렇게 쓰는게 더 깔끔하다.  */}
-
-
-
+      
           <Button
             variant="outlined"
             onClick={async () => {

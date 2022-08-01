@@ -8,28 +8,21 @@ import { changeMonth, changObj } from "../store";
 import { saveAttendList } from "../module/attendList";
 import MainBar from "./mainBar";
 
-
 function CalendarPage() {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
 
-  // redux store에서 state 가져다쓰기
-  // redux store를 가져와주는 useSelector()
+  
   let state = useSelector((state) => {
     return state;
   });
-  
+
   let $attListObj = state.$attListObj;
   let $eventAttList = [];
   let dispatch = useDispatch();
 
-  // let calendar = new FullCalendar.Calendar(calendarEl, {
-  //   contentHeight: 600
-  // });
-
-  // calendar.setOption('contentHeight', 650)
 
   for (var key in $attListObj) {
     let tempObj = {};
@@ -41,27 +34,25 @@ function CalendarPage() {
   useEffect(() => {
     async function fetchData() {
       let attListArray = await saveAttendList(year, month);
-      dispatch(changObj(attListArray));
+      if (Object.keys(attListArray).length !== 0){
+        dispatch(changObj(attListArray));
+      }
     }
     fetchData();
 
     dispatch(changeMonth({ year: year, month: month }));
   }, [month]);
 
-
   const handleDateClick = (e) => {
     setOpen(true);
     setDate(e.dateStr);
   };
-  
 
   return (
     <>
       <MainBar />
       <FullCalendar
-
-        height = {'auto'}
-
+        height={"auto"}
         datesSet={(arg) => {
           let argTitle = arg.view.title.split(" ");
           setYear(argTitle[0].replace("년", ""));
@@ -71,20 +62,16 @@ function CalendarPage() {
         dateClick={handleDateClick}
         initialView="dayGridMonth"
         weekends={true}
-        // 7월 29일 업데이트 내용.... 슈바
-        eventClick={(info)=> {
-          // 2022-06-29
-            let year = info.event.start.getFullYear();
-            let month = String(info.event.start.getMonth()+1).padStart(2,'0')
-            let date = String(info.event.start.getDate()).padStart(2,'0')
+        eventClick={(info) => {
+          let year = info.event.start.getFullYear();
+          let month = String(info.event.start.getMonth() + 1).padStart(2, "0");
+          let date = String(info.event.start.getDate()).padStart(2, "0");
 
-            let returnDate = `${year}-${month}-${date}`
-            setOpen(true)
-            setDate(returnDate)
-          }
-        }
+          let returnDate = `${year}-${month}-${date}`;
+          setOpen(true);
+          setDate(returnDate);
+        }}
         events={$eventAttList}
-        
         titleFormat={function (date) {
           return `${date.date.year}년 ${String(date.date.month + 1).padStart(
             2,
@@ -93,7 +80,6 @@ function CalendarPage() {
         }}
       />
       <Popup open={open} setOpen={setOpen} date={date}></Popup>
-      
     </>
   );
 }

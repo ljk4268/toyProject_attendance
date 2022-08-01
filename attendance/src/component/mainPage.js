@@ -1,10 +1,36 @@
-import { useSelector } from "react-redux";
+
 import MainBar from "../component/mainBar";
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
+//mui
+import { styled } from '@mui/material/styles';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import Avatar from '@mui/material/Avatar';
+import { blue, pink } from '@mui/material/colors';
+import EmojiPeopleOutlinedIcon from '@mui/icons-material/EmojiPeopleOutlined';
+import IconButton from '@mui/material/IconButton';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+
+// 장소등록 input창
+import * as React from 'react';
+import FormControl, { useFormControl } from '@mui/material/FormControl';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import FormHelperText from '@mui/material/FormHelperText';
+
+//장소 등록시 보이는 mui라이브러리
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Collapse from '@mui/material/Collapse';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import PlaceIcon from '@mui/icons-material/Place';
 
 
 
@@ -12,30 +38,36 @@ import { useDispatch } from 'react-redux';
 function MainPage() {
 
   let navigate = useNavigate();
-
   let [userName, setUserName] = useState('')
+  let date = getToday();
+  let [todayAttendanceNames, setTodayAttendanceNames] = useState([]);
+  let [places, setPlaces] = useState([{
+      id: 0,
+      place: '야탑 라리쉐뜨',
+      open: false,
+      official: 'N'
+    },
+    {
+      id: 0,
+      place: '미금 제니스',
+      open: false,
+      official: 'N'
+    }
+  ]);
 
 
-  // 리덕스 새로고침시 state 정보 날아가는 문제! 
-  // 목적1. 리덕스에 데이터 저장 
-  // 이유 :  사용자가 수정, 삭제, 등록 등의 기능을 원할 때 사용자 정보를 서버에 넘겨줄 필요가 있어서 
-  // 목적2. 화면 첫 렌더링에서 사용자 정보(=이름)을 보여주고 싶음. 
-  // 목적2를 이루기 위해서는 첫 렌더링에 사용자 정보를 바로 보여주기 힘들었음. 
-  // useEffect로 첫 렌더링 이후에 사용자 정보에 대한 데이터를 받아오기 때문 
-  // 그래서 useState를 써서 첫 렌더링 이후 useEffect의 결과로 값이 바뀌는 순간 바로 적용이 되게끔 
-  // useState의 특징 : 값이 바뀌는 순간 바로 렌더링 해줌 
-  // 그냥 변수 ( let or const )를 사용하면 값이 바뀌어도 렌더링이 안됨. 
-
-
+  // useEffect
+  // 로그인한 사용자 정보 가져오기 
   useEffect(()=>{
     async function getUserInfo(){
       
       const session = await axios.post('/session')
       
-      let $nickname = session.data.attendanceUser.nickname;
-      // let $accountId = session.data.attendanceUser.accountId;
+      
 
       if(session.data.success === 'ok') {
+
+        let $nickname = session.data.attendanceUser.nickname;
 
         setUserName($nickname)
 
@@ -48,9 +80,78 @@ function MainPage() {
     getUserInfo()
   },[])
 
+  // 오늘 날짜의 출석리스트 가져오기 
+  useEffect(() => {
+    async function getTodayAttendance() {
+      const lists = await axios.post('/atndn/list-on-date',{
+        attendanceDate: date
+      });
+
+      let todayAttendanceLists = lists.data.attendanceList
+      let newArray = []
+
+      todayAttendanceLists.forEach((element) => {
+        newArray.push({
+          nickname : element.nickname,
+          attendanceId: element.attendanceId,
+          locationName: element.locationName,
+          locationId: element.locationId,
+          mealStatus: element.mealStatus
+        }) 
+        
+        setTodayAttendanceNames(newArray)
+      });
+    }
+    getTodayAttendance();
+  },[])
+
+
+  // 함수들
+  // mui 함수들
+  const Demo = styled('div')(({ theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+  }));
+
+  function MyFormHelperText() {
+    const { focused } = useFormControl() || {};
+  
+    const helperText = React.useMemo(() => {
+      if (focused) {
+        return 'This field is being focused';
+      }
+  
+      return '정모인 경우 체크박스를 클릭해주세요.';
+    }, [focused]);
+  
+    return <FormHelperText>{helperText}</FormHelperText>;
+  }
+
+  function getToday(){
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = ("0" + (1 + date.getMonth())).slice(-2);
+    let day = ("0" + date.getDate()).slice(-2);
+
+    return year + "-" + month + "-" + day;
+  }
+
+  
+
+  const handleClick = (i) => {
+    let newPlaces = [...places];
+    newPlaces[i].open = !newPlaces[i].open
+    setPlaces(newPlaces)
+  };
+
+
+  const addPlace = () => {
+    let todayPlace = document.getElementById('places').value;
+    let newPlace = [...places];
+    newPlace.push({id: 0, place: `${todayPlace}`, open: false, official: 'N' });
+    setPlaces(newPlace);
+  }
+
   return(
-
-
     <>
       <MainBar/>
       <div className="main-top">
@@ -62,7 +163,83 @@ function MainPage() {
       <p className="userHi"> {userName} 님, 반가워요!! </p>
       <div className="main-bottom">
 
+        <p className="todayList">오늘 공부하는 사람!</p>
 
+        <Box component="form" noValidate autoComplete="off"
+          sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}
+        >
+          <FormControl sx={{ width: '70vw'}}>
+            <OutlinedInput placeholder="모임 장소를 입력해주세요." id="places"/>
+          </FormControl>
+          <Button 
+            variant="outlined" 
+            onClick={addPlace}
+          >등록</Button>
+        </Box>
+        
+
+        <Demo>
+          {/* 장소등록 되었을 때 보이는 UI */}
+          {
+          // 첫 for문 : 장소 데이터를 서버에서 받아옴 
+          // 두번째 for문 : 날짜에 대한 출석자를 서버에서 받아옴 
+          // 첫번째 for문의 장소와 두번째 for문의 그 사람이 저장한 장소를 비교함 
+          // 비교해서 맞으면 그 장소 아래에 넣으면 됨.   
+            places.map(function(place, i){
+              return(
+              <List key={i} >
+
+                  <ListItemButton onClick={()=>{handleClick(i)}} sx={{ pt: 2 }} >
+                    <ListItemIcon>
+                      <PlaceIcon sx={{ color: pink[500] }}/>
+                    </ListItemIcon>
+                    <ListItemText primary={place.place} />
+                    {place.open ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+
+
+                  <Collapse in={place.open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding >
+                      <ListItemButton sx={{ pl: 5 }}>
+                        <ListItemAvatar>
+                            <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+                              <EmojiPeopleOutlinedIcon />
+                            </Avatar>
+                          </ListItemAvatar>
+                        <ListItemText primary="김익형" />
+                        <IconButton edge="end" aria-label="delete" color='inherit'>
+                            <CancelOutlinedIcon />
+                          </IconButton>
+                      </ListItemButton>
+                    </List>
+                  </Collapse>
+
+                </List>
+              )
+            })
+          
+          }
+          
+
+          {/* 해당날짜 출석등록자들 보이는 UI */}
+          <List sx={{ pt: 1 }} >
+              {todayAttendanceNames.map((name,i) => (
+                <ListItem key={i}>
+                  <ListItemAvatar>
+                    <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+                      <EmojiPeopleOutlinedIcon />
+
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={name.nickname} />
+                  <IconButton edge="end" aria-label="delete" color='inherit'>
+                    <CancelOutlinedIcon />
+                  </IconButton>
+                </ListItem>
+              ))}
+            </List>
+            
+          </Demo>
       </div>
       
     </>
