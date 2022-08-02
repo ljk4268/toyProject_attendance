@@ -41,21 +41,10 @@ function MainPage() {
   let [userName, setUserName] = useState('')
   let date = getToday();
   let [todayAttendanceNames, setTodayAttendanceNames] = useState([]);
-  let [places, setPlaces] = useState([{
-      id: 0,
-      place: '야탑 라리쉐뜨',
-      open: false,
-      official: 'N'
-    },
-    {
-      id: 0,
-      place: '미금 제니스',
-      open: false,
-      official: 'N'
-    }
-  ]);
 
+  let [places, setPlaces] = useState([]);
 
+  console.log('here', places);
   // useEffect
   // 로그인한 사용자 정보 가져오기 
   useEffect(()=>{
@@ -127,15 +116,16 @@ function MainPage() {
   }
 
   function getToday(){
+
     let date = new Date();
     let year = date.getFullYear();
     let month = ("0" + (1 + date.getMonth())).slice(-2);
     let day = ("0" + date.getDate()).slice(-2);
 
     return year + "-" + month + "-" + day;
+
   }
 
-  
 
   const handleClick = (i) => {
     let newPlaces = [...places];
@@ -150,6 +140,68 @@ function MainPage() {
     newPlace.push({id: 0, place: `${todayPlace}`, open: false, official: 'N' });
     setPlaces(newPlace);
   }
+
+  // 등록된 장소 목록 가지고오는거 해보기 (22.08.02)
+  async function postPlaces(){
+
+    let place = document.getElementById('places').value;
+    let official = 'N';
+
+    if ( place == '' ){
+      return;
+    }
+    
+      const todayPlace = await axios.post('/loc/entry',{
+        attendanceDate: date,
+        locationName: place,
+        official: official
+      })
+
+};
+
+  // 서버에 등록한 장소 가지고 오기 ( 22.08.02 )
+  async function getPlaces(){
+          
+    const todayPlaces = await axios.post('/loc/list',{
+      attendanceDate: date
+    });
+    const locationLists = todayPlaces.data.locationList;
+
+    let listArray = [];
+
+    // locationId , locationName , official
+    locationLists.forEach((locationList)=>{
+      listArray.push({
+        'locationId' : locationList.locationId,
+        'locationName' : locationList.locationName,
+        'official' : locationList.official,
+        'open' : false
+      })
+    })
+    
+    return listArray
+  };
+
+
+// JSX내용 리팩토링 하기 
+// 리팩토링 : 코드를 좀더 깔끔하게 만들기 위해 유지보수하는것 (=재작업)
+  const AttendNameList =  <List sx={{ pt: 1 }}>
+    {todayAttendanceNames.map((name, i) => (
+      <ListItem key={i}>
+        <ListItemAvatar>
+          <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+            <EmojiPeopleOutlinedIcon />
+
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={name.nickname} />
+        <IconButton edge="end" aria-label="delete" color='inherit'>
+          <CancelOutlinedIcon />
+        </IconButton>
+      </ListItem>
+    ))}
+  </List>
+
 
   return(
     <>
@@ -171,9 +223,19 @@ function MainPage() {
           <FormControl sx={{ width: '70vw'}}>
             <OutlinedInput placeholder="모임 장소를 입력해주세요." id="places"/>
           </FormControl>
+
+          {/* 장소등록 버튼 누르면 서버에 장소등록API 보내기 */}
           <Button 
             variant="outlined" 
-            onClick={addPlace}
+            onClick={
+              async ()=>{
+                await postPlaces();
+                let getPlaceLists = await getPlaces();
+                let newPlaces = [...places]
+                newPlaces = getPlaceLists
+                setPlaces(newPlaces);
+              }
+            }
           >등록</Button>
         </Box>
         
@@ -193,7 +255,7 @@ function MainPage() {
                     <ListItemIcon>
                       <PlaceIcon sx={{ color: pink[500] }}/>
                     </ListItemIcon>
-                    <ListItemText primary={place.place} />
+                    <ListItemText primary={place.locationName} />
                     {place.open ? <ExpandLess /> : <ExpandMore />}
                   </ListItemButton>
 
@@ -222,22 +284,7 @@ function MainPage() {
           
 
           {/* 해당날짜 출석등록자들 보이는 UI */}
-          <List sx={{ pt: 1 }} >
-              {todayAttendanceNames.map((name,i) => (
-                <ListItem key={i}>
-                  <ListItemAvatar>
-                    <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-                      <EmojiPeopleOutlinedIcon />
-
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary={name.nickname} />
-                  <IconButton edge="end" aria-label="delete" color='inherit'>
-                    <CancelOutlinedIcon />
-                  </IconButton>
-                </ListItem>
-              ))}
-            </List>
+          { AttendNameList }
             
           </Demo>
       </div>
