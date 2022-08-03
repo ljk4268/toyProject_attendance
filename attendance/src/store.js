@@ -1,8 +1,10 @@
 
-import { configureStore, createSlice } from '@reduxjs/toolkit'
+import { configureStore, createSlice} from '@reduxjs/toolkit'
 
 
-// useState의 역할
+
+
+// redux state
 let user = createSlice({
   name: 'user',
   initialState: {kakaoId: '', nickname: '', email: ''},

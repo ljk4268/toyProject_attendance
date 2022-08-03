@@ -3,6 +3,13 @@ import MainBar from "../component/mainBar";
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { postPlaces, getPlaces } from '../module/places'
+import { getToday } from '../module/getToday'
+import { getTodayAttendance } from '../module/user'
+
+import { useDispatch, useSelector } from "react-redux";
+import { userDate } from '../store'
+
 
 //mui
 import { styled } from '@mui/material/styles';
@@ -41,10 +48,15 @@ function MainPage() {
   let [userName, setUserName] = useState('')
   let date = getToday();
   let [todayAttendanceNames, setTodayAttendanceNames] = useState([]);
-
   let [places, setPlaces] = useState([]);
 
-  console.log('here', places);
+  // 리덕스 state 가져오기
+  let userInfo = useSelector((state) => {
+    return state.user;
+  });
+
+  // console.log(userInfo)
+
   // useEffect
   // 로그인한 사용자 정보 가져오기 
   useEffect(()=>{
@@ -52,8 +64,6 @@ function MainPage() {
       
       const session = await axios.post('/session')
       
-      
-
       if(session.data.success === 'ok') {
 
         let $nickname = session.data.attendanceUser.nickname;
@@ -70,28 +80,9 @@ function MainPage() {
   },[])
 
   // 오늘 날짜의 출석리스트 가져오기 
+  // 모듈화 >> state변경함수를 파라미터로 주면서 성공함. 이게 되네?
   useEffect(() => {
-    async function getTodayAttendance() {
-      const lists = await axios.post('/atndn/list-on-date',{
-        attendanceDate: date
-      });
-
-      let todayAttendanceLists = lists.data.attendanceList
-      let newArray = []
-
-      todayAttendanceLists.forEach((element) => {
-        newArray.push({
-          nickname : element.nickname,
-          attendanceId: element.attendanceId,
-          locationName: element.locationName,
-          locationId: element.locationId,
-          mealStatus: element.mealStatus
-        }) 
-        
-        setTodayAttendanceNames(newArray)
-      });
-    }
-    getTodayAttendance();
+    getTodayAttendance(setTodayAttendanceNames)
   },[])
 
 
@@ -115,71 +106,10 @@ function MainPage() {
     return <FormHelperText>{helperText}</FormHelperText>;
   }
 
-  function getToday(){
-
-    let date = new Date();
-    let year = date.getFullYear();
-    let month = ("0" + (1 + date.getMonth())).slice(-2);
-    let day = ("0" + date.getDate()).slice(-2);
-
-    return year + "-" + month + "-" + day;
-
-  }
-
-
   const handleClick = (i) => {
     let newPlaces = [...places];
     newPlaces[i].open = !newPlaces[i].open
     setPlaces(newPlaces)
-  };
-
-
-  const addPlace = () => {
-    let todayPlace = document.getElementById('places').value;
-    let newPlace = [...places];
-    newPlace.push({id: 0, place: `${todayPlace}`, open: false, official: 'N' });
-    setPlaces(newPlace);
-  }
-
-  // 등록된 장소 목록 가지고오는거 해보기 (22.08.02)
-  async function postPlaces(){
-
-    let place = document.getElementById('places').value;
-    let official = 'N';
-
-    if ( place == '' ){
-      return;
-    }
-    
-      const todayPlace = await axios.post('/loc/entry',{
-        attendanceDate: date,
-        locationName: place,
-        official: official
-      })
-
-};
-
-  // 서버에 등록한 장소 가지고 오기 ( 22.08.02 )
-  async function getPlaces(){
-          
-    const todayPlaces = await axios.post('/loc/list',{
-      attendanceDate: date
-    });
-    const locationLists = todayPlaces.data.locationList;
-
-    let listArray = [];
-
-    // locationId , locationName , official
-    locationLists.forEach((locationList)=>{
-      listArray.push({
-        'locationId' : locationList.locationId,
-        'locationName' : locationList.locationName,
-        'official' : locationList.official,
-        'open' : false
-      })
-    })
-    
-    return listArray
   };
 
 
@@ -212,7 +142,9 @@ function MainPage() {
           <div className="greeting2">Half Done !</div>
         </div>
       </div>
+
       <p className="userHi"> {userName} 님, 반가워요!! </p>
+
       <div className="main-bottom">
 
         <p className="todayList">오늘 공부하는 사람!</p>
@@ -242,11 +174,12 @@ function MainPage() {
 
         <Demo>
           {/* 장소등록 되었을 때 보이는 UI */}
-          {
-          // 첫 for문 : 장소 데이터를 서버에서 받아옴 
+          {/* // 첫 for문 : 장소 데이터를 서버에서 받아옴 
           // 두번째 for문 : 날짜에 대한 출석자를 서버에서 받아옴 
           // 첫번째 for문의 장소와 두번째 for문의 그 사람이 저장한 장소를 비교함 
-          // 비교해서 맞으면 그 장소 아래에 넣으면 됨.   
+          // 비교해서 맞으면 그 장소 아래에 넣으면 됨.  */}
+
+          {
             places.map(function(place, i){
               return(
               <List key={i} >
@@ -279,7 +212,6 @@ function MainPage() {
                 </List>
               )
             })
-          
           }
           
 
