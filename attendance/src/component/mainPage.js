@@ -29,13 +29,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormHelperText from '@mui/material/FormHelperText';
 
-//장소 등록시 보이는 mui라이브러리
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Collapse from '@mui/material/Collapse';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import PlaceIcon from '@mui/icons-material/Place';
+//장소 등록시 보이는 장소리스트 함수
+import { showPlaces } from '../module/showPlaces';
 
 
 
@@ -45,15 +40,13 @@ function MainPage() {
   let navigate = useNavigate();
   let date = getToday();
   let [todayAttendanceNames, setTodayAttendanceNames] = useState([]);
-  let [places, setPlaces] = useState([]);
-
+  let [todayPlaces, setTodayPlaces] = useState([]);
   
   let userInfo = useSelector((state) => {
     return state.user;
   });
 
   let user = userInfo.nickname;
-  console.log(user);
 
 
   // useEffect
@@ -79,6 +72,7 @@ function MainPage() {
   // 모듈화 >> state변경함수를 파라미터로 주면서 성공함. 이게 되네?
   useEffect(() => {
     getTodayAttendance(setTodayAttendanceNames)
+    getPlaces(setTodayPlaces);
   },[])
 
 
@@ -102,7 +96,11 @@ function MainPage() {
     return <FormHelperText>{helperText}</FormHelperText>;
   }
 
-
+  const handleClick = (i) => {
+    let newPlaces = [...todayPlaces];
+    newPlaces[i].open = !newPlaces[i].open
+    setTodayPlaces(newPlaces)
+  };
 
 
 // JSX내용 리팩토링 하기 
@@ -154,13 +152,9 @@ function MainPage() {
             onClick={
               async ()=>{
                 await postPlaces();
-                let getPlaceLists = await getPlaces();
-                let newPlaces = [...places]
-                newPlaces = getPlaceLists
-                setPlaces(newPlaces);
+                getPlaces(setTodayPlaces);
               }
-            }
-          >등록</Button>
+            }>등록</Button>
         </Box>
         
 
@@ -172,9 +166,9 @@ function MainPage() {
           // 비교해서 맞으면 그 장소 아래에 넣으면 됨.  */}
 
           {
-            places.map(function(place, i){
+            todayPlaces.map(function(place, i){
               return(
-                placeFunction(i, handleClick, place)
+                showPlaces(i, handleClick, place)
               )
             })
           }
@@ -194,34 +188,3 @@ function MainPage() {
 };
 
 export default MainPage;
-
-function placeFunction(i, handleClick, place) {
-  return <List key={i}>
-
-    <ListItemButton onClick={() => { handleClick(i); } } sx={{ pt: 2 }}>
-      <ListItemIcon>
-        <PlaceIcon sx={{ color: pink[500] }} />
-      </ListItemIcon>
-      <ListItemText primary={place.locationName} />
-      {place.open ? <ExpandLess /> : <ExpandMore />}
-    </ListItemButton>
-
-
-    <Collapse in={place.open} timeout="auto" unmountOnExit>
-      <List component="div" disablePadding>
-        <ListItemButton sx={{ pl: 5 }}>
-          <ListItemAvatar>
-            <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-              <EmojiPeopleOutlinedIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="김익형" />
-          <IconButton edge="end" aria-label="delete" color='inherit'>
-            <CancelOutlinedIcon />
-          </IconButton>
-        </ListItemButton>
-      </List>
-    </Collapse>
-
-  </List>;
-}
