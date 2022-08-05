@@ -10,11 +10,11 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import { blue } from '@mui/material/colors';
-import PersonIcon from '@mui/icons-material/Person';
 import EmojiPeopleOutlinedIcon from '@mui/icons-material/EmojiPeopleOutlined';
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { changObj, changeNameArray } from "./../store";
+import { changObj } from "../redux/feature/attendList";
+import { changeNameArray } from "../redux/feature/attendanceNames";
 import { saveAttendList } from "../module/attendList";
 import { useEffect, useState } from "react";
 

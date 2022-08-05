@@ -6,9 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { postPlaces, getPlaces } from '../module/places'
 import { getToday } from '../module/getToday'
 import { getTodayAttendance } from '../module/user'
-
 import { useDispatch, useSelector } from "react-redux";
-import { userDate } from '../store'
 
 
 //mui
@@ -45,30 +43,28 @@ import PlaceIcon from '@mui/icons-material/Place';
 function MainPage() {
 
   let navigate = useNavigate();
-  let [userName, setUserName] = useState('')
   let date = getToday();
   let [todayAttendanceNames, setTodayAttendanceNames] = useState([]);
   let [places, setPlaces] = useState([]);
 
-  // 리덕스 state 가져오기
+  
   let userInfo = useSelector((state) => {
     return state.user;
   });
 
-  // console.log(userInfo)
+  let user = userInfo.nickname;
+  console.log(user);
+
 
   // useEffect
-  // 로그인한 사용자 정보 가져오기 
+  // 로그인한 정보 남아있으면 메인페이지 없으면 다시 로그인 페이지로 돌아가는 공간
+  // 창현이한테 이 코드 정확히 무엇을 위한 코드인지 물어보기
   useEffect(()=>{
     async function getUserInfo(){
       
       const session = await axios.post('/session')
       
       if(session.data.success === 'ok') {
-
-        let $nickname = session.data.attendanceUser.nickname;
-
-        setUserName($nickname)
 
         return navigate('/main')
 
@@ -106,11 +102,7 @@ function MainPage() {
     return <FormHelperText>{helperText}</FormHelperText>;
   }
 
-  const handleClick = (i) => {
-    let newPlaces = [...places];
-    newPlaces[i].open = !newPlaces[i].open
-    setPlaces(newPlaces)
-  };
+
 
 
 // JSX내용 리팩토링 하기 
@@ -143,7 +135,7 @@ function MainPage() {
         </div>
       </div>
 
-      <p className="userHi"> {userName} 님, 반가워요!! </p>
+      <p className="userHi"> {user} 님, 반가워요!! </p>
 
       <div className="main-bottom">
 
@@ -182,34 +174,7 @@ function MainPage() {
           {
             places.map(function(place, i){
               return(
-              <List key={i} >
-
-                  <ListItemButton onClick={()=>{handleClick(i)}} sx={{ pt: 2 }} >
-                    <ListItemIcon>
-                      <PlaceIcon sx={{ color: pink[500] }}/>
-                    </ListItemIcon>
-                    <ListItemText primary={place.locationName} />
-                    {place.open ? <ExpandLess /> : <ExpandMore />}
-                  </ListItemButton>
-
-
-                  <Collapse in={place.open} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding >
-                      <ListItemButton sx={{ pl: 5 }}>
-                        <ListItemAvatar>
-                            <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-                              <EmojiPeopleOutlinedIcon />
-                            </Avatar>
-                          </ListItemAvatar>
-                        <ListItemText primary="김익형" />
-                        <IconButton edge="end" aria-label="delete" color='inherit'>
-                            <CancelOutlinedIcon />
-                          </IconButton>
-                      </ListItemButton>
-                    </List>
-                  </Collapse>
-
-                </List>
+                placeFunction(i, handleClick, place)
               )
             })
           }
@@ -229,3 +194,34 @@ function MainPage() {
 };
 
 export default MainPage;
+
+function placeFunction(i, handleClick, place) {
+  return <List key={i}>
+
+    <ListItemButton onClick={() => { handleClick(i); } } sx={{ pt: 2 }}>
+      <ListItemIcon>
+        <PlaceIcon sx={{ color: pink[500] }} />
+      </ListItemIcon>
+      <ListItemText primary={place.locationName} />
+      {place.open ? <ExpandLess /> : <ExpandMore />}
+    </ListItemButton>
+
+
+    <Collapse in={place.open} timeout="auto" unmountOnExit>
+      <List component="div" disablePadding>
+        <ListItemButton sx={{ pl: 5 }}>
+          <ListItemAvatar>
+            <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+              <EmojiPeopleOutlinedIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary="김익형" />
+          <IconButton edge="end" aria-label="delete" color='inherit'>
+            <CancelOutlinedIcon />
+          </IconButton>
+        </ListItemButton>
+      </List>
+    </Collapse>
+
+  </List>;
+}

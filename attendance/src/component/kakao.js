@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { userDate }from './../store'
+import { userDate }from '../redux/feature/user'
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 
