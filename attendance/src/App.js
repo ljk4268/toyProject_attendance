@@ -1,4 +1,5 @@
 import MainPage from './component/mainPage'
+import AttendRegistration from './component/attendRegistation'
 import CalendarPage from './component/calendarPage'
 import Login from './component/login'
 import Kakao from './component/kakao'
@@ -27,6 +28,9 @@ function App() {
 
         {/* 메인페이지 */}
         <Route path="/main" element={<MainPage/>}/>
+
+        {/* 출석등록페이지 */}
+        <Route path="/registration" element={<AttendRegistration/>}/>
         
       </Routes>
 

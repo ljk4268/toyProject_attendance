@@ -7,6 +7,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Dongle&family=Fuzzy+Bubbles&family=Grape+Nuts&family=Playfair+Display&family=Source+Sans+Pro&display=swap');
 
 
+
 html {
   width: 100%;
   height: 100%;
@@ -163,12 +164,29 @@ a {
   padding-bottom: 10px;
   text-align: left;
   font-weight: 500;
-  font-size: 4vw;
+  font-size: 5vw;
 }
+
 
 /* .MuiFormLabel-root.Mui-focused {
   color: red !important;
 } */
 .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
   border-color: rgb(207, 207, 205) !important;
+}
+
+
+/* 출석등록페이지 CSS */
+.select{
+  font-size: 3vw;
+  font-weight: 400;
+  color: red;
+}
+
+.calendarIcon{
+  vertical-align: middle;
+}
+.css-1gjgmky-MuiToggleButtonGroup-root {
+  width: 100% ;
+  display: block !important;
 }

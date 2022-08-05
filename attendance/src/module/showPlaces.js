@@ -23,7 +23,7 @@ import PlaceIcon from '@mui/icons-material/Place';
 
 
 export function showPlaces(i, handleClick, place) {
-  return <List key={i}>
+  return <List key={i} sx={{ background: '#fafafa', pt: 0, mt: 1, borderRadius: '5px' }}>
 
     <ListItemButton onClick={() => { handleClick(i); } } sx={{ pt: 2 }}>
       <ListItemIcon>

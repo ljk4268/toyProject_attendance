@@ -1,5 +1,9 @@
 
+//component
 import MainBar from "../component/mainBar";
+import MainLogo from "../component/mianLogo";
+import PlaceInput from "../component/placeInput";
+
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
@@ -21,13 +25,6 @@ import EmojiPeopleOutlinedIcon from '@mui/icons-material/EmojiPeopleOutlined';
 import IconButton from '@mui/material/IconButton';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
-// 장소등록 input창
-import * as React from 'react';
-import FormControl, { useFormControl } from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import FormHelperText from '@mui/material/FormHelperText';
 
 //장소 등록시 보이는 장소리스트 함수
 import { showPlaces } from '../module/showPlaces';
@@ -76,25 +73,10 @@ function MainPage() {
   },[])
 
 
-  // 함수들
   // mui 함수들
   const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
   }));
-
-  function MyFormHelperText() {
-    const { focused } = useFormControl() || {};
-  
-    const helperText = React.useMemo(() => {
-      if (focused) {
-        return 'This field is being focused';
-      }
-  
-      return '정모인 경우 체크박스를 클릭해주세요.';
-    }, [focused]);
-  
-    return <FormHelperText>{helperText}</FormHelperText>;
-  }
 
   const handleClick = (i) => {
     let newPlaces = [...todayPlaces];
@@ -126,37 +108,15 @@ function MainPage() {
   return(
     <>
       <MainBar/>
-      <div className="main-top">
-        <div>
-          <div className="greeting">Well Begun is</div>
-          <div className="greeting2">Half Done !</div>
-        </div>
-      </div>
+      <MainLogo/>
 
       <p className="userHi"> {user} 님, 반가워요!! </p>
 
       <div className="main-bottom">
 
         <p className="todayList">오늘 공부하는 사람!</p>
-
-        <Box component="form" noValidate autoComplete="off"
-          sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}
-        >
-          <FormControl sx={{ width: '70vw'}}>
-            <OutlinedInput placeholder="모임 장소를 입력해주세요." id="places"/>
-          </FormControl>
-
-          {/* 장소등록 버튼 누르면 서버에 장소등록API 보내기 */}
-          <Button 
-            variant="outlined" 
-            onClick={
-              async ()=>{
-                await postPlaces();
-                getPlaces(setTodayPlaces);
-              }
-            }>등록</Button>
-        </Box>
         
+        <PlaceInput setTodayPlaces={setTodayPlaces} />
 
         <Demo>
           {/* 장소등록 되었을 때 보이는 UI */}
