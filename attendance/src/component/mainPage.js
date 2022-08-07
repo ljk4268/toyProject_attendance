@@ -1,6 +1,7 @@
 
 //component
-import MainBar from "../component/mainBar";
+import NavbarTop from "../component/navbarTop";
+import NavbarBottom from "../component/navbarBottom";
 import MainLogo from "../component/mianLogo";
 import PlaceInput from "../component/placeInput";
 
@@ -20,7 +21,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
-import { blue, pink } from '@mui/material/colors';
+import { blue } from '@mui/material/colors';
 import EmojiPeopleOutlinedIcon from '@mui/icons-material/EmojiPeopleOutlined';
 import IconButton from '@mui/material/IconButton';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
@@ -107,7 +108,8 @@ function MainPage() {
 
   return(
     <>
-      <MainBar/>
+      <NavbarTop/>
+      <NavbarBottom/>
       <MainLogo/>
 
       <p className="userHi"> {user} 님, 반가워요!! </p>

@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { changObj } from "../redux/feature/attendList";
 import { changeMonth } from "../redux/feature/month";
 import { saveAttendList } from "../module/attendList";
-import MainBar from "./mainBar";
+import NavbarTop from "../component/navbarTop";
+import NavbarBottom from "../component/navbarBottom";
 
 function CalendarPage() {
   const [open, setOpen] = useState(false);
@@ -51,7 +52,8 @@ function CalendarPage() {
 
   return (
     <>
-      <MainBar />
+      <NavbarTop />
+      <NavbarBottom />
       <FullCalendar
         height={"auto"}
         datesSet={(arg) => {

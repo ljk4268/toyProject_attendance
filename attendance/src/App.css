@@ -190,3 +190,11 @@ a {
   width: 100% ;
   display: block !important;
 }
+
+.meal {
+  padding-left: 5px;
+}
+
+.showPlaces{
+  margin-top: 4%;
+}
