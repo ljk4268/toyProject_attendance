@@ -20,7 +20,6 @@ import { useEffect, useState } from "react";
 
 // 테스트중
 
-
 function Popup(props) {
 
   const date = props.date;
@@ -54,19 +53,6 @@ function Popup(props) {
     }
   }, [date, $attListObj])
 
-  // useEffect(()=>{
-  //   if ($attListObj[date] !== undefined) {
-  //     let namesArray = $attListObj[date].name
-  //     console.log(namesArray)
-  //     let newNames = [...names]
-  //     newNames = namesArray
-  //     setNames(newNames)
-  //   } else {
-  //     let newNames = [...names]
-  //     newNames = []
-  //     setNames(newNames)
-  //   }
-  // }, [$attListObj])
 
 
   useEffect(()=>{

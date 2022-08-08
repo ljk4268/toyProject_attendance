@@ -198,3 +198,7 @@ a {
 .showPlaces{
   margin-top: 4%;
 }
+
+.notificationMessage {
+  color: rgb(156, 154, 154)
+}

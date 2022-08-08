@@ -1,35 +1,31 @@
 
-//component
+import axios from 'axios';
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+
+//component 및 함수
 import NavbarTop from "../component/navbarTop";
 import NavbarBottom from "../component/navbarBottom";
 import MainLogo from "../component/mianLogo";
-import PlaceInput from "../component/placeInput";
-
-import axios from 'axios';
-import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { postPlaces, getPlaces } from '../module/places'
+import { getPlaces } from '../module/places'
 import { getToday } from '../module/getToday'
 import { getTodayAttendance } from '../module/user'
-import { useDispatch, useSelector } from "react-redux";
-
+import attendanceTagUi from './partial/attendaceTagUi';
 
 //mui
-import { styled } from '@mui/material/styles';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
 import { blue } from '@mui/material/colors';
-import EmojiPeopleOutlinedIcon from '@mui/icons-material/EmojiPeopleOutlined';
-import IconButton from '@mui/material/IconButton';
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Collapse from '@mui/material/Collapse';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import PlaceIcon from '@mui/icons-material/Place';
 
 
-//장소 등록시 보이는 장소리스트 함수
-import { showPlaces } from '../module/showPlaces';
-
+//함수
 
 
 
@@ -39,13 +35,13 @@ function MainPage() {
   let date = getToday();
   let [todayAttendanceNames, setTodayAttendanceNames] = useState([]);
   let [todayPlaces, setTodayPlaces] = useState([]);
+  let [notificationMessage, setNotificationMessage] = useState(false);
   
   let userInfo = useSelector((state) => {
     return state.user;
   });
 
   let user = userInfo.nickname;
-
 
   // useEffect
   // 로그인한 정보 남아있으면 메인페이지 없으면 다시 로그인 페이지로 돌아가는 공간
@@ -69,16 +65,15 @@ function MainPage() {
   // 오늘 날짜의 출석리스트 가져오기 
   // 모듈화 >> state변경함수를 파라미터로 주면서 성공함. 이게 되네?
   useEffect(() => {
-    getTodayAttendance(setTodayAttendanceNames)
+    getTodayAttendance(setTodayAttendanceNames);
     getPlaces(setTodayPlaces);
+    if (todayAttendanceNames==0){
+      setNotificationMessage(true)
+    }
   },[])
 
 
   // mui 함수들
-  const Demo = styled('div')(({ theme }) => ({
-    backgroundColor: theme.palette.background.paper,
-  }));
-
   const handleClick = (i) => {
     let newPlaces = [...todayPlaces];
     newPlaces[i].open = !newPlaces[i].open
@@ -86,24 +81,15 @@ function MainPage() {
   };
 
 
-// JSX내용 리팩토링 하기 
-// 리팩토링 : 코드를 좀더 깔끔하게 만들기 위해 유지보수하는것 (=재작업)
-  const AttendNameList =  <List sx={{ pt: 1 }}>
-    {todayAttendanceNames.map((name, i) => (
-      <ListItem key={i}>
-        <ListItemAvatar>
-          <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-            <EmojiPeopleOutlinedIcon />
+  let AttendNameList = []
+  
+  todayAttendanceNames.map((name,i) => {
+    if ( name.locationId === null ){
+      AttendNameList.push(attendanceTagUi(name,i))
+    }
+  })
 
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={name.nickname} />
-        <IconButton edge="end" aria-label="delete" color='inherit'>
-          <CancelOutlinedIcon />
-        </IconButton>
-      </ListItem>
-    ))}
-  </List>
+  
 
 
   return(
@@ -117,34 +103,56 @@ function MainPage() {
       <div className="main-bottom">
 
         <p className="todayList">오늘 공부하는 사람!</p>
-        
-        <PlaceInput setTodayPlaces={setTodayPlaces} />
 
-        <Demo>
-          {/* 장소등록 되었을 때 보이는 UI */}
-          {/* // 첫 for문 : 장소 데이터를 서버에서 받아옴 
-          // 두번째 for문 : 날짜에 대한 출석자를 서버에서 받아옴 
-          // 첫번째 for문의 장소와 두번째 for문의 그 사람이 저장한 장소를 비교함 
-          // 비교해서 맞으면 그 장소 아래에 넣으면 됨.  */}
 
-          {
-            todayPlaces.map(function(place, i){
-              return(
-                showPlaces(i, handleClick, place)
-              )
-            })
-          }
+      {
+      // 장소는 map함수로 하나씩 반복되고 있다. 
+      // 유저정보를 모두 꺼내는 for문으로 반복을 하면 유저정보도 한번씩 돌아감. 
+      // 그 장소아이디랑 유저가 속한 장소아이디랑 비교해서 
+      // 같으면 그 장소에 속하게끔 구현할 수 있다. 
+        todayPlaces.map(function(place, i){
+          // 해당장소 클릭한 유저 모음
+          let userInlocation = [];
           
-
-          {/* 해당날짜 출석등록자들 보이는 UI */}
-          { AttendNameList }
+          for ( let j = 0; j < todayAttendanceNames.length; j++){
             
-          </Demo>
-      </div>
+            if( place.locationId == todayAttendanceNames[j].locationId){
+              userInlocation.push(attendanceTagUi(todayAttendanceNames[j],j))
+            }
+
+          }
+
+          return(
+            <List key={i} sx={{ background: '#fafafa', pt: 0, mt: 1, borderRadius: '5px' }}>
+
+              <ListItemButton onClick={() => { handleClick(i); } } sx={{ pt: 2 }}>
+                <ListItemIcon>
+                  <PlaceIcon sx={{ color: blue[400] }} />
+                </ListItemIcon>
+                <ListItemText primary={place.locationName} sx={{ fontWeight:'bold' }}/>
+                {place.open ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+
+              <Collapse in={place.open} timeout="auto" unmountOnExit>
+              
+                {userInlocation}
+                
+              </Collapse>
+
+            </List>
+          )
+        })
+      }
+
+      {/* 해당날짜 출석등록자들 보이는 UI */}
+        {AttendNameList} 
       
+      {
+        notificationMessage == true ? <div className="notificationMessage">오늘 등록된 사람이 없습니다.</div> : null
+      }
+
+      </div>
     </>
-  
-  
   )
 
 };

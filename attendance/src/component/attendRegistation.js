@@ -168,7 +168,7 @@ function AttendRegistration(){
       </ToggleButton>
       <ToggleButton value='1' data-id="N">
         <NoMealsOutlinedIcon sx={{ fontSize: 19 }}/>
-        <span className="meal">먹고 갈게요!</span>
+        <span className="meal">안먹을래요!</span>
       </ToggleButton>
 
     </ToggleButtonGroup>

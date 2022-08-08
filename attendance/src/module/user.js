@@ -20,7 +20,8 @@ export async function getTodayAttendance(setTodayAttendanceNames) {
       attendanceId: element.attendanceId,
       locationName: element.locationName,
       locationId: element.locationId,
-      mealStatus: element.mealStatus
+      mealStatus: element.mealStatus,
+      accountId : element.accountId
     }) 
 
     setTodayAttendanceNames(newArray);
