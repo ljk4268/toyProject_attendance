@@ -25,11 +25,9 @@ function NavbarBottom() {
   });
 
   return (      
-      <React.Fragment>
-
-        {/* 하단 navbar */}
-        {/* css fixed padding 구글검색해서 찾음  */}
-        <AppBar position="fixed" sx={{ top: 'auto', bottom: 0,  }} className="topAppBar">
+        // {/* 하단 navbar */}
+        // {/* css fixed padding 구글검색해서 찾음  */}
+        <AppBar position="fixed"  sx={{  top:'auto', bottom: 0,  }} className="navbar">
           <Toolbar >
 
             <IconButton color="inherit" aria-label="open drawer">
@@ -54,7 +52,6 @@ function NavbarBottom() {
           </Toolbar>
         </AppBar>
 
-    </React.Fragment>
   );
 
 

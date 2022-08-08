@@ -7,10 +7,8 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Fab from '@mui/material/Fab';
 import MenuIcon from '@mui/icons-material/Menu';
-import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
+import Container from '@mui/material/Container';
 
 
 
@@ -26,40 +24,34 @@ function NavbarTop() {
   });
 
   return (      
-      <React.Fragment>
-        <Box sx={{ flexGrow: 1, paddingBottom:'25%' }}>
+        <Box sx={{ flexGrow: 1, paddingBottom:'25%'}}>
 
         {/* 상단 navbar */}
-          <AppBar position="fixed">
+          <AppBar  position="fixed" className='navbar'>
+              <Toolbar style={{ backgroundColor: "#fbfbf9", color: "#000" }} >
 
-            <Toolbar style={{ backgroundColor: "#fbfbf9", color: "#000" }}>
+                <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+                  <MenuIcon />
+                </IconButton>
+                <Typography variant="h5" color="inherit" align="center" component="div" sx={{ flexGrow: 1 }} >
+                시작이 반
+                </Typography>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                >
+                  
+                    <InsertEmoticonOutlinedIcon />
+                  
+                </IconButton>
 
-              <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h5" color="inherit" align="center" component="div" sx={{ flexGrow: 1 }} >
-              시작이 반
-              </Typography>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                color="inherit"
-              >
-                
-                  <InsertEmoticonOutlinedIcon />
-                
-              </IconButton>
-
-              {/* <Button color="inherit">Login</Button> */}
-
-            </Toolbar>
-
+                {/* <Button color="inherit">Login</Button> */}
+              </Toolbar>
           </AppBar>
-
         </Box> 
-    </React.Fragment>
   );
 
 
