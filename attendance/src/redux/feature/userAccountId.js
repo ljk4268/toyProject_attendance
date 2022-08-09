@@ -5,7 +5,7 @@ let userAccountId = createSlice({
   initialState: {accountId : 0},
   reducers:{
     userAcId(state, action){
-      state.accountId = action.payload[0].accountId
+      state.accountId = action.payload
     }
   }
 })

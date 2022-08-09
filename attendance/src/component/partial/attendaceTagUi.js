@@ -17,9 +17,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { postAttendanceCancel } from '../../module/user';
 
 
-export default function attendanceTagUi(userAttendanceInfo,userAccountId,i) {
-
-
+export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAttendanceFunction,i) {
   // 해당장소에 등록되는 유저의 경우 paddingLeft를 줘야함. 
 
   // 유저정보 변수들
@@ -51,8 +49,11 @@ export default function attendanceTagUi(userAttendanceInfo,userAccountId,i) {
 
     // 출석취소버틑ㄴ
     cancelIconTag = <IconButton edge="end" aria-label="delete" 
-    onClick={()=>{
-      postAttendanceCancel(attendanceId);
+    onClick={async()=>{
+      // 둘다 비동기 함수인데 순서 지키게 하려고 
+      // await로 동기화 시켜버림
+      await postAttendanceCancel(attendanceId);
+      await dataAttendanceFunction();
     }}>
     <CancelOutlinedIcon/>
   </IconButton>

@@ -10,7 +10,7 @@ import NavbarBottom from "../component/navbarBottom";
 import MainLogo from "../component/mianLogo";
 import { getPlaces } from '../module/places'
 import { getToday } from '../module/getToday'
-import { getTodayAttendance } from '../module/user'
+import { getDateAttendance } from '../module/user'
 import { userAcId } from '../redux/feature/userAccountId'
 import attendanceTagUi from './partial/attendaceTagUi';
 
@@ -39,6 +39,7 @@ function MainPage() {
   let [todayPlaces, setTodayPlaces] = useState([]);
   let [notificationMessage, setNotificationMessage] = useState(false);
   
+
   let reduxState = useSelector((state) => {
     return state;
   });
@@ -46,6 +47,11 @@ function MainPage() {
 
   let user = reduxState.user.nickname;
   let userAccountId = reduxState.userAccountId
+
+  let dataAttendanceFunction = () => {
+    getDateAttendance(setTodayAttendanceNames, date)
+  }
+
 
 
   // useEffect
@@ -57,7 +63,7 @@ function MainPage() {
       const session = await axios.post('/session')
       
       if(session.data.success === 'ok') {
-
+        dispatch(userAcId(session.data.attendanceUser.accountId))
         return navigate('/main')
 
       } 
@@ -70,7 +76,7 @@ function MainPage() {
   // 오늘 날짜의 출석리스트 가져오기 
   // 모듈화 >> state변경함수를 파라미터로 주면서 성공함. 이게 되네?
   useEffect(() => {
-    getTodayAttendance(setTodayAttendanceNames);
+    getDateAttendance(setTodayAttendanceNames, date);
     getPlaces(setTodayPlaces);
     
   },[])
@@ -78,10 +84,10 @@ function MainPage() {
   useEffect(()=>{
 
     if( todayAttendanceNames.length != 0 ){
-      dispatch(userAcId(todayAttendanceNames))
+      setNotificationMessage(false)
     }
 
-    if (todayAttendanceNames==0){
+    if (todayAttendanceNames == 0){
       setNotificationMessage(true)
     }
   
@@ -100,7 +106,7 @@ function MainPage() {
   
   todayAttendanceNames.map((name,i) => {
     if ( name.locationId === null ){
-      AttendNameList.push(attendanceTagUi(name,userAccountId,i))
+      AttendNameList.push(attendanceTagUi(name,userAccountId,dataAttendanceFunction,i))
     }
   })
 
