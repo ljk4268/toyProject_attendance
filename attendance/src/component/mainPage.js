@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
 //component 및 함수
@@ -11,7 +11,9 @@ import MainLogo from "../component/mianLogo";
 import { getPlaces } from '../module/places'
 import { getToday } from '../module/getToday'
 import { getTodayAttendance } from '../module/user'
+import { userAcId } from '../redux/feature/userAccountId'
 import attendanceTagUi from './partial/attendaceTagUi';
+
 
 //mui
 import List from '@mui/material/List';
@@ -33,15 +35,18 @@ function MainPage() {
 
   let navigate = useNavigate();
   let date = getToday();
-  let [todayAttendanceNames, setTodayAttendanceNames] = useState([]);
+  let [todayAttendanceNames, setTodayAttendanceNames] = useState([1]);
   let [todayPlaces, setTodayPlaces] = useState([]);
   let [notificationMessage, setNotificationMessage] = useState(false);
   
-  let userInfo = useSelector((state) => {
-    return state.user;
+  let reduxState = useSelector((state) => {
+    return state;
   });
+  let dispatch = useDispatch();
 
-  let user = userInfo.nickname;
+  let user = reduxState.user.nickname;
+  let userAccountId = reduxState.userAccountId
+
 
   // useEffect
   // 로그인한 정보 남아있으면 메인페이지 없으면 다시 로그인 페이지로 돌아가는 공간
@@ -67,10 +72,20 @@ function MainPage() {
   useEffect(() => {
     getTodayAttendance(setTodayAttendanceNames);
     getPlaces(setTodayPlaces);
+    
+  },[])
+
+  useEffect(()=>{
+
+    if( todayAttendanceNames.length != 0 ){
+      dispatch(userAcId(todayAttendanceNames))
+    }
+
     if (todayAttendanceNames==0){
       setNotificationMessage(true)
     }
-  },[])
+  
+  },[todayAttendanceNames])
 
 
   // mui 함수들
@@ -85,7 +100,7 @@ function MainPage() {
   
   todayAttendanceNames.map((name,i) => {
     if ( name.locationId === null ){
-      AttendNameList.push(attendanceTagUi(name,i))
+      AttendNameList.push(attendanceTagUi(name,userAccountId,i))
     }
   })
 

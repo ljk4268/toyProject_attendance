@@ -66,7 +66,7 @@ function AttendRegistration(){
 			setAlertOpen(true)
 		} else {
 			let entry = await postTodayAttendance(date, locationId, mealStatus);
-			console.log(entry.data.success)
+
 
 			if (entry.data.reason == "해당 날짜에 이미 등록한 유저!"){
 				setWarningWindow(true)
@@ -214,26 +214,26 @@ function AttendRegistration(){
 
 
 	const attendanceButton = <Box
-		sx={{
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center',
-			'& > *': {
-				m: 1,
-			},
-		}}
-	>
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					'& > *': {
+						m: 1,
+					},
+				}}
+			>
 
-		<ButtonGroup variant="outlined" aria-label="outlined button group">
-			<Button
-				sx={{ width: '150px' }}
-				size='large'
-				onClick={postAttendance}
-			>출석등록하기</Button>
-			<Button sx={{ width: '150px' }} size='large' onClick={()=>{navigate('/main')}}>취소</Button>
-		</ButtonGroup>
+			<ButtonGroup variant="outlined" aria-label="outlined button group">
+				<Button
+					sx={{ width: '150px' }}
+					size='large'
+					onClick={postAttendance}
+				>출석등록하기</Button>
+				<Button sx={{ width: '150px' }} size='large' onClick={()=>{navigate('/main')}}>취소</Button>
+			</ButtonGroup>
 
-	</Box>;
+		</Box>;
 
 
 

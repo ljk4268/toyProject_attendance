@@ -5,6 +5,7 @@ import UserReducer from './feature/user';
 import MonthReducer from './feature/month';
 import AttendListReducer from './feature/attendList';
 import AttendanceNamesReducer from './feature/attendanceNames';
+import UserAccountIdReducer from './feature/userAccountId';
 
 import storage from 'redux-persist/lib/storage';
 import {persistReducer} from 'redux-persist';
@@ -22,6 +23,7 @@ const reducer = combineReducers({
   month: MonthReducer,
   $attListObj: AttendListReducer,
   $attNames: AttendanceNamesReducer,
+  userAccountId:UserAccountIdReducer
 });
 
 
