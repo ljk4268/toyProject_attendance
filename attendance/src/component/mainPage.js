@@ -28,9 +28,6 @@ import PlaceIcon from '@mui/icons-material/Place';
 
 
 //함수
-
-
-
 function MainPage() {
 
   let navigate = useNavigate();
@@ -38,6 +35,7 @@ function MainPage() {
   let [todayAttendanceNames, setTodayAttendanceNames] = useState([1]);
   let [todayPlaces, setTodayPlaces] = useState([]);
   let [notificationMessage, setNotificationMessage] = useState(false);
+  let [cancelAlertOpen, setCancelAlertOpen] = useState(false);
   
 
   let reduxState = useSelector((state) => {
@@ -106,7 +104,7 @@ function MainPage() {
   
   todayAttendanceNames.map((name,i) => {
     if ( name.locationId === null ){
-      AttendNameList.push(attendanceTagUi(name,userAccountId,dataAttendanceFunction,i))
+      AttendNameList.push(attendanceTagUi(name,userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen, i))
     }
   })
 

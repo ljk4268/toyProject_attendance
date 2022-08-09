@@ -12,12 +12,21 @@ import NoMealsOutlinedIcon from '@mui/icons-material/NoMealsOutlined';
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 //함수
 import { postAttendanceCancel } from '../../module/user';
 
 
-export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAttendanceFunction,i) {
+
+export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,i) {
+
   // 해당장소에 등록되는 유저의 경우 paddingLeft를 줘야함. 
 
   // 유저정보 변수들
@@ -31,47 +40,82 @@ export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAtt
   let mealIconTag = null;
   let cancelIconTag = null;
   let editIconTag = null;
+  let cancelAlert = null;
 
   // css 변수
   let paddingLeftValue = 1;
 
+  if ( locationId != null ){
+    paddingLeftValue = 5;
+  }
+
   // alert창
+
+  const handleClickOpen = () => {
+    setCancelAlertOpen(true);
+  };
+
+  const handleClose = () => {
+    setCancelAlertOpen(false);
+  };
 
 
   // 상황에 따라 보여질 UI들을 위한 분기
+  // 식사버튼
   if ( meal == 'N'  ) {
     mealIconTag = <NoMealsOutlinedIcon sx={{ fontSize: 18, paddingRight: 1, color: grey[300] }}/>
   } else {
     mealIconTag = <RestaurantOutlinedIcon sx={{ fontSize: 18, paddingRight: 1, color: orange[300] }}/>
   }
 
+  // 출석 수정 && 취소버튼 
   if ( accountId == userAccountId.accountId ){
 
-    // 출석취소버틑ㄴ
+    // 출석취소버튼
     cancelIconTag = <IconButton edge="end" aria-label="delete" 
-    onClick={async()=>{
-      // 둘다 비동기 함수인데 순서 지키게 하려고 
-      // await로 동기화 시켜버림
-      await postAttendanceCancel(attendanceId);
-      await dataAttendanceFunction();
-    }}>
+    onClick={handleClickOpen}>
     <CancelOutlinedIcon/>
   </IconButton>
 
-// 출석수정버튼
-    editIconTag = <IconButton edge="end" aria-label="edit">
-    <EditOutlinedIcon 
-      sx={{paddingRight:'10px'}}
-      onClick={()=>{window.location.href="/registration"}}  
-    />
+    // 출석수정버튼
+    editIconTag = <IconButton edge="end" aria-label="edit" onClick={()=>{window.location.href="/registration"}}  >
+    <EditOutlinedIcon sx={{paddingRight:'10px'}}/>
   </IconButton>
 
+    //삭제버튼 누를 때 나오는 알림창
+    cancelAlert = <Dialog
+      open={cancelAlertOpen}
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+      >
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          출석등록을 취소하시겠습니까?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>아니요</Button>
+        <Button 
+        onClick={async()=>{
+          await postAttendanceCancel(attendanceId);
+          await dataAttendanceFunction();
+          handleClose()
+        }}
+        autoFocus>
+          네
+        </Button>
+      </DialogActions>
+      </Dialog>
+
   }
 
-  if ( locationId != null ){
-    paddingLeftValue = 5;
-  }
 
+
+      // 둘다 비동기 함수인데 순서 지키게 하려고 
+      // await로 동기화 시켜버림
+      // await postAttendanceCancel(attendanceId);
+      // await dataAttendanceFunction();
 
 
 
@@ -89,6 +133,7 @@ export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAtt
     
     {editIconTag}
     {cancelIconTag}
+    {cancelAlert}
 
   </ListItem>
 </List>
