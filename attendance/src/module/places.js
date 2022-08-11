@@ -37,7 +37,8 @@ export async function getPlaces(setTodayPlaces){
       'locationId' : locationList.locationId,
       'locationName' : locationList.locationName,
       'official' : locationList.official,
-      'open' : false
+      'open' : false,
+      'accountId': locationList.accountId
     })
   })
   

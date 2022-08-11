@@ -25,6 +25,8 @@ import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import PlaceIcon from '@mui/icons-material/Place';
+import IconButton from '@mui/material/IconButton';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 
 //함수
@@ -100,6 +102,10 @@ function MainPage() {
     setTodayPlaces(newPlaces)
   };
 
+  const handleClickOpen = () => {
+    setCancelAlertOpen(true);
+  };
+
 
   let AttendNameList = []
   
@@ -131,6 +137,7 @@ function MainPage() {
       // 그 장소아이디랑 유저가 속한 장소아이디랑 비교해서 
       // 같으면 그 장소에 속하게끔 구현할 수 있다. 
         todayPlaces.map(function(place, i){
+
           // 해당장소 클릭한 유저 모음
           let userInlocation = [];
           
@@ -150,6 +157,18 @@ function MainPage() {
                   <PlaceIcon sx={{ color: blue[400] }} />
                 </ListItemIcon>
                 <ListItemText primary={place.locationName} sx={{ fontWeight:'bold' }}/>
+
+                  {
+                    place.accountId == userAccountId.accountId ? <IconButton edge="start" aria-label="delete" 
+                    sx={{paddingRight: '25px'}}
+                    onClick={handleClickOpen}>
+                    <CancelOutlinedIcon/>
+                  </IconButton> 
+                  :
+                  null
+                  }
+                
+
                 {place.open ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
 
