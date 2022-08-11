@@ -17,15 +17,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+
 
 
 //함수
 import { postAttendanceCancel } from '../../module/user';
+import { changeEditMode } from '../../redux/feature/editMode'
 
 
 
-export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,i) {
+
+export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,dispatch,i) {
 
   // 해당장소에 등록되는 유저의 경우 paddingLeft를 줘야함. 
 
@@ -68,7 +70,7 @@ export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAtt
     mealIconTag = <RestaurantOutlinedIcon sx={{ fontSize: 18, paddingRight: 1, color: orange[300] }}/>
   }
 
-  // 출석 수정 && 취소버튼 
+  // 출석 수정 && 취소버튼 && 취소버튼 누를 때 나오는 알림창
   if ( accountId == userAccountId.accountId ){
 
     // 출석취소버튼
@@ -78,11 +80,17 @@ export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAtt
   </IconButton>
 
     // 출석수정버튼
-    editIconTag = <IconButton edge="end" aria-label="edit" onClick={()=>{window.location.href="/registration"}}  >
+    editIconTag = <IconButton 
+      edge="end" 
+      aria-label="edit" 
+      onClick={()=>{
+        dispatch(changeEditMode(true));
+        window.location.href="/registration";
+      }}  >
     <EditOutlinedIcon sx={{paddingRight:'10px'}}/>
   </IconButton>
 
-    //삭제버튼 누를 때 나오는 알림창
+    //출석취소버튼 누를 때 나오는 알림창
     cancelAlert = <Dialog
       open={cancelAlertOpen}
       onClose={handleClose}

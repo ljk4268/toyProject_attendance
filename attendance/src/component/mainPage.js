@@ -41,6 +41,7 @@ function MainPage() {
   let reduxState = useSelector((state) => {
     return state;
   });
+
   let dispatch = useDispatch();
 
   let user = reduxState.user.nickname;
@@ -104,7 +105,7 @@ function MainPage() {
   
   todayAttendanceNames.map((name,i) => {
     if ( name.locationId === null ){
-      AttendNameList.push(attendanceTagUi(name,userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen, i))
+      AttendNameList.push(attendanceTagUi(name,userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,dispatch,i))
     }
   })
 
@@ -136,7 +137,7 @@ function MainPage() {
           for ( let j = 0; j < todayAttendanceNames.length; j++){
             
             if( place.locationId == todayAttendanceNames[j].locationId){
-              userInlocation.push(attendanceTagUi(todayAttendanceNames[j],j))
+              userInlocation.push(attendanceTagUi(todayAttendanceNames[j],userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,dispatch,j))
             }
 
           }

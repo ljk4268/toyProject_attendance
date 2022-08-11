@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 
 //component
@@ -11,7 +11,8 @@ import { getPlaces } from '../module/places'
 import { getToday } from '../module/getToday'
 
 // 함수
-import { postTodayAttendance } from '../module/user'
+import { postDateAttendance, getDateAttendance, postAttendanceUpdate} from '../module/user'
+import { changeEditMode } from '../redux/feature/editMode'
 
 //mui라이브러리
 import * as React from 'react';
@@ -39,42 +40,90 @@ function AttendRegistration(){
   let userInfo = useSelector((state) => {
     return state.user;
   });
+	let editMode = useSelector((state) => {
+    return state.editMode;
+  });
+	let userAccountId = useSelector((state) => {
+    return state.userAccountId;
+  });
+
 	let navigate = useNavigate();
+	let dispatch = useDispatch();
 
   const week = ['일','월','화','수','목','금','토']
 	const [alignment, setAlignment] = useState(null);
   const [mealAlignment, setMealAlignment] = useState(null);
   const [alertOpen, setAlertOpen] = useState(false);
   const [warningWindow, setWarningWindow] = useState(false);
+
   let now = new Date();
   let dayOfWeek = week[now.getDay()];
   let date = getToday();
   let user = userInfo.nickname;
   let [todayPlaces, setTodayPlaces] = useState([0]);
   let [locationId, setLocationId] = useState(null);
+  let [attendanceId, setAttendanceId] = useState(null);
   let [mealStatus, setMealStatus] = useState(null);
-  
+  let [editModeSelect, setEditModeSelect] = useState(false);
+
 
   useEffect(() => {
     getPlaces(setTodayPlaces);
-  },[])
+		// 출석 수정모드로 들어왔을 경우 
+		if ( editMode ) {
+			setEditModeSelect(true);
+			async function attanceUserData(){
+				let attanceList = await getDateAttendance(null,date,editMode);
+				let userData = attanceList.find(lists => lists.accountId == userAccountId.accountId)
+				setAttendanceId(userData.attendanceId)
+				setMealAlignment(userData.mealStatus)
+				if ( userData.locationName == null ){
+					setAlignment('alone')
+				} else {
 
+					setAlignment(userData.locationName)
+				}
+				
+			}
+			attanceUserData()
+		}
+  },[])
 
 	// 함수
 	async function postAttendance(){
-		if(locationId == null || mealStatus == null ){
-			setAlertOpen(true)
+		// 수정모드일때 
+		if ( editMode ){
+
+			if ( alignment == null || mealAlignment == null ){
+				setAlertOpen(true)
+			} else {
+				let changeAtndn = await postAttendanceUpdate(date, locationId, mealStatus, attendanceId);
+
+				if(changeAtndn.data.success == 'ok'){
+					dispatch(changeEditMode(false));
+					navigate('/main');
+				} 
+				
+			}
+
 		} else {
-			let entry = await postTodayAttendance(date, locationId, mealStatus);
+			// 등록 모드일 때 
+			console.log(locationId, mealStatus)
+			if(locationId == null || mealStatus == null ){
+				setAlertOpen(true)
+			} else {
+
+				let entry = await postDateAttendance(date, locationId, mealStatus);
 
 
-			if (entry.data.reason == "해당 날짜에 이미 등록한 유저!"){
-				setWarningWindow(true)
+				if (entry.data.reason == "해당 날짜에 이미 등록한 유저!"){
+					setWarningWindow(true)
+				}
+				if (entry.data.success == "ok"){
+					return navigate('/main')
+				}
+				
 			}
-			if (entry.data.success == "ok"){
-				return navigate('/main')
-			}
-			
 		}
 	}
 
@@ -120,6 +169,7 @@ function AttendRegistration(){
 
 
   // const로 리팩토링 >> 태그를 변수화한거임. 
+	
   const showPlaces = <div className="showPlaces">
     <ToggleButtonGroup
       orientation="vertical"
@@ -133,16 +183,21 @@ function AttendRegistration(){
     <ToggleButton value="alone" data-id="-1">혼자 할게요</ToggleButton>
 
       {todayPlaces.map((place, i) => {
-        return (
-          <ToggleButton 
-            value={i}
-            key={i}
-            data-id={place.locationId}
-          >{place.locationName}</ToggleButton>
 
-        );
+					if( place.locationName != undefined ){
+						return (
+							<ToggleButton 
+								key={i}
+								value={place.locationName}
+								data-id={place.locationId}
+								className="toggle-button"
+							>{place.locationName}</ToggleButton>
+						
+						);
+					}
 
-      })}
+      	}
+			)}
 
     </ToggleButtonGroup>
   </div>;
@@ -156,17 +211,17 @@ function AttendRegistration(){
     <ToggleButtonGroup
       orientation="vertical"
       value={mealAlignment}
-      // defaultValue="N"
+      // defaultValue=""
       color="primary"
       exclusive
       onChange={mealHandleAlignment}
       sx={{ width: '100%' }}
     >
-      <ToggleButton value='0' data-id="Y">
+      <ToggleButton value='Y' data-id="Y" >
         <RestaurantOutlinedIcon sx={{ fontSize: 19 }}/>
         <span className="meal">같이 먹어요!</span>
       </ToggleButton>
-      <ToggleButton value='1' data-id="N">
+      <ToggleButton value='N' data-id="N">
         <NoMealsOutlinedIcon sx={{ fontSize: 19 }}/>
         <span className="meal">안먹을래요!</span>
       </ToggleButton>
@@ -213,7 +268,8 @@ function AttendRegistration(){
 		</Dialog>;
 
 
-	const attendanceButton = <Box
+	const attendanceButton = 
+			<Box
 				sx={{
 					display: 'flex',
 					flexDirection: 'column',
@@ -223,17 +279,35 @@ function AttendRegistration(){
 					},
 				}}
 			>
+				{
+					
+					editModeSelect == true ? <ButtonGroup variant="outlined" aria-label="outlined button group">
+						<Button
+							sx={{ width: '150px' }}
+							size='large'
+							onClick={postAttendance}
+						>출석수정하기</Button>
+						<Button sx={{ width: '150px' }} size='large' onClick={()=>{navigate('/main')}}>취소</Button>
+				</ButtonGroup>
 
-			<ButtonGroup variant="outlined" aria-label="outlined button group">
-				<Button
-					sx={{ width: '150px' }}
-					size='large'
-					onClick={postAttendance}
-				>출석등록하기</Button>
-				<Button sx={{ width: '150px' }} size='large' onClick={()=>{navigate('/main')}}>취소</Button>
+				:
+
+				<ButtonGroup variant="outlined" aria-label="outlined button group">
+					<Button
+						sx={{ width: '150px' }}
+						size='large'
+						onClick={postAttendance}
+					>출석등록하기</Button>
+					<Button sx={{ width: '150px' }} size='large' onClick={()=>{navigate('/main')}}>취소</Button>
 			</ButtonGroup>
 
+				}
+			
+
 		</Box>;
+
+
+
 
 
 
@@ -243,44 +317,95 @@ function AttendRegistration(){
       <NavbarTop/>
       <MainLogo/>
 
-      <p className="userHi"> {user} 님, 출석등록을 하시겠습니까? </p>
+			{
 
-      <div className="main-bottom">
+				editModeSelect == false ? <div>
+					<p className="userHi"> {user} 님, 출석등록을 하시겠습니까? </p>
 
-      <p className="todayList">
-        <span className="calendarIcon"><CalendarMonthOutlinedIcon/></span>
-        {date} ({dayOfWeek})
-      </p> 
+<div className="main-bottom">
 
-      {/* 모임장소 선택하는 부분  */}
-        <div>
-          
-          <p className="todayList">참석할 모임장소 선택!</p>
+<p className="todayList">
+	<span className="calendarIcon"><CalendarMonthOutlinedIcon/></span>
+	{date} ({dayOfWeek})
+</p> 
 
-          {placeInput}
-          
-          {showPlaces}
-          
-        </div>
-        
+{/* 모임장소 선택하는 부분  */}
+	<div>
+		
+		<p className="todayList">참석할 모임장소 선택!</p>
 
-          
-        <p className="todayList">식사 하실분!</p> 
+		{placeInput}
+		
+		{showPlaces}
+		
+	</div>
+	
 
-      {/* 식사여부 선택하는 부분  */}
-        {seletedMeal}
+		
+	<p className="todayList">식사 하실분!</p> 
+
+{/* 식사여부 선택하는 부분  */}
+	{seletedMeal}
 
 
-        <p className="todayList"></p>
+	<p className="todayList"></p>
 
-			{/* 출석등록 버튼  */}
-        {attendanceButton}  
+{/* 출석등록 버튼  */}
+	{attendanceButton}  
 
-      </div>
+</div>
+
+{/* alert 창 */}
+	{entryAlert}
+	{alreadyAttended}
+				</div> 
+				
+				:
+// editMode가 true 일 때 보여지는 UI
+	<div>
+		<p className="userHi"> {user} 님, 출석 수정 하시겠습니까? </p>
+
+		<div className="main-bottom">
+
+			<p className="todayList">
+			<span className="calendarIcon"><CalendarMonthOutlinedIcon/></span>
+				{date} ({dayOfWeek})
+			</p> 
+
+			{/* 모임장소 선택하는 부분  */}
+			<div>
+
+			<p className="todayList">참석할 모임장소 선택!</p>
+
+				{placeInput}
+
+				{showPlaces}
+
+			</div>
+
+
+
+			<p className="todayList">식사 하실분!</p> 
+
+				{/* 식사여부 선택하는 부분  */}
+				{seletedMeal}
+
+
+			<p className="todayList"></p>
+
+				{/* 출석등록 버튼  */}
+				{attendanceButton}  
+
+			</div>
 
 			{/* alert 창 */}
-				{entryAlert}
-				{alreadyAttended}
+			{entryAlert}
+			{alreadyAttended}
+	</div>
+
+			}
+
+      
 
     </>
 
