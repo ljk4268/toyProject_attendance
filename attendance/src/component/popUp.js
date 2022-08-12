@@ -11,6 +11,16 @@ import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import { blue } from '@mui/material/colors';
 import EmojiPeopleOutlinedIcon from '@mui/icons-material/EmojiPeopleOutlined';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Collapse from '@mui/material/Collapse';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import PlaceIcon from '@mui/icons-material/Place';
+import IconButton from '@mui/material/IconButton';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+
+
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { changObj } from "../redux/feature/attendList";
@@ -18,11 +28,16 @@ import { changeNameArray } from "../redux/feature/attendanceNames";
 import { saveAttendList } from "../module/attendList";
 import { useEffect, useState } from "react";
 
-// 테스트중
+// 함수
+import { getPlaces, deletePlace } from '../module/places'
+import { getDateAttendance } from '../module/user'
+import attendanceTagUi from './partial/attendaceTagUi';
+
+
 
 function Popup(props) {
 
-  const date = props.date;
+  
 
   let state = useSelector((state) => {
     return state.month;
@@ -30,88 +45,151 @@ function Popup(props) {
   let $attListObj = useSelector((state) => {
     return state.$attListObj;
   });
+  let userAccountId = useSelector((state) => {
+    return state.userAccountId;
+  });
+
 
   let dispatch = useDispatch();
 
+  const date = props.date;
   let calendarMonth = state.month;
   let calendarYear = state.year;
+  let [dateAttendanceNames, setDateAttendanceNames] = useState([1]);
+  let [datePlaces, setDatePlaces] = useState([]);
+  let [cancelAlertOpen, setCancelAlertOpen] = useState(false);
 
-  let [names, setNames] = useState([]);
 
 
+
+  // 해당날짜 출석인원 및 모임장소 가지고오기
   useEffect(()=>{
-    if ($attListObj[date] !== undefined) {
-      let namesArray = $attListObj[date].name
-      console.log(namesArray)
-      let newNames = [...names]
-      newNames = namesArray
-      setNames(newNames)
-    } else {
-      let newNames = [...names]
-      newNames = []
-      setNames(newNames)
+    if ( date != ''){
+    getPlaces(setDatePlaces, date)
+    getDateAttendance(setDateAttendanceNames, date)
+  }
+  },[props.open])
+
+
+  let dataAttendanceFunction = () => {
+    getDateAttendance(setTodayAttendanceNames, date)
+  }
+
+  const handleClick = (i) => {
+    let newPlaces = [...datePlaces];
+    newPlaces[i].open = !newPlaces[i].open
+    setDatePlaces(newPlaces)
+  };
+
+
+  let AttendNameList = [];
+
+  dateAttendanceNames.map((name,i) => {
+    if ( name.locationId === null ){
+      AttendNameList.push(attendanceTagUi(name,userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,dispatch,i))
     }
-  }, [date, $attListObj])
+  })
 
+  let atndnButton = <>
+        <Button variant="outlined">
+              출석하기
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            props.setOpen(false);
+          }}
+        >
+          취소
+        </Button>
+      </>
 
+  dateAttendanceNames.map((name,i) =>{
+    
+    if ( name.accountId == userAccountId.accountId ){
 
-  useEffect(()=>{
-    dispatch(changeNameArray(names))
-  }, [names])
+      atndnButton = 
+      <>
+        <Button variant="outlined">
+              수정하기
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                props.setOpen(false);
+              }}
+            >
+              취소
+            </Button>
+      </>
+
+    } 
+  })
 
   return (
-    <Dialog open={props.open}>
-      <DialogTitle> 누가누가 참석했나~ 😏 </DialogTitle>
-      <DialogContent>
-        <DialogContentText component="div">
-          <List sx={{ pt: 0 }} >
-            {names.map((name,i) => (
-              <ListItem key={i}>
-                <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-                    <EmojiPeopleOutlinedIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={name} />
-              </ListItem>
-            ))}
-          </List>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions style={{justifyContent: 'center'}}>
-      
-          <Button
-            variant="outlined"
-            onClick={async () => {
-              const entry = await axios.post("/atndn/entry", {
-                attendanceDate: date,
-                mealStatus: "N",
-              });
-              // 출석 등록되고 나면 팝업창 닫기.
-              props.setOpen(false);
+    <>
+      <Dialog open={props.open}>
+        <DialogTitle>자기계발하는 사람 누구누구?!</DialogTitle>
 
-              // 출석이 등록되고 나면 리스트 받기.
-              let attListObj = await saveAttendList(
-                calendarYear,
-                calendarMonth
-              );
 
-              dispatch(changObj(attListObj));
-            }}
-          >
-            출석하기
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              props.setOpen(false);
-            }}
-          >
-            취소
-          </Button>
+         {/* 출석등록한 사람들 리스트 */}
+        <DialogContent>
+          <DialogContentText component="div">
 
-      </DialogActions>
-    </Dialog>
+            {/* 장소리스트 */}
+            {
+
+              datePlaces.map(function(place,i){
+                let userInlocation = [];
+
+                for ( let j = 0; j < dateAttendanceNames.length; j++){
+                  if( place.locationId == dateAttendanceNames[j].locationId){
+                    userInlocation.push(attendanceTagUi(dateAttendanceNames[j],userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,dispatch,j))
+                  }
+                }
+
+                return(
+                  <List key={i} sx={{ background: '#fafafa', pt: 0, mt: 1, borderRadius: '5px' }}>
+
+                    <ListItemButton onClick={() => { handleClick(i); }} sx={{ pt: 2 }}>
+                      <ListItemIcon>
+                        <PlaceIcon sx={{ color: blue[400] }} />
+                      </ListItemIcon>
+                      <ListItemText primary={place.locationName} sx={{ fontWeight:'bold' }}/>
+                        
+
+                      {place.open ? <ExpandLess sx={{paddingLeft: '25px'}}/> : <ExpandMore sx={{paddingLeft: '25px'}}/>}
+                    </ListItemButton>
+
+                    <Collapse in={place.open} timeout="auto" unmountOnExit>
+                    
+                      {userInlocation}
+                      
+                    </Collapse>
+                  </List>
+                )
+
+              })
+
+            }
+
+            {/* 해당날짜 출석등록자들 보이는 UI */}
+            {AttendNameList}
+
+
+          </DialogContentText>
+        </DialogContent>
+
+
+
+        <DialogActions style={{justifyContent: 'center'}}>
+        
+            {atndnButton}
+
+        </DialogActions>
+      </Dialog>
+
+    </>
   );
 }
 

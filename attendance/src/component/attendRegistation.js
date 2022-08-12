@@ -68,7 +68,7 @@ function AttendRegistration(){
 
 
   useEffect(() => {
-    getPlaces(setTodayPlaces);
+    getPlaces(setTodayPlaces, date);
 		// 출석 수정모드로 들어왔을 경우 
 		if ( editMode ) {
 			setEditModeSelect(true);
@@ -108,7 +108,6 @@ function AttendRegistration(){
 
 		} else {
 			// 등록 모드일 때 
-			console.log(locationId, mealStatus)
 			if(locationId == null || mealStatus == null ){
 				setAlertOpen(true)
 			} else {
@@ -183,7 +182,7 @@ function AttendRegistration(){
     <ToggleButton value="alone" data-id="-1">혼자 할게요</ToggleButton>
 
       {todayPlaces.map((place, i) => {
-
+			console.log('장소',place)
 					if( place.locationName != undefined ){
 						return (
 							<ToggleButton 

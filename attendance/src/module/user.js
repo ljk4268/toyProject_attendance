@@ -11,6 +11,7 @@ export async function getDateAttendance(setTodayAttendanceNames, _date, editMode
   const lists = await axios.post('/atndn/list-on-date',{
     attendanceDate: _date
   });
+
   let todayAttendanceLists = lists.data.attendanceList
   let newArray = []
   

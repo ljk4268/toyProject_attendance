@@ -85,7 +85,7 @@ function MainPage() {
   // 모듈화 >> state변경함수를 파라미터로 주면서 성공함. 이게 되네?
   useEffect(() => {
     getDateAttendance(setTodayAttendanceNames, date);
-    getPlaces(setTodayPlaces);
+    getPlaces(setTodayPlaces, date);
     
   },[])
 

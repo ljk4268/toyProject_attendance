@@ -1,7 +1,6 @@
 import axios from "axios";
 import { getToday } from './getToday'
 
-let date = getToday();
 
 //// 오늘 장소 등록되면 서버에 보내기 (22.08.02 - 03)
 export async function postPlaces() {
@@ -22,10 +21,10 @@ export async function postPlaces() {
 }
 
 // 서버에 등록한 장소 가지고 오기 ( 22.08.02 - 03 )
-export async function getPlaces(setTodayPlaces){
-          
+export async function getPlaces(setTodayPlaces, _date){
+
   const todayPlaces = await axios.post('/loc/list',{
-    attendanceDate: date
+    attendanceDate: _date
   });
   const locationLists = todayPlaces.data.locationList;
 
@@ -41,7 +40,6 @@ export async function getPlaces(setTodayPlaces){
       'accountId': locationList.accountId
     })
   })
-  
   setTodayPlaces(listArray)
 };
 
