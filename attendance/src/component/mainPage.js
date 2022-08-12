@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import NavbarTop from "../component/navbarTop";
 import NavbarBottom from "../component/navbarBottom";
 import MainLogo from "../component/mianLogo";
-import { getPlaces } from '../module/places'
+import { getPlaces, deletePlace } from '../module/places'
 import { getToday } from '../module/getToday'
 import { getDateAttendance } from '../module/user'
 import { userAcId } from '../redux/feature/userAccountId'
@@ -27,6 +27,11 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import PlaceIcon from '@mui/icons-material/Place';
 import IconButton from '@mui/material/IconButton';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
 
 
 //함수
@@ -38,6 +43,8 @@ function MainPage() {
   let [todayPlaces, setTodayPlaces] = useState([]);
   let [notificationMessage, setNotificationMessage] = useState(false);
   let [cancelAlertOpen, setCancelAlertOpen] = useState(false);
+  let [placeDeleteOpen, setPlaceDeleteOpen] = useState(false);
+  let [deleteLocatinId, setDeleteLocatinId] = useState(0);
   
 
   let reduxState = useSelector((state) => {
@@ -95,6 +102,7 @@ function MainPage() {
   },[todayAttendanceNames])
 
 
+
   // mui 함수들
   const handleClick = (i) => {
     let newPlaces = [...todayPlaces];
@@ -105,6 +113,12 @@ function MainPage() {
   const handleClickOpen = () => {
     setCancelAlertOpen(true);
   };
+
+  const handlePlaceDeleteAlert = () => {
+    setPlaceDeleteOpen(true);
+  };
+
+
 
 
   let AttendNameList = []
@@ -160,16 +174,23 @@ function MainPage() {
 
                   {
                     place.accountId == userAccountId.accountId ? <IconButton edge="start" aria-label="delete" 
-                    sx={{paddingRight: '25px'}}
-                    onClick={handleClickOpen}>
+                    sx={{padding: 0}}
+                    onClick={()=>{
+                      let locationId = place.locationId
+                      setDeleteLocatinId(locationId)
+                      handlePlaceDeleteAlert();
+                    }}
+                    >
+                    
                     <CancelOutlinedIcon/>
+
                   </IconButton> 
                   :
                   null
                   }
                 
 
-                {place.open ? <ExpandLess /> : <ExpandMore />}
+                {place.open ? <ExpandLess sx={{paddingLeft: '25px'}}/> : <ExpandMore sx={{paddingLeft: '25px'}}/>}
               </ListItemButton>
 
               <Collapse in={place.open} timeout="auto" unmountOnExit>
@@ -190,6 +211,15 @@ function MainPage() {
         notificationMessage == true ? <div className="notificationMessage">오늘 등록된 사람이 없습니다.</div> : null
       }
 
+      {
+        placeDeleteOpen == true ? <PlaceDeleteAlert 
+        placeDeleteOpen={placeDeleteOpen}
+        setPlaceDeleteOpen={setPlaceDeleteOpen}
+        deleteLocatinId={deleteLocatinId}
+        setTodayPlaces={setTodayPlaces}
+        /> : null
+      }
+
       </div>
     </>
   )
@@ -197,3 +227,41 @@ function MainPage() {
 };
 
 export default MainPage;
+
+function PlaceDeleteAlert(props){
+
+  let navigate = useNavigate();
+
+  let locationId = props.deleteLocatinId
+
+  const handlePlaceDeleteAlertClose = () => {
+    props.setPlaceDeleteOpen(false);
+  };
+
+  return (
+    <Dialog
+      open={props.placeDeleteOpen}
+      onClose={handlePlaceDeleteAlertClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+      >
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          해당 장소를 삭제하시겠습니까?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handlePlaceDeleteAlertClose}>아니요</Button>
+        <Button 
+        onClick={async()=>{
+          let deletePlaceResult = await deletePlace(locationId);
+          handlePlaceDeleteAlertClose();
+          getPlaces(props.setTodayPlaces);
+        }}
+        autoFocus>
+          네
+        </Button>
+      </DialogActions>
+      </Dialog>
+  )
+}

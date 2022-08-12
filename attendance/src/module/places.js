@@ -45,3 +45,11 @@ export async function getPlaces(setTodayPlaces){
   setTodayPlaces(listArray)
 };
 
+
+// 서버에 등록된 장소 삭제하기
+export async function deletePlace(_locationId){
+  const deletePlace = await axios.post('/loc/cancel',{
+    locationId: _locationId
+  });
+  return deletePlace
+}
