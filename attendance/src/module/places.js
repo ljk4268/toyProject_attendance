@@ -3,8 +3,7 @@ import { getToday } from './getToday'
 
 
 //// 오늘 장소 등록되면 서버에 보내기 (22.08.02 - 03)
-export async function postPlaces() {
-
+export async function postPlaces(date) {
   let place = document.getElementById("places").value;
   let official = "N";
 
@@ -26,6 +25,7 @@ export async function getPlaces(setTodayPlaces, _date){
   const todayPlaces = await axios.post('/loc/list',{
     attendanceDate: _date
   });
+
   const locationLists = todayPlaces.data.locationList;
 
   let listArray = [];
@@ -40,6 +40,7 @@ export async function getPlaces(setTodayPlaces, _date){
       'accountId': locationList.accountId
     })
   })
+
   setTodayPlaces(listArray)
 };
 

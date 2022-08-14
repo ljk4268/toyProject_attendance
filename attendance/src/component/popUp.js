@@ -5,23 +5,15 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
 import { blue } from '@mui/material/colors';
-import EmojiPeopleOutlinedIcon from '@mui/icons-material/EmojiPeopleOutlined';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import PlaceIcon from '@mui/icons-material/Place';
-import IconButton from '@mui/material/IconButton';
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
-
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { changObj } from "../redux/feature/attendList";
 import { changeNameArray } from "../redux/feature/attendanceNames";
@@ -32,29 +24,27 @@ import { useEffect, useState } from "react";
 import { getPlaces, deletePlace } from '../module/places'
 import { getDateAttendance } from '../module/user'
 import attendanceTagUi from './partial/attendaceTagUi';
+import { useNavigate } from "react-router-dom";
+import { changeEditMode } from '../redux/feature/editMode'
+
 
 
 
 function Popup(props) {
 
-  
-
-  let state = useSelector((state) => {
-    return state.month;
-  });
-  let $attListObj = useSelector((state) => {
-    return state.$attListObj;
-  });
   let userAccountId = useSelector((state) => {
     return state.userAccountId;
   });
 
+  let editMode = useSelector((state) => {
+    return state.editMode;
+  });
+
+  let navigate = useNavigate();
 
   let dispatch = useDispatch();
 
   const date = props.date;
-  let calendarMonth = state.month;
-  let calendarYear = state.year;
   let [dateAttendanceNames, setDateAttendanceNames] = useState([1]);
   let [datePlaces, setDatePlaces] = useState([]);
   let [cancelAlertOpen, setCancelAlertOpen] = useState(false);
@@ -72,7 +62,7 @@ function Popup(props) {
 
 
   let dataAttendanceFunction = () => {
-    getDateAttendance(setTodayAttendanceNames, date)
+    getDateAttendance(setDateAttendanceNames, date, editMode)
   }
 
   const handleClick = (i) => {
@@ -91,7 +81,12 @@ function Popup(props) {
   })
 
   let atndnButton = <>
-        <Button variant="outlined">
+        <Button variant="outlined"
+          onClick={() => {
+            navigate('/registration');
+            props.setOpen(false);
+          }}
+        >
               출석하기
         </Button>
         <Button
@@ -110,7 +105,13 @@ function Popup(props) {
 
       atndnButton = 
       <>
-        <Button variant="outlined">
+        <Button variant="outlined"
+          onClick={() => {
+            dispatch(changeEditMode(true));
+            navigate('/registration');
+            props.setOpen(false);
+          }}
+        >
               수정하기
             </Button>
             <Button

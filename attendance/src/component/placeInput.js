@@ -25,6 +25,7 @@ function MyFormHelperText() {
 }
 
 function PlaceInput(props){
+
   return(
     <Box component="form" noValidate autoComplete="off"
       sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center', }}
@@ -38,8 +39,8 @@ function PlaceInput(props){
         variant="outlined" 
         onClick={
           async ()=>{
-            await postPlaces();
-            getPlaces(props.setTodayPlaces);
+            await postPlaces(props.date);
+            await getPlaces(props.setTodayPlaces, props.date);
             document.getElementById("places").value = null;
           }
         }>등록</Button>

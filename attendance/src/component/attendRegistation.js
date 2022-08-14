@@ -67,6 +67,10 @@ function AttendRegistration(){
   let [editModeSelect, setEditModeSelect] = useState(false);
 
 
+	// useEffect(()=>{
+
+	// },[todayPlaces])
+
   useEffect(() => {
     getPlaces(setTodayPlaces, date);
 		// 출석 수정모드로 들어왔을 경우 
@@ -182,7 +186,6 @@ function AttendRegistration(){
     <ToggleButton value="alone" data-id="-1">혼자 할게요</ToggleButton>
 
       {todayPlaces.map((place, i) => {
-			console.log('장소',place)
 					if( place.locationName != undefined ){
 						return (
 							<ToggleButton 
@@ -202,7 +205,7 @@ function AttendRegistration(){
   </div>;
 
   const placeInput = <div>
-    <PlaceInput setTodayPlaces={setTodayPlaces}/>
+    <PlaceInput setTodayPlaces={setTodayPlaces} date={date}/>
     <Box sx={{ width: '90vw' }}><MyFormHelperText /></Box>
   </div>;
 
@@ -286,7 +289,11 @@ function AttendRegistration(){
 							size='large'
 							onClick={postAttendance}
 						>출석수정하기</Button>
-						<Button sx={{ width: '150px' }} size='large' onClick={()=>{navigate('/main')}}>취소</Button>
+						<Button sx={{ width: '150px' }} size='large' 
+							onClick={()=>{
+								dispatch(changeEditMode(false));
+								navigate('/main');
+								}}>취소</Button>
 				</ButtonGroup>
 
 				:

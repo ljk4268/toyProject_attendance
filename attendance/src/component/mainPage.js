@@ -50,14 +50,17 @@ function MainPage() {
   let reduxState = useSelector((state) => {
     return state;
   });
-
+  
+  
   let dispatch = useDispatch();
 
   let user = reduxState.user.nickname;
-  let userAccountId = reduxState.userAccountId
+  let userAccountId = reduxState.userAccountId;
+  let editMode = reduxState.editMode;
+
 
   let dataAttendanceFunction = () => {
-    getDateAttendance(setTodayAttendanceNames, date)
+    getDateAttendance(setTodayAttendanceNames, date, editMode)
   }
 
 
