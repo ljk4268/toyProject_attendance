@@ -25,7 +25,6 @@ function CalendarPage() {
   let $eventAttList = [];
   let dispatch = useDispatch();
 
-
   for (var key in $attListObj) {
     let tempObj = {};
     tempObj["title"] = $attListObj[key].count;
@@ -40,10 +39,13 @@ function CalendarPage() {
         dispatch(changObj(attListArray));
       }
     }
-    fetchData();
+    
+    if( open == false){
+      fetchData();
+    }
 
     dispatch(changeMonth({ year: year, month: month }));
-  }, [month]);
+  }, [month,open]);
 
   const handleDateClick = (e) => {
     setOpen(true);

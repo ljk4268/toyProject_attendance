@@ -13,11 +13,11 @@ import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import PlaceIcon from '@mui/icons-material/Place';
+import IconButton from '@mui/material/IconButton';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+
 
 import { useDispatch, useSelector } from "react-redux";
-import { changObj } from "../redux/feature/attendList";
-import { changeNameArray } from "../redux/feature/attendanceNames";
-import { saveAttendList } from "../module/attendList";
 import { useEffect, useState } from "react";
 
 // 함수
@@ -26,6 +26,7 @@ import { getDateAttendance } from '../module/user'
 import attendanceTagUi from './partial/attendaceTagUi';
 import { useNavigate } from "react-router-dom";
 import { changeEditMode } from '../redux/feature/editMode'
+import { changePopUpOn } from '../redux/feature/popUpOn'
 
 
 
@@ -40,6 +41,10 @@ function Popup(props) {
     return state.editMode;
   });
 
+  let popUpOn = useSelector((state) => {
+    return state.popUpOn;
+  });
+
   let navigate = useNavigate();
 
   let dispatch = useDispatch();
@@ -48,6 +53,8 @@ function Popup(props) {
   let [dateAttendanceNames, setDateAttendanceNames] = useState([1]);
   let [datePlaces, setDatePlaces] = useState([]);
   let [cancelAlertOpen, setCancelAlertOpen] = useState(false);
+  let [placeDeleteOpen, setPlaceDeleteOpen] = useState(false);
+  let [deleteLocatinId, setDeleteLocatinId] = useState(0);
 
 
 
@@ -71,6 +78,10 @@ function Popup(props) {
     setDatePlaces(newPlaces)
   };
 
+  const handlePlaceDeleteAlert = () => {
+    setPlaceDeleteOpen(true);
+  };
+
 
   let AttendNameList = [];
 
@@ -83,7 +94,8 @@ function Popup(props) {
   let atndnButton = <>
         <Button variant="outlined"
           onClick={() => {
-            navigate('/registration');
+            dispatch(changePopUpOn(true));
+            navigate('/registration', {state: {clickdate: date}} );
             props.setOpen(false);
           }}
         >
@@ -107,8 +119,9 @@ function Popup(props) {
       <>
         <Button variant="outlined"
           onClick={() => {
+            dispatch(changePopUpOn(true));
             dispatch(changeEditMode(true));
-            navigate('/registration');
+            navigate('/registration', {state: {clickdate: date}} );
             props.setOpen(false);
           }}
         >
@@ -156,10 +169,29 @@ function Popup(props) {
                       <ListItemIcon>
                         <PlaceIcon sx={{ color: blue[400] }} />
                       </ListItemIcon>
-                      <ListItemText primary={place.locationName} sx={{ fontWeight:'bold' }}/>
+                      <ListItemText primary={place.locationName} sx={{ fontWeight:'bold', textAlign: 'left' }} />
+
+                      {
+                        place.accountId == userAccountId.accountId ? <IconButton edge="start" aria-label="delete" 
+                        sx={{marginRight:'10px'}}
+                        onClick={(event)=>{
+                          event.stopPropagation()
+                          let locationId = place.locationId
+                          setDeleteLocatinId(locationId)
+                          handlePlaceDeleteAlert();
+                        }}
+                        >
+                        <CancelOutlinedIcon/>
+                      </IconButton> 
+
+                      :
+
+                      null
+
+                      }
                         
 
-                      {place.open ? <ExpandLess sx={{paddingLeft: '25px'}}/> : <ExpandMore sx={{paddingLeft: '25px'}}/>}
+                      {place.open ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
 
                     <Collapse in={place.open} timeout="auto" unmountOnExit>
@@ -176,6 +208,16 @@ function Popup(props) {
 
             {/* 해당날짜 출석등록자들 보이는 UI */}
             {AttendNameList}
+
+            {
+              placeDeleteOpen == true ? <PlaceDeleteAlert 
+              placeDeleteOpen={placeDeleteOpen}
+              setPlaceDeleteOpen={setPlaceDeleteOpen}
+              deleteLocatinId={deleteLocatinId}
+              setDatePlaces={setDatePlaces}
+              date={date}
+              /> : null
+            }
 
 
           </DialogContentText>
@@ -195,3 +237,39 @@ function Popup(props) {
 }
 
 export default Popup;
+
+function PlaceDeleteAlert(props){
+
+  let locationId = props.deleteLocatinId
+
+  const handlePlaceDeleteAlertClose = () => {
+    props.setPlaceDeleteOpen(false);
+  };
+
+  return (
+    <Dialog
+      open={props.placeDeleteOpen}
+      onClose={handlePlaceDeleteAlertClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+      >
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          해당 장소를 삭제하시겠습니까?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handlePlaceDeleteAlertClose}>아니요</Button>
+        <Button 
+        onClick={async()=>{
+          let deletePlaceResult = await deletePlace(locationId);
+          handlePlaceDeleteAlertClose();
+          getPlaces(props.setDatePlaces, props.date);
+        }}
+        autoFocus>
+          네
+        </Button>
+      </DialogActions>
+      </Dialog>
+  )
+}

@@ -7,6 +7,7 @@ import AttendListReducer from './feature/attendList';
 import AttendanceNamesReducer from './feature/attendanceNames';
 import UserAccountIdReducer from './feature/userAccountId';
 import EditModedReducer from './feature/editMode';
+import PopUpOnReducer from './feature/popUpOn';
 
 import storage from 'redux-persist/lib/storage';
 import {persistReducer} from 'redux-persist';
@@ -25,7 +26,8 @@ const reducer = combineReducers({
   $attListObj: AttendListReducer,
   $attNames: AttendanceNamesReducer,
   userAccountId:UserAccountIdReducer,
-  editMode:EditModedReducer
+  editMode:EditModedReducer,
+  popUpOn:PopUpOnReducer
 });
 
 

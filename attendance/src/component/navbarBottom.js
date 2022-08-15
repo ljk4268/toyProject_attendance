@@ -9,6 +9,8 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import { getToday } from '../module/getToday'
+
 
 
 
@@ -16,6 +18,8 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 function NavbarBottom() {
 
   let navigate = useNavigate();
+  let _date = getToday();
+
   
   const StyledFab = styled(Fab)({
     position: 'absolute',
@@ -37,7 +41,7 @@ function NavbarBottom() {
 
             <StyledFab color="inherit" aria-label="add" 
               style={{ backgroundColor: '#f8eb76', color: '#fbfbf9' }}
-              onClick={()=>{navigate('/registration')}}
+              onClick={()=>{navigate('/registration', {state: {clickdate: _date}}) }}
             >
               <AddIcon sx={{ fontSize: 38 }}/>
             </StyledFab>

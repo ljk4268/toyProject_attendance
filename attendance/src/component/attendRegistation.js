@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -13,6 +13,7 @@ import { getToday } from '../module/getToday'
 // 함수
 import { postDateAttendance, getDateAttendance, postAttendanceUpdate} from '../module/user'
 import { changeEditMode } from '../redux/feature/editMode'
+import { changePopUpOn } from '../redux/feature/popUpOn'
 
 //mui라이브러리
 import * as React from 'react';
@@ -37,43 +38,73 @@ import DialogContentText from '@mui/material/DialogContentText';
 
 function AttendRegistration(){
 
-  let userInfo = useSelector((state) => {
+	const location = useLocation();
+	// 팝업창에서 날짜 클릭하고 출석등록 누르면 전달받는 날짜.
+	const popUpDate = location.state.clickdate
+	
+  const userInfo = useSelector((state) => {
     return state.user;
   });
-	let editMode = useSelector((state) => {
+	const editMode = useSelector((state) => {
     return state.editMode;
   });
-	let userAccountId = useSelector((state) => {
+	const userAccountId = useSelector((state) => {
     return state.userAccountId;
   });
+	// const popUpOn = useSelector((state) => {
+  //   return state.popUpOn;
+  // });
 
-	let navigate = useNavigate();
-	let dispatch = useDispatch();
+
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
   const week = ['일','월','화','수','목','금','토']
 	const [alignment, setAlignment] = useState(null);
   const [mealAlignment, setMealAlignment] = useState(null);
   const [alertOpen, setAlertOpen] = useState(false);
   const [warningWindow, setWarningWindow] = useState(false);
+	const [todayPlaces, setTodayPlaces] = useState([0]);
+  const [locationId, setLocationId] = useState(null);
+  const [attendanceId, setAttendanceId] = useState(null);
+  const [mealStatus, setMealStatus] = useState(null);
+  const [editModeSelect, setEditModeSelect] = useState(false);
+	let today = getToday();
+  const [date, setDate] = useState(today);
 
-  let now = new Date();
-  let dayOfWeek = week[now.getDay()];
-  let date = getToday();
+  let dayOfWeek = week[new Date(date).getDay()];
   let user = userInfo.nickname;
-  let [todayPlaces, setTodayPlaces] = useState([0]);
-  let [locationId, setLocationId] = useState(null);
-  let [attendanceId, setAttendanceId] = useState(null);
-  let [mealStatus, setMealStatus] = useState(null);
-  let [editModeSelect, setEditModeSelect] = useState(false);
+
+  // useEffect(() => {
+	// 	getPlaces(setTodayPlaces, date)
+
+	// 	// 출석 수정모드로 들어왔을 경우 
+	// 	if ( editMode ) {
+	// 		setEditModeSelect(true);
+	// 		async function attanceUserData(){
+	// 			let attanceList = await getDateAttendance(null,date,editMode);
+	// 			let userData = attanceList.find(lists => lists.accountId == userAccountId.accountId)
+	// 			setAttendanceId(userData.attendanceId)
+	// 			setMealAlignment(userData.mealStatus)
+	// 			if ( userData.locationName == null ){
+	// 				setAlignment('alone')
+	// 			} else {
+
+	// 				setAlignment(userData.locationName)
+	// 			}
+				
+	// 		}
+	// 		attanceUserData()
+	// 	}
+  // },[])
 
 
-	// useEffect(()=>{
-
-	// },[todayPlaces])
-
-  useEffect(() => {
-    getPlaces(setTodayPlaces, date);
-		// 출석 수정모드로 들어왔을 경우 
+	useEffect(()=>{
+		if ( popUpOn ) {
+			setDate(popUpDate)
+			dayOfWeek = week[new Date(popUpOn).getDay()];
+		}
+		getPlaces(setTodayPlaces, date)
 		if ( editMode ) {
 			setEditModeSelect(true);
 			async function attanceUserData(){
@@ -91,7 +122,9 @@ function AttendRegistration(){
 			}
 			attanceUserData()
 		}
-  },[])
+	}, [popUpOn, date])
+
+
 
 	// 함수
 	async function postAttendance(){
@@ -292,6 +325,10 @@ function AttendRegistration(){
 						<Button sx={{ width: '150px' }} size='large' 
 							onClick={()=>{
 								dispatch(changeEditMode(false));
+								if( popUpOn ){
+									dispatch(changePopUpOn(false));
+									navigate('/calendar');
+								}
 								navigate('/main');
 								}}>취소</Button>
 				</ButtonGroup>
@@ -304,7 +341,14 @@ function AttendRegistration(){
 						size='large'
 						onClick={postAttendance}
 					>출석등록하기</Button>
-					<Button sx={{ width: '150px' }} size='large' onClick={()=>{navigate('/main')}}>취소</Button>
+					<Button sx={{ width: '150px' }} size='large' 
+					onClick={()=>{
+						if( popUpOn ){
+							dispatch(changePopUpOn(false));
+							navigate('/calendar');
+						}
+						navigate('/main')
+					}}>취소</Button>
 			</ButtonGroup>
 
 				}

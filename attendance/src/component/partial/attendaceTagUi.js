@@ -62,7 +62,7 @@ export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAtt
   };
 
 
-  // 상황에 따라 보여질 UI들을 위한 분기
+
   // 식사버튼
   if ( meal == 'N'  ) {
     mealIconTag = <NoMealsOutlinedIcon sx={{ fontSize: 18, paddingRight: 1, color: grey[300] }}/>
@@ -85,7 +85,7 @@ export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAtt
       aria-label="edit" 
       onClick={()=>{
         dispatch(changeEditMode(true));
-        window.location.href="/registration";
+        // window.location.href="/registration";
       }}  >
     <EditOutlinedIcon sx={{paddingRight:'10px'}}/>
   </IconButton>
@@ -118,12 +118,6 @@ export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAtt
 
   }
 
-
-
-      // 둘다 비동기 함수인데 순서 지키게 하려고 
-      // await로 동기화 시켜버림
-      // await postAttendanceCancel(attendanceId);
-      // await dataAttendanceFunction();
 
 
 

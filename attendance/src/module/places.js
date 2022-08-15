@@ -21,7 +21,7 @@ export async function postPlaces(date) {
 
 // 서버에 등록한 장소 가지고 오기 ( 22.08.02 - 03 )
 export async function getPlaces(setTodayPlaces, _date){
-
+  console.log(_date)
   const todayPlaces = await axios.post('/loc/list',{
     attendanceDate: _date
   });

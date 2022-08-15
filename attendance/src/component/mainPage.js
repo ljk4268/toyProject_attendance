@@ -37,7 +37,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 //함수
 function MainPage() {
 
-  let navigate = useNavigate();
   let date = getToday();
   let [todayAttendanceNames, setTodayAttendanceNames] = useState([1]);
   let [todayPlaces, setTodayPlaces] = useState([]);
@@ -53,21 +52,18 @@ function MainPage() {
   
   
   let dispatch = useDispatch();
+  let navigate = useNavigate();
 
   let user = reduxState.user.nickname;
   let userAccountId = reduxState.userAccountId;
   let editMode = reduxState.editMode;
-
+  let popUpOn = reduxState.popUpOn;
 
   let dataAttendanceFunction = () => {
     getDateAttendance(setTodayAttendanceNames, date, editMode)
   }
+  
 
-
-
-  // useEffect
-  // 로그인한 정보 남아있으면 메인페이지 없으면 다시 로그인 페이지로 돌아가는 공간
-  // 창현이한테 이 코드 정확히 무엇을 위한 코드인지 물어보기
   useEffect(()=>{
     async function getUserInfo(){
       
@@ -78,7 +74,6 @@ function MainPage() {
         return navigate('/main')
 
       } 
-      // if(session.data.success === 'ok') 가 false면 로그인 페이지로 
       return navigate('/')
     }
     getUserInfo()
@@ -91,6 +86,10 @@ function MainPage() {
     getPlaces(setTodayPlaces, date);
     
   },[])
+
+// 출석 등록한 사람이 없을 때 서버에서 빈배열을 보내줌. 
+// 서버에서 빈배열을 받은거랑 내가 초기화 했을 때 빈배열인거랑 헷갈리지 않으려고 
+// 1이라는 요소가 들어간 배열로 초기화를 해둠. 
 
   useEffect(()=>{
 
@@ -111,10 +110,6 @@ function MainPage() {
     let newPlaces = [...todayPlaces];
     newPlaces[i].open = !newPlaces[i].open
     setTodayPlaces(newPlaces)
-  };
-
-  const handleClickOpen = () => {
-    setCancelAlertOpen(true);
   };
 
   const handlePlaceDeleteAlert = () => {
@@ -177,23 +172,25 @@ function MainPage() {
 
                   {
                     place.accountId == userAccountId.accountId ? <IconButton edge="start" aria-label="delete" 
-                    sx={{padding: 0}}
-                    onClick={()=>{
+                    sx={{paddingRight:'10px'}}
+                    onClick={(event)=>{
+                      event.stopPropagation()
                       let locationId = place.locationId
                       setDeleteLocatinId(locationId)
                       handlePlaceDeleteAlert();
                     }}
                     >
-                    
                     <CancelOutlinedIcon/>
-
                   </IconButton> 
+
                   :
+
                   null
+
                   }
                 
 
-                {place.open ? <ExpandLess sx={{paddingLeft: '25px'}}/> : <ExpandMore sx={{paddingLeft: '25px'}}/>}
+                {place.open ? <ExpandLess sx={{marginLeft: '15px'}}/> : <ExpandMore sx={{marginLeft: '15px'}}/>}
               </ListItemButton>
 
               <Collapse in={place.open} timeout="auto" unmountOnExit>
@@ -211,7 +208,7 @@ function MainPage() {
         {AttendNameList} 
       
       {
-        notificationMessage == true ? <div className="notificationMessage">오늘 등록된 사람이 없습니다.</div> : null
+        notificationMessage == true ? <div className="notificationMessage">오늘 등록한 사람이 없습니다.</div> : null
       }
 
       {
@@ -232,8 +229,6 @@ function MainPage() {
 export default MainPage;
 
 function PlaceDeleteAlert(props){
-
-  let navigate = useNavigate();
 
   let locationId = props.deleteLocatinId
 
