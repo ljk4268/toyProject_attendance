@@ -12,7 +12,7 @@ import { getPlaces, deletePlace } from '../module/places'
 import { getToday } from '../module/getToday'
 import { getDateAttendance } from '../module/user'
 import { userAcId } from '../redux/feature/userAccountId'
-import attendanceTagUi from './partial/attendaceTagUi';
+import AttendanceTagUi from './partial/attendaceTagUi';
 
 
 //mui
@@ -38,7 +38,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 function MainPage() {
 
   let date = getToday();
-  let [todayAttendanceNames, setTodayAttendanceNames] = useState([1]);
+  let [dateAttendanceNames, setTodayAttendanceNames] = useState([1]);
   let [todayPlaces, setTodayPlaces] = useState([]);
   let [notificationMessage, setNotificationMessage] = useState(false);
   let [cancelAlertOpen, setCancelAlertOpen] = useState(false);
@@ -93,15 +93,15 @@ function MainPage() {
 
   useEffect(()=>{
 
-    if( todayAttendanceNames.length != 0 ){
+    if( dateAttendanceNames.length != 0 ){
       setNotificationMessage(false)
     }
 
-    if (todayAttendanceNames == 0){
+    if (dateAttendanceNames == 0){
       setNotificationMessage(true)
     }
   
-  },[todayAttendanceNames])
+  },[dateAttendanceNames])
 
 
 
@@ -121,9 +121,19 @@ function MainPage() {
 
   let AttendNameList = []
   
-  todayAttendanceNames.map((name,i) => {
+  dateAttendanceNames.map((name,i) => {
     if ( name.locationId === null ){
-      AttendNameList.push(attendanceTagUi(name,userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,dispatch,i))
+      AttendNameList.push(<AttendanceTagUi 
+        dateAttendanceNames={name} 
+        userAccountId={userAccountId}
+        dataAttendanceFunction={dataAttendanceFunction}
+        cancelAlertOpen={cancelAlertOpen}
+        setCancelAlertOpen={setCancelAlertOpen}
+        setTodayAttendanceNames={setTodayAttendanceNames}
+        date={date}
+        j={i}
+        key={i}
+        />)
     }
   })
 
@@ -153,10 +163,20 @@ function MainPage() {
           // 해당장소 클릭한 유저 모음
           let userInlocation = [];
           
-          for ( let j = 0; j < todayAttendanceNames.length; j++){
+          for ( let j = 0; j < dateAttendanceNames.length; j++){
             
-            if( place.locationId == todayAttendanceNames[j].locationId){
-              userInlocation.push(attendanceTagUi(todayAttendanceNames[j],userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,dispatch,j))
+            if( place.locationId == dateAttendanceNames[j].locationId){
+              userInlocation.push(<AttendanceTagUi 
+                dateAttendanceNames={dateAttendanceNames[j]} 
+                userAccountId={userAccountId}
+                dataAttendanceFunction={dataAttendanceFunction}
+                cancelAlertOpen={cancelAlertOpen}
+                setCancelAlertOpen={setCancelAlertOpen}
+                setTodayAttendanceNames={setTodayAttendanceNames}
+                date={date}
+                j={j}
+                key={i}
+                />)
             }
 
           }

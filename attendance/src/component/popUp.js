@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 // 함수
 import { getPlaces, deletePlace } from '../module/places'
 import { getDateAttendance } from '../module/user'
-import attendanceTagUi from './partial/attendaceTagUi';
+import AttendanceTagUi from './partial/attendaceTagUi';
 import { useNavigate } from "react-router-dom";
 import { changeEditMode } from '../redux/feature/editMode'
 import { changePopUpOn } from '../redux/feature/popUpOn'
@@ -87,7 +87,17 @@ function Popup(props) {
 
   dateAttendanceNames.map((name,i) => {
     if ( name.locationId === null ){
-      AttendNameList.push(attendanceTagUi(name,userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,dispatch,i))
+      AttendNameList.push(<AttendanceTagUi 
+        dateAttendanceNames={name} 
+        userAccountId={userAccountId}
+        dataAttendanceFunction={dataAttendanceFunction}
+        cancelAlertOpen={cancelAlertOpen}
+        setCancelAlertOpen={setCancelAlertOpen}
+        setTodayAttendanceNames={setDateAttendanceNames}
+        date={date}
+        j={i}
+        key={i}
+        />)
     }
   })
 
@@ -158,7 +168,17 @@ function Popup(props) {
 
                 for ( let j = 0; j < dateAttendanceNames.length; j++){
                   if( place.locationId == dateAttendanceNames[j].locationId){
-                    userInlocation.push(attendanceTagUi(dateAttendanceNames[j],userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,dispatch,j))
+                    userInlocation.push(<AttendanceTagUi 
+                      dateAttendanceNames={dateAttendanceNames[j]} 
+                      userAccountId={userAccountId}
+                      dataAttendanceFunction={dataAttendanceFunction}
+                      cancelAlertOpen={cancelAlertOpen}
+                      setCancelAlertOpen={setCancelAlertOpen}
+                      setTodayAttendanceNames={setDateAttendanceNames}
+                      date={date}
+                      j={j}
+                      key={i}
+                      />)
                   }
                 }
 

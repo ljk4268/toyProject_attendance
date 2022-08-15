@@ -51,9 +51,10 @@ function AttendRegistration(){
 	const userAccountId = useSelector((state) => {
     return state.userAccountId;
   });
-	// const popUpOn = useSelector((state) => {
-  //   return state.popUpOn;
-  // });
+	const popUpOn = useSelector((state) => {
+    return state.popUpOn;
+  });
+  console.log(popUpOn)
 
 
 	const navigate = useNavigate();
@@ -328,8 +329,9 @@ function AttendRegistration(){
 								if( popUpOn ){
 									dispatch(changePopUpOn(false));
 									navigate('/calendar');
+								} else {
+									navigate('/main');
 								}
-								navigate('/main');
 								}}>취소</Button>
 				</ButtonGroup>
 

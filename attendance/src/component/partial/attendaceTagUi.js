@@ -23,20 +23,32 @@ import DialogContentText from '@mui/material/DialogContentText';
 //함수
 import { postAttendanceCancel } from '../../module/user';
 import { changeEditMode } from '../../redux/feature/editMode'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { getDateAttendance } from '../../module/user'
 
 
 
 
-export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,dispatch,i) {
+
+// userAttendanceInfo,userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,dispatch,i
+export default function AttendanceTagUi(props) {
 
   // 해당장소에 등록되는 유저의 경우 paddingLeft를 줘야함. 
+  let dispatch = useDispatch();
+  let navigate = useNavigate();
+  let reduxState = useSelector((state) => {
+    return state;
+  });
+
+  let editMode = reduxState.editMode
 
   // 유저정보 변수들
-  let name = userAttendanceInfo.nickname
-  let meal = userAttendanceInfo.mealStatus
-  let locationId = userAttendanceInfo.locationId
-  let accountId = userAttendanceInfo.accountId
-  let attendanceId = userAttendanceInfo.attendanceId
+  let name = props.dateAttendanceNames.nickname
+  let meal = props.dateAttendanceNames.mealStatus
+  let locationId = props.dateAttendanceNames.locationId
+  let accountId = props.dateAttendanceNames.accountId
+  let attendanceId = props.dateAttendanceNames.attendanceId
 
   // 아이콘태그 변수들
   let mealIconTag = null;
@@ -54,11 +66,11 @@ export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAtt
   // alert창
 
   const handleClickOpen = () => {
-    setCancelAlertOpen(true);
+    props.setCancelAlertOpen(true);
   };
 
   const handleClose = () => {
-    setCancelAlertOpen(false);
+    props.setCancelAlertOpen(false);
   };
 
 
@@ -71,7 +83,7 @@ export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAtt
   }
 
   // 출석 수정 && 취소버튼 && 취소버튼 누를 때 나오는 알림창
-  if ( accountId == userAccountId.accountId ){
+  if ( accountId == props.userAccountId.accountId ){
 
     // 출석취소버튼
     cancelIconTag = <IconButton edge="end" aria-label="delete" 
@@ -85,14 +97,14 @@ export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAtt
       aria-label="edit" 
       onClick={()=>{
         dispatch(changeEditMode(true));
-        // window.location.href="/registration";
+        navigate('/registration', {state: {clickdate: props.date}})
       }}  >
     <EditOutlinedIcon sx={{paddingRight:'10px'}}/>
   </IconButton>
 
     //출석취소버튼 누를 때 나오는 알림창
     cancelAlert = <Dialog
-      open={cancelAlertOpen}
+      open={props.cancelAlertOpen}
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
@@ -107,7 +119,7 @@ export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAtt
         <Button 
         onClick={async()=>{
           await postAttendanceCancel(attendanceId);
-          await dataAttendanceFunction();
+          await getDateAttendance(props.setTodayAttendanceNames, props.date, editMode);
           handleClose()
         }}
         autoFocus>
@@ -121,7 +133,7 @@ export default function attendanceTagUi(userAttendanceInfo,userAccountId,dataAtt
 
 
 
-  return <List component="div" disablePadding key={i}>
+  return <List component="div" disablePadding key={props.j}>
   <ListItem sx={{pl: paddingLeftValue}}>
     <ListItemAvatar>
       <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
