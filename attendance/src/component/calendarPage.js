@@ -33,10 +33,13 @@ function CalendarPage() {
   }
 
   useEffect(() => {
+
     async function fetchData() {
-      let attListArray = await saveAttendList(year, month);
-      if (Object.keys(attListArray).length !== 0){
-        dispatch(changObj(attListArray));
+      if( month != ''){
+        let attListArray = await saveAttendList(year, month);
+        if (Object.keys(attListArray).length !== 0){
+          dispatch(changObj(attListArray));
+        }
       }
     }
     

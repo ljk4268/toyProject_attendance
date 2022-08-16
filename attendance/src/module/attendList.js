@@ -4,15 +4,19 @@ import axios from 'axios';
 
 export async function saveAttendList(calendarYear, calendarMonth){
 
+  // "month": "string",
+  // "year": "string"
   // 출석이 등록되고 나면 리스트 받기. 
-  const list = await axios.get(process.env.REACT_APP_API_ROOT + '/atndn/list')
+  const list = await axios.post(process.env.REACT_APP_API_ROOT + '/atndn/list', {
+    "month": calendarMonth,
+    "year": calendarYear
+  })
+
   // 요소의 달과 리덕스 안의 현재 달을 비교 
   // 비교해서 true면 그 날짜는 우리가 써야하는 날짜 
   // 우리가 써야하는 날짜들을 객체안에 넣어둠 
-  
   // attList : 데이터에서 받아온 배열  
   let attList = list.data.attendanceList
-
 
   let attListObj = {}; 
 
