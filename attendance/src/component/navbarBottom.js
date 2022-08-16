@@ -9,6 +9,7 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import { grey } from '@mui/material/colors';
 import { getToday } from '../module/getToday'
 
 
@@ -33,10 +34,10 @@ function NavbarBottom() {
   return (      
         // {/* 하단 navbar */}
         <AppBar position="fixed"  sx={{  top:'auto', bottom: 0,  }} className="navbar">
-          <Toolbar sx={{  display:'flex', justifyContent:'space-evenly'  }}>
+          <Toolbar sx={{  display:'flex', justifyContent:'space-evenly',backgroundColor: '#fff'  }}>
 
-            <IconButton color="inherit" aria-label="open drawer" onClick={()=>{navigate('/main')}}>
-              <HomeOutlinedIcon sx={{ fontSize: 30 }}/>
+            <IconButton aria-label="open drawer" onClick={()=>{navigate('/main')}}>
+              <HomeOutlinedIcon sx={{ fontSize: 30, color: grey[600] }}/>
             </IconButton>
 
             <StyledFab color="inherit" aria-label="add" 
@@ -48,8 +49,8 @@ function NavbarBottom() {
 
             <Box sx={{ flexGrow: 0.4 }} />
 
-            <IconButton color="inherit" onClick={()=>{navigate('/calendar')}}>
-              <CalendarMonthOutlinedIcon sx={{ fontSize: 30 }}/>
+            <IconButton onClick={()=>{navigate('/calendar')}}>
+              <CalendarMonthOutlinedIcon sx={{ fontSize: 30, color: grey[600] }}/>
             </IconButton>
 
           </Toolbar>
