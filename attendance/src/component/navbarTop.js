@@ -32,7 +32,7 @@ function NavbarTop() {
                 <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
                   <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" color="inherit" align="center" component="div" sx={{ flexGrow: 1 }} >
+                <Typography color="inherit" align="center" component="div" sx={{ flexGrow: 1, fontSize: '17px' }} >
                 시작이 반
                 </Typography>
                 <IconButton
