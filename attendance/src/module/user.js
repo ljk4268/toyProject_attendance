@@ -8,7 +8,7 @@ let todayDate = getToday();
 // 오늘 날짜의 출석리스트 가져오기 
 export async function getDateAttendance(setTodayAttendanceNames, _date, editMode) {
 
-  const lists = await axios.post('/atndn/list-on-date',{
+  const lists = await axios.post(process.env.REACT_APP_API_ROOT + '/atndn/list-on-date',{
     attendanceDate: _date
   });
 
@@ -49,7 +49,7 @@ export async function postDateAttendance(_seletedDate, _locationId, _mealStatus)
     _locationId = null
   }
 
-  const entry = await axios.post("/atndn/entry", {
+  const entry = await axios.post(process.env.REACT_APP_API_ROOT + "/atndn/entry", {
     attendanceDate: _seletedDate,
     locationId: _locationId,
     mealStatus: _mealStatus,
@@ -62,7 +62,7 @@ export async function postDateAttendance(_seletedDate, _locationId, _mealStatus)
 // 사용자가 delete버튼 누르면 출석 취소하기. 
 export async function postAttendanceCancel(_attendanceId){
 
-  const cancelAttendance = await axios.post("/atndn/cancel", {
+  const cancelAttendance = await axios.post(process.env.REACT_APP_API_ROOT+ "/atndn/cancel", {
     attendanceId: _attendanceId
   });
 
@@ -75,7 +75,7 @@ export async function postAttendanceUpdate(_attendanceDate,_locationId,_mealStat
     _locationId = null
   }
 
-  const updateAtndn = await axios.post("/atndn/change", {
+  const updateAtndn = await axios.post(process.env.REACT_APP_API_ROOT + "/atndn/change", {
     attendanceDate: _attendanceDate,
     attendanceId: _attendanceId,
     locationId: _locationId,

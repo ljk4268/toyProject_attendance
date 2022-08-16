@@ -246,7 +246,7 @@ a {
   .navbar {
     /* position: sticky; */
     max-width: 768px;
-    right: auto;
+    right: auto !important;
   }
   .css-w54wyp{
     padding-bottom: 10% !important;

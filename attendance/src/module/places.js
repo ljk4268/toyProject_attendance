@@ -11,7 +11,7 @@ export async function postPlaces(date) {
     return;
   }
 
-  const todayPlace = await axios.post("/loc/entry", {
+  const todayPlace = await axios.post(process.env.REACT_APP_API_ROOT + "/loc/entry", {
     attendanceDate: date,
     locationName: place,
     official: official,
@@ -21,7 +21,7 @@ export async function postPlaces(date) {
 
 // 서버에 등록한 장소 가지고 오기 ( 22.08.02 - 03 )
 export async function getPlaces(setTodayPlaces, _date){
-  const todayPlaces = await axios.post('/loc/list',{
+  const todayPlaces = await axios.post(process.env.REACT_APP_API_ROOT + '/loc/list',{
     attendanceDate: _date
   });
 
@@ -46,7 +46,7 @@ export async function getPlaces(setTodayPlaces, _date){
 
 // 서버에 등록된 장소 삭제하기
 export async function deletePlace(_locationId){
-  const deletePlace = await axios.post('/loc/cancel',{
+  const deletePlace = await axios.post(process.env.REACT_APP_API_ROOT + '/loc/cancel',{
     locationId: _locationId
   });
   return deletePlace

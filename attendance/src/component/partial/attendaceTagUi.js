@@ -28,13 +28,8 @@ import { useNavigate } from 'react-router-dom';
 import { getDateAttendance } from '../../module/user'
 
 
-
-
-
-// userAttendanceInfo,userAccountId,dataAttendanceFunction,cancelAlertOpen,setCancelAlertOpen,dispatch,i
 export default function AttendanceTagUi(props) {
 
-  // 해당장소에 등록되는 유저의 경우 paddingLeft를 줘야함. 
   let dispatch = useDispatch();
   let navigate = useNavigate();
   let reduxState = useSelector((state) => {

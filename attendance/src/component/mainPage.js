@@ -59,15 +59,11 @@ function MainPage() {
   let editMode = reduxState.editMode;
   let popUpOn = reduxState.popUpOn;
 
-  let dataAttendanceFunction = () => {
-    getDateAttendance(setTodayAttendanceNames, date, editMode)
-  }
-  
 
   useEffect(()=>{
     async function getUserInfo(){
       
-      const session = await axios.post('/session')
+      const session = await axios.post(process.env.REACT_APP_API_ROOT + '/session')
       
       if(session.data.success === 'ok') {
         dispatch(userAcId(session.data.attendanceUser.accountId))
@@ -126,7 +122,6 @@ function MainPage() {
       AttendNameList.push(<AttendanceTagUi 
         dateAttendanceNames={name} 
         userAccountId={userAccountId}
-        dataAttendanceFunction={dataAttendanceFunction}
         cancelAlertOpen={cancelAlertOpen}
         setCancelAlertOpen={setCancelAlertOpen}
         setTodayAttendanceNames={setTodayAttendanceNames}
@@ -169,7 +164,6 @@ function MainPage() {
               userInlocation.push(<AttendanceTagUi 
                 dateAttendanceNames={dateAttendanceNames[j]} 
                 userAccountId={userAccountId}
-                dataAttendanceFunction={dataAttendanceFunction}
                 cancelAlertOpen={cancelAlertOpen}
                 setCancelAlertOpen={setCancelAlertOpen}
                 setTodayAttendanceNames={setTodayAttendanceNames}
