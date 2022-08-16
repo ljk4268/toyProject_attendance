@@ -18,6 +18,8 @@
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
     "css-loader": "^6.7.1",
+    "env-cmd": "^10.1.0",
+    "gh-pages": "^4.0.0",
     "http-proxy-middleware": "^2.0.6",
     "node-sass": "^7.0.1",
     "react": "^18.2.0",
@@ -33,9 +35,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "env-cmd -f .env.production react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [
@@ -49,5 +53,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://3.36.247.2/"
+  "proxy": "http://3.36.247.2/",
+  "homepage": "https://ljk4268.github.io/attendance-pages/"
 }
