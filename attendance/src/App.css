@@ -205,10 +205,7 @@ a {
 
 @media screen and (min-width : 768px) { 
 
-  /* #root{
-    width: 768px;
-    margin: 0 auto;
-  } */
+
 
   body{
     width: 768px;
@@ -259,7 +256,10 @@ a {
   }
   .fc {
     max-width: 700px !important;
-    margin: auto ;
+    margin: auto;
+    padding-bottom: 20%;
+    
+
   }
 
   .fc .fc-toolbar-title{

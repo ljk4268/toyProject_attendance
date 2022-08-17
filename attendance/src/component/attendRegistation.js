@@ -54,7 +54,7 @@ function AttendRegistration(){
 	const popUpOn = useSelector((state) => {
     return state.popUpOn;
   });
-  console.log(popUpOn)
+  console.log('팝업창', popUpOn)
 
 
 	const navigate = useNavigate();
@@ -157,7 +157,12 @@ function AttendRegistration(){
 					setWarningWindow(true)
 				}
 				if (entry.data.success == "ok"){
-					return navigate('/main')
+					if ( popUpOn ) {
+						dispatch(changePopUpOn(false));
+						navigate('/calendar')
+					} else {
+						navigate('/main')
+					}
 				}
 				
 			}
@@ -348,8 +353,10 @@ function AttendRegistration(){
 						if( popUpOn ){
 							dispatch(changePopUpOn(false));
 							navigate('/calendar');
+						} else {
+							navigate('/main')
 						}
-						navigate('/main')
+						
 					}}>취소</Button>
 			</ButtonGroup>
 
