@@ -1,14 +1,13 @@
 function MainLogo(){
 
-  const text = "Well Begun is\nHalf Done !"
   return (
     <div className="App">
-      <div className="main-top">
+      <div id="main-logos"className="main-top">
         <div>
-          <div className="greeting">
+          <div id="logo-main" className="greeting">
           Well Begun is
           </div>
-          <div className="greeting2">Half Done !</div>
+          <div id="logo-main2" className="greeting2 logo-main2">Half Done !</div>
         </div>
       </div>
     </div>

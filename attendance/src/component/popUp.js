@@ -27,23 +27,19 @@ import AttendanceTagUi from './partial/attendaceTagUi';
 import { useNavigate } from "react-router-dom";
 import { changeEditMode } from '../redux/feature/editMode'
 import { changePopUpOn } from '../redux/feature/popUpOn'
+import { changeCalendarClick } from '../redux/feature/calendarClick'
 
 
 
 
 function Popup(props) {
 
-  let userAccountId = useSelector((state) => {
-    return state.userAccountId;
+  let reduxState = useSelector((state) => {
+    return state;
   });
 
-  let editMode = useSelector((state) => {
-    return state.editMode;
-  });
-
-  let popUpOn = useSelector((state) => {
-    return state.popUpOn;
-  });
+  let editMode = reduxState.editMode;
+  let userAccountId = reduxState.userAccountId;
 
   let navigate = useNavigate();
 
@@ -55,8 +51,6 @@ function Popup(props) {
   let [cancelAlertOpen, setCancelAlertOpen] = useState(false);
   let [placeDeleteOpen, setPlaceDeleteOpen] = useState(false);
   let [deleteLocatinId, setDeleteLocatinId] = useState(0);
-
-
 
 
   // 해당날짜 출석인원 및 모임장소 가지고오기
@@ -104,6 +98,7 @@ function Popup(props) {
   let atndnButton = <>
         <Button variant="outlined"
           onClick={() => {
+            dispatch(changeCalendarClick(false));
             dispatch(changePopUpOn(true));
             navigate('/registration', {state: {clickdate: date}} );
             props.setOpen(false);
@@ -114,6 +109,7 @@ function Popup(props) {
         <Button
           variant="outlined"
           onClick={() => {
+            dispatch(changeCalendarClick(false));
             props.setOpen(false);
           }}
         >
@@ -131,6 +127,7 @@ function Popup(props) {
           onClick={() => {
             dispatch(changePopUpOn(true));
             dispatch(changeEditMode(true));
+            dispatch(changeCalendarClick(false));
             navigate('/registration', {state: {clickdate: date}} );
             props.setOpen(false);
           }}
@@ -140,6 +137,7 @@ function Popup(props) {
             <Button
               variant="outlined"
               onClick={() => {
+                dispatch(changeCalendarClick(false));
                 props.setOpen(false);
               }}
             >

@@ -56,8 +56,6 @@ function MainPage() {
 
   let user = reduxState.user.nickname;
   let userAccountId = reduxState.userAccountId;
-  let editMode = reduxState.editMode;
-  let popUpOn = reduxState.popUpOn;
 
 
   useEffect(()=>{
@@ -154,7 +152,6 @@ function MainPage() {
       // 그 장소아이디랑 유저가 속한 장소아이디랑 비교해서 
       // 같으면 그 장소에 속하게끔 구현할 수 있다. 
         todayPlaces.map(function(place, i){
-
           // 해당장소 클릭한 유저 모음
           let userInlocation = [];
           
@@ -169,7 +166,7 @@ function MainPage() {
                 setTodayAttendanceNames={setTodayAttendanceNames}
                 date={date}
                 j={j}
-                key={i}
+                key={j}
                 />)
             }
 

@@ -23,6 +23,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 //함수
 import { postAttendanceCancel } from '../../module/user';
 import { changeEditMode } from '../../redux/feature/editMode'
+import { changePopUpOn } from '../../redux/feature/popUpOn'
+import { changeCalendarClick } from '../../redux/feature/calendarClick'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getDateAttendance } from '../../module/user'
@@ -32,11 +34,13 @@ export default function AttendanceTagUi(props) {
 
   let dispatch = useDispatch();
   let navigate = useNavigate();
+
   let reduxState = useSelector((state) => {
     return state;
   });
-
   let editMode = reduxState.editMode
+  let calendarClick = reduxState.calendarClick
+
 
   // 유저정보 변수들
   let name = props.dateAttendanceNames.nickname
@@ -91,8 +95,15 @@ export default function AttendanceTagUi(props) {
       edge="end" 
       aria-label="edit" 
       onClick={()=>{
-        dispatch(changeEditMode(true));
-        navigate('/registration', {state: {clickdate: props.date}})
+        if ( calendarClick ){
+          dispatch(changePopUpOn(true));
+          dispatch(changeCalendarClick(false));
+          dispatch(changeEditMode(true));
+          navigate('/registration', {state: {clickdate: props.date}})
+        } else {
+          dispatch(changeEditMode(true));
+          navigate('/registration', {state: {clickdate: props.date}})
+        }
       }}  >
     <EditOutlinedIcon sx={{paddingRight:'10px'}}/>
   </IconButton>

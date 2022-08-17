@@ -12,13 +12,16 @@
   border-right: 1px solid rgb(192, 189, 189);
 } */
 
-html,body{
+html {
   height: 100%;
+}
+body {
+  min-height: 100%;
 }
 
 
 
-.App {
+.body {
   text-align: center;
   font-family: 'Source Sans Pro', sans-serif ;
   box-sizing: border-box;
@@ -86,6 +89,52 @@ html,body{
   color: red;
 }
 
+
+#logo-main, #logo-main2{
+  font-size: 45px;
+  font-weight: 600;
+}
+
+#logo-main2{
+  display: inline-block;
+}
+
+.login-page {
+  padding-top: 20%;
+}
+.login-logo{
+  padding: 10% 15%;
+  text-align: center;
+}
+
+.login-line{
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: rgba(0,0,0,0.35);
+  font-size: 14px;
+  margin: 8px 0px;
+  padding-bottom: 15%;
+}
+.login-line:before{
+  content: '';
+  flex-grow: 1;
+  margin: 0px 16px;
+  background: rgba(192, 189, 189);
+  height: 1px;
+  font-size: 1px;
+  line-height: 0px;
+}
+.login-line:after{
+  content: '';
+  flex-grow: 1;
+  margin: 0px 16px;
+  background: rgba(192, 189, 189);
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+}
+
 .loginImg {
   display: flex;
   justify-content: center;
@@ -97,18 +146,9 @@ a {
 }
 .kakao-login {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.shadow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 184px;
-  height: 45px;
-  border-radius: 9px;
-  box-shadow: 0 -5px 5px #dbc004 inset;
-  cursor: pointer;
+  transform: translateY(-75%);
+  width: 60px;
+  border-radius: 50%;
 }
 
 
@@ -205,14 +245,45 @@ a {
 
 @media screen and (min-width : 768px) { 
 
-
-
-  body{
+  html {
+    height: 100%;
+  }
+  body {
     width: 768px;
+    min-height: 100%;
     margin: 0 auto;
     border-left: 1px solid rgb(192, 189, 189);
     border-right: 1px solid rgb(192, 189, 189);
   }
+
+  #main-logos{
+    padding-left: 10%;
+  }
+  .login-page {
+    padding-top: 0%;
+  }
+  .login-logo{
+    padding: 10% 20%;
+    padding-top: 2%;
+    text-align: center;
+  }
+  .login-line{
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    color: rgba(0,0,0,0.35);
+    font-size: 14px;
+    margin: 8px 0px;
+    padding-bottom: 10%;
+  }
+
+  .kakao-login {
+    position: absolute;
+    transform: translateY(-75%);
+    max-width: 80px;
+    max-height: 80px;
+  }
+
 
   .main-top{
     /* background-color: bisque; */
@@ -232,6 +303,14 @@ a {
     font-family: 'Grape Nuts', serif;
     font-weight: 700;
     box-shadow: inset 0 -35% 0 rgb(251, 249, 115);
+    display: inline-block;
+  }
+
+  #logo-main, #logo-main2{
+    font-size: 70px;
+    font-weight: 600;
+  }
+  #logo-main2{
     display: inline-block;
   }
 

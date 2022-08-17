@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changObj } from "../redux/feature/attendList";
 import { changeMonth } from "../redux/feature/month";
+import { changeCalendarClick } from "../redux/feature/calendarClick";
 import { saveAttendList } from "../module/attendList";
 import NavbarTop from "../component/navbarTop";
 import NavbarBottom from "../component/navbarBottom";
@@ -17,11 +18,12 @@ function CalendarPage() {
   const [year, setYear] = useState("");
 
   
-  let state = useSelector((state) => {
+  let reduxState = useSelector((state) => {
     return state;
   });
 
-  let $attListObj = state.$attListObj;
+
+  let $attListObj = reduxState.$attListObj;
   let $eventAttList = [];
   let dispatch = useDispatch();
 
@@ -51,6 +53,7 @@ function CalendarPage() {
   }, [month,open]);
 
   const handleDateClick = (e) => {
+    dispatch(changeCalendarClick(true))
     setOpen(true);
     setDate(e.dateStr);
   };
@@ -76,6 +79,7 @@ function CalendarPage() {
           let date = String(info.event.start.getDate()).padStart(2, "0");
 
           let returnDate = `${year}-${month}-${date}`;
+          dispatch(changeCalendarClick(true))
           setOpen(true);
           setDate(returnDate);
         }}

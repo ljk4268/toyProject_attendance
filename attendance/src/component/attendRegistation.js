@@ -54,7 +54,6 @@ function AttendRegistration(){
 	const popUpOn = useSelector((state) => {
     return state.popUpOn;
   });
-  console.log('팝업창', popUpOn)
 
 
 	const navigate = useNavigate();
@@ -99,6 +98,7 @@ function AttendRegistration(){
 	// 	}
   // },[])
 
+	console.log(locationId, mealStatus)
 
 	useEffect(()=>{
 		if ( popUpOn ) {
@@ -111,6 +111,8 @@ function AttendRegistration(){
 			async function attanceUserData(){
 				let attanceList = await getDateAttendance(null,date,editMode);
 				let userData = attanceList.find(lists => lists.accountId == userAccountId.accountId)
+				console.log(userData)
+				setLocationId(userData.locationId)
 				setAttendanceId(userData.attendanceId)
 				setMealAlignment(userData.mealStatus)
 				if ( userData.locationName == null ){
@@ -127,10 +129,12 @@ function AttendRegistration(){
 
 
 
+
 	// 함수
 	async function postAttendance(){
 		// 수정모드일때 
 		if ( editMode ){
+			console.log(editMode)
 
 			if ( alignment == null || mealAlignment == null ){
 				setAlertOpen(true)
@@ -138,8 +142,14 @@ function AttendRegistration(){
 				let changeAtndn = await postAttendanceUpdate(date, locationId, mealStatus, attendanceId);
 
 				if(changeAtndn.data.success == 'ok'){
-					dispatch(changeEditMode(false));
-					navigate('/main');
+					if ( popUpOn ) {
+						dispatch(changePopUpOn(false));
+						dispatch(changeEditMode(false));
+						navigate('/calendar')
+					} else {
+						dispatch(changeEditMode(false));
+						navigate('/main');
+					}
 				} 
 				
 			}
@@ -237,7 +247,7 @@ function AttendRegistration(){
 						);
 					}
 
-      	}
+        }
 			)}
 
     </ToggleButtonGroup>
