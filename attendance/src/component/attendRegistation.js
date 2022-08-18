@@ -69,7 +69,7 @@ function AttendRegistration(){
   const [attendanceId, setAttendanceId] = useState(null);
   const [mealStatus, setMealStatus] = useState(null);
   const [editModeSelect, setEditModeSelect] = useState(false);
-	let today = getToday();
+	const today = getToday();
   const [date, setDate] = useState(today);
 
   let dayOfWeek = week[new Date(date).getDay()];

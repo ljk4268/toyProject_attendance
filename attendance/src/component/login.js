@@ -1,4 +1,7 @@
+import { useEffect } from "react";
+import axios from 'axios';
 import MainLogo from "../component/mianLogo";
+import { useNavigate } from "react-router-dom";
 
 
 function Login(){
@@ -6,6 +9,22 @@ function Login(){
   const serverUrl = 'http://3.36.247.2'
   // const serverUrl = 'http://localhost:3000'
 
+  let navigate = useNavigate();
+
+  useEffect(()=>{
+    async function getUserInfo(){
+      
+      const session = await axios.post(process.env.REACT_APP_API_ROOT + '/session')
+      console.log(session)
+      
+      if(session.data.success === 'ok') {
+        return navigate('/main')
+      } 
+      return navigate('/')
+
+    }
+    getUserInfo()
+  },[])
   
   return(
     <>

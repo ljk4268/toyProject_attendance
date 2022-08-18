@@ -6,6 +6,9 @@ import { userDate }from '../redux/feature/user'
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 
+import Box from '@mui/material/Box';
+import { Margin } from '@mui/icons-material';
+
 function Kakao(){
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -61,12 +64,11 @@ function Kakao(){
   }, [])
 
   return(
-
-    <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
-      <CircularProgress color="secondary" />
-      <CircularProgress color="success" />
-      <CircularProgress color="inherit" />
-    </Stack>
+      <div className="loding">
+        <Box>
+            <CircularProgress size='20vw'/>
+        </Box>
+      </div>
 
   )
 }

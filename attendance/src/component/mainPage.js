@@ -37,13 +37,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 //함수
 function MainPage() {
 
-  let date = getToday();
-  let [dateAttendanceNames, setTodayAttendanceNames] = useState([1]);
-  let [todayPlaces, setTodayPlaces] = useState([]);
-  let [notificationMessage, setNotificationMessage] = useState(false);
-  let [cancelAlertOpen, setCancelAlertOpen] = useState(false);
-  let [placeDeleteOpen, setPlaceDeleteOpen] = useState(false);
-  let [deleteLocatinId, setDeleteLocatinId] = useState(0);
+  const date = getToday();
+  const [dateAttendanceNames, setTodayAttendanceNames] = useState([1]);
+  const [todayPlaces, setTodayPlaces] = useState([]);
+  const [notificationMessage, setNotificationMessage] = useState(false);
+  const [cancelAlertOpen, setCancelAlertOpen] = useState(false);
+  const [placeDeleteOpen, setPlaceDeleteOpen] = useState(false);
+  const [deleteLocatinId, setDeleteLocatinId] = useState(0);
   
 
   let reduxState = useSelector((state) => {

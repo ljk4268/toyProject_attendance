@@ -28,6 +28,7 @@ body {
   max-width: 768px;
   margin: 0 auto;
   height: 100%;
+  position: relative;
 }
 
 
@@ -80,6 +81,19 @@ body {
   font-family: 'Nanum Gothic', sans-serif;
   font-size: 12px;
 }
+
+.loding{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.css-18lrjg1-MuiCircularProgress-root{
+  display: block !important;
+}
+
 
 /* 주말 색깔 지정 */
 .fc-day-sat {
