@@ -233,6 +233,7 @@ function Popup(props) {
               setPlaceDeleteOpen={setPlaceDeleteOpen}
               deleteLocatinId={deleteLocatinId}
               setDatePlaces={setDatePlaces}
+              setDateAttendanceNames={setDateAttendanceNames}
               date={date}
               /> : null
             }
@@ -280,7 +281,8 @@ function PlaceDeleteAlert(props){
         <Button onClick={handlePlaceDeleteAlertClose}>아니요</Button>
         <Button 
         onClick={async()=>{
-          let deletePlaceResult = await deletePlace(locationId);
+          await deletePlace(locationId);
+          await getDateAttendance(props.setDateAttendanceNames, props.date, null);
           handlePlaceDeleteAlertClose();
           getPlaces(props.setDatePlaces, props.date);
         }}

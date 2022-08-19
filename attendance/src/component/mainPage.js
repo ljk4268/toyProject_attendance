@@ -13,6 +13,7 @@ import { getToday } from '../module/getToday'
 import { getDateAttendance } from '../module/user'
 import { userAcId } from '../redux/feature/userAccountId'
 import AttendanceTagUi from './partial/attendaceTagUi';
+import { changeAttendCheck } from '../redux/feature/attendCheck'
 
 
 //mui
@@ -56,6 +57,7 @@ function MainPage() {
 
   let user = reduxState.user.nickname;
   let userAccountId = reduxState.userAccountId;
+  let editMode = reduxState.editMode;
 
 
 
@@ -79,8 +81,28 @@ function MainPage() {
   useEffect(() => {
     getDateAttendance(setDateAttendanceNames, date);
     getPlaces(setTodayPlaces, date);
-    
   },[])
+
+  // 등록을 한 직후 상태값을 변경하면 그떄 한 번만 변경이 수행됨. 
+  // 하지만 서버에 있는 자신을 포함한 데이터가 존재하면 언제나 변경을 수행할 수 있음. 
+  // 리액트의 생명주기가 끝났다고 생각되면 리덕스 state도 같이 초기화가 됨. 
+  useEffect(() => {
+    let check = false;
+    
+    dateAttendanceNames.forEach(function(name){
+      if (name.accountId == userAccountId.accountId){
+        check = true;
+      }
+    })
+
+    if ( check ){
+      dispatch(changeAttendCheck(true));
+    } else {
+      dispatch(changeAttendCheck(false));
+    }
+
+  },[dateAttendanceNames])
+
 
 // 출석 등록한 사람이 없을 때 서버에서 빈배열을 보내줌. 
 // 서버에서 빈배열을 받은거랑 내가 초기화 했을 때 빈배열인거랑 헷갈리지 않으려고 
@@ -229,6 +251,8 @@ function MainPage() {
         setPlaceDeleteOpen={setPlaceDeleteOpen}
         deleteLocatinId={deleteLocatinId}
         setTodayPlaces={setTodayPlaces}
+        setDateAttendanceNames={setDateAttendanceNames}
+        date={date}
         /> : null
       }
 
@@ -264,7 +288,8 @@ function PlaceDeleteAlert(props){
         <Button onClick={handlePlaceDeleteAlertClose}>아니요</Button>
         <Button 
         onClick={async()=>{
-          let deletePlaceResult = await deletePlace(locationId);
+          await deletePlace(locationId);
+          await getDateAttendance(props.setDateAttendanceNames, props.date, null);
           handlePlaceDeleteAlertClose();
           getPlaces(props.setTodayPlaces);
         }}

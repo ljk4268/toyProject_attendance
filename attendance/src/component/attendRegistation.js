@@ -14,7 +14,6 @@ import { getToday } from '../module/getToday'
 import { postDateAttendance, getDateAttendance, postAttendanceUpdate} from '../module/user'
 import { changeEditMode } from '../redux/feature/editMode'
 import { changePopUpOn } from '../redux/feature/popUpOn'
-import { changeAttendCheck } from '../redux/feature/attendCheck'
 
 //mui라이브러리
 import * as React from 'react';
@@ -339,7 +338,6 @@ function AttendRegistration(){
 						size='large'
 						onClick={()=>{
 							postAttendance();
-							dispatch(changeAttendCheck(true));
 						}}
 					>출석등록하기</Button>
 					<Button sx={{ width: '150px' }} size='large' 

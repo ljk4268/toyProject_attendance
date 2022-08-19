@@ -60,17 +60,28 @@ body {
 
 
 .fc-h-event {
-  /* width: 100%; */
-  font-size: 10px;
+  position: absolute;
+  left: 43%;
+  transform: translateX(-43%);
+  width: 3em;
+  height: 3em;
+  font-size: 0.6em;
   text-align: center;
   background-color: #f8eb76;
-  /* border-radius: 50%; */
-  border: none
+  border-radius: 50%;
+  border: none;
+  font-weight: 800;
+}
+.fc-event-main{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .fc-event-title {
   font-family: 'Nanum Gothic', sans-serif;
   color: rgb(41, 39, 39);
 }
+
 
 .fc-daygrid-dot-event .fc-event-title {
   font-family: 'Nanum Gothic', sans-serif;
