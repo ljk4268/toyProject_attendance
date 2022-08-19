@@ -87,7 +87,7 @@ function Popup(props) {
         dataAttendanceFunction={dataAttendanceFunction}
         cancelAlertOpen={cancelAlertOpen}
         setCancelAlertOpen={setCancelAlertOpen}
-        setTodayAttendanceNames={setDateAttendanceNames}
+        setDateAttendanceNames={setDateAttendanceNames}
         date={date}
         j={i}
         key={i}
@@ -172,7 +172,7 @@ function Popup(props) {
                       dataAttendanceFunction={dataAttendanceFunction}
                       cancelAlertOpen={cancelAlertOpen}
                       setCancelAlertOpen={setCancelAlertOpen}
-                      setTodayAttendanceNames={setDateAttendanceNames}
+                      setDateAttendanceNames={setDateAttendanceNames}
                       date={date}
                       j={j}
                       key={i}

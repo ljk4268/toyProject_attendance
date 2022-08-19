@@ -25,6 +25,7 @@ import { postAttendanceCancel } from '../../module/user';
 import { changeEditMode } from '../../redux/feature/editMode'
 import { changePopUpOn } from '../../redux/feature/popUpOn'
 import { changeCalendarClick } from '../../redux/feature/calendarClick'
+import { changeAttendCheck } from '../../redux/feature/attendCheck'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getDateAttendance } from '../../module/user'
@@ -125,7 +126,8 @@ export default function AttendanceTagUi(props) {
         <Button 
         onClick={async()=>{
           await postAttendanceCancel(attendanceId);
-          await getDateAttendance(props.setTodayAttendanceNames, props.date, editMode);
+          await getDateAttendance(props.setDateAttendanceNames, props.date, editMode);
+          dispatch(changeAttendCheck(false));
           handleClose()
         }}
         autoFocus>

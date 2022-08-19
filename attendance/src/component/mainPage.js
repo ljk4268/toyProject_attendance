@@ -38,7 +38,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 function MainPage() {
 
   const date = getToday();
-  const [dateAttendanceNames, setTodayAttendanceNames] = useState([1]);
+  const [dateAttendanceNames, setDateAttendanceNames] = useState([1]);
   const [todayPlaces, setTodayPlaces] = useState([]);
   const [notificationMessage, setNotificationMessage] = useState(false);
   const [cancelAlertOpen, setCancelAlertOpen] = useState(false);
@@ -56,6 +56,7 @@ function MainPage() {
 
   let user = reduxState.user.nickname;
   let userAccountId = reduxState.userAccountId;
+
 
 
   useEffect(()=>{
@@ -76,7 +77,7 @@ function MainPage() {
   // 오늘 날짜의 출석리스트 가져오기 
   // 모듈화 >> state변경함수를 파라미터로 주면서 성공함. 이게 되네?
   useEffect(() => {
-    getDateAttendance(setTodayAttendanceNames, date);
+    getDateAttendance(setDateAttendanceNames, date);
     getPlaces(setTodayPlaces, date);
     
   },[])
@@ -122,7 +123,7 @@ function MainPage() {
         userAccountId={userAccountId}
         cancelAlertOpen={cancelAlertOpen}
         setCancelAlertOpen={setCancelAlertOpen}
-        setTodayAttendanceNames={setTodayAttendanceNames}
+        setDateAttendanceNames={setDateAttendanceNames}
         date={date}
         j={i}
         key={i}
@@ -163,7 +164,7 @@ function MainPage() {
                 userAccountId={userAccountId}
                 cancelAlertOpen={cancelAlertOpen}
                 setCancelAlertOpen={setCancelAlertOpen}
-                setTodayAttendanceNames={setTodayAttendanceNames}
+                setDateAttendanceNames={setDateAttendanceNames}
                 date={date}
                 j={j}
                 key={j}

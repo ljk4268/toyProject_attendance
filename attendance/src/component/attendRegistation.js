@@ -14,6 +14,7 @@ import { getToday } from '../module/getToday'
 import { postDateAttendance, getDateAttendance, postAttendanceUpdate} from '../module/user'
 import { changeEditMode } from '../redux/feature/editMode'
 import { changePopUpOn } from '../redux/feature/popUpOn'
+import { changeAttendCheck } from '../redux/feature/attendCheck'
 
 //mui라이브러리
 import * as React from 'react';
@@ -53,7 +54,11 @@ function AttendRegistration(){
   });
 	const popUpOn = useSelector((state) => {
     return state.popUpOn;
+  });	
+	const attendCheck = useSelector((state) => {
+    return state.attendCheck;
   });
+	
 
 
 	const navigate = useNavigate();
@@ -75,30 +80,6 @@ function AttendRegistration(){
   let dayOfWeek = week[new Date(date).getDay()];
   let user = userInfo.nickname;
 
-  // useEffect(() => {
-	// 	getPlaces(setTodayPlaces, date)
-
-	// 	// 출석 수정모드로 들어왔을 경우 
-	// 	if ( editMode ) {
-	// 		setEditModeSelect(true);
-	// 		async function attanceUserData(){
-	// 			let attanceList = await getDateAttendance(null,date,editMode);
-	// 			let userData = attanceList.find(lists => lists.accountId == userAccountId.accountId)
-	// 			setAttendanceId(userData.attendanceId)
-	// 			setMealAlignment(userData.mealStatus)
-	// 			if ( userData.locationName == null ){
-	// 				setAlignment('alone')
-	// 			} else {
-
-	// 				setAlignment(userData.locationName)
-	// 			}
-				
-	// 		}
-	// 		attanceUserData()
-	// 	}
-  // },[])
-
-	console.log(locationId, mealStatus)
 
 	useEffect(()=>{
 		if ( popUpOn ) {
@@ -356,7 +337,10 @@ function AttendRegistration(){
 					<Button
 						sx={{ width: '150px' }}
 						size='large'
-						onClick={postAttendance}
+						onClick={()=>{
+							postAttendance();
+							dispatch(changeAttendCheck(true));
+						}}
 					>출석등록하기</Button>
 					<Button sx={{ width: '150px' }} size='large' 
 					onClick={()=>{

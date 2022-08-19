@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -19,9 +20,16 @@ import { getToday } from '../module/getToday'
 function NavbarBottom() {
 
   let navigate = useNavigate();
+  let reduxState = useSelector((state) => {
+    return state;
+  });
+  let attendCheck = reduxState.attendCheck;
+
   let _date = getToday();
 
-  
+
+  let plusButton = null;;
+
   const StyledFab = styled(Fab)({
     position: 'absolute',
     zIndex: 1,
@@ -30,6 +38,19 @@ function NavbarBottom() {
     right: 0,
     margin: '0 auto',
   });
+
+  if ( attendCheck ) {
+    plusButton = null;
+  } else {
+    plusButton = <StyledFab color="inherit" aria-label="add" 
+    style={{ backgroundColor: '#f8eb76', color: '#fbfbf9' }}
+    onClick={()=>{navigate('/registration', {state: {clickdate: _date}}) }}
+  >
+    <AddIcon sx={{ fontSize: 38 }}/>
+  </StyledFab>
+  }
+  
+  
 
   return (      
         // {/* 하단 navbar */}
@@ -40,12 +61,7 @@ function NavbarBottom() {
               <HomeOutlinedIcon sx={{ fontSize: 30, color: grey[600] }}/>
             </IconButton>
 
-            <StyledFab color="inherit" aria-label="add" 
-              style={{ backgroundColor: '#f8eb76', color: '#fbfbf9' }}
-              onClick={()=>{navigate('/registration', {state: {clickdate: _date}}) }}
-            >
-              <AddIcon sx={{ fontSize: 38 }}/>
-            </StyledFab>
+            {plusButton}
 
             <Box sx={{ flexGrow: 0.4 }} />
 

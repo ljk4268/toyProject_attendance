@@ -249,7 +249,8 @@ a {
 }
 
 .notificationMessage {
-  color: rgb(156, 154, 154)
+  text-align: center;
+  color: rgb(156, 154, 154);
 }
 
 .css-11b3ww9-MuiPaper-root-MuiAppBar-root,

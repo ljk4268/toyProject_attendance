@@ -9,6 +9,7 @@ import UserAccountIdReducer from './feature/userAccountId';
 import EditModedReducer from './feature/editMode';
 import PopUpOnReducer from './feature/popUpOn';
 import CalendarClickReducer from './feature/calendarClick';
+import AttendCheckReducer from './feature/attendCheck';
 
 import storage from 'redux-persist/lib/storage';
 import {persistReducer} from 'redux-persist';
@@ -29,7 +30,8 @@ const reducer = combineReducers({
   userAccountId:UserAccountIdReducer,
   editMode:EditModedReducer,
   popUpOn:PopUpOnReducer,
-  calendarClick:CalendarClickReducer
+  calendarClick:CalendarClickReducer,
+  attendCheck:AttendCheckReducer
 });
 
 

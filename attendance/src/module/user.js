@@ -6,7 +6,7 @@ import { getToday } from './getToday'
 let todayDate = getToday();
 
 // 오늘 날짜의 출석리스트 가져오기 
-export async function getDateAttendance(setTodayAttendanceNames, _date, editMode) {
+export async function getDateAttendance(setDateAttendanceNames, _date, editMode) {
 
   const lists = await axios.post(process.env.REACT_APP_API_ROOT + '/atndn/list-on-date',{
     attendanceDate: _date
@@ -21,7 +21,7 @@ export async function getDateAttendance(setTodayAttendanceNames, _date, editMode
 
   if (todayAttendanceLists == '') {
     newArray = [];
-    setTodayAttendanceNames(newArray);
+    setDateAttendanceNames(newArray);
   }
 
   todayAttendanceLists.forEach((element) => {
@@ -35,7 +35,7 @@ export async function getDateAttendance(setTodayAttendanceNames, _date, editMode
     }) 
 
     // 리덕스 dispatch(변경함수(newArray) << 이거 맞아?
-    setTodayAttendanceNames(newArray);
+    setDateAttendanceNames(newArray);
     
   });
 }
