@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { changeEditMode } from '../redux/feature/editMode'
 import { changePopUpOn } from '../redux/feature/popUpOn'
 import { changeCalendarClick } from '../redux/feature/calendarClick'
+import { changeAttendCheck } from '../redux/feature/attendCheck'
 
 
 
@@ -57,13 +58,31 @@ function Popup(props) {
   useEffect(()=>{
     if ( date != ''){
     getPlaces(setDatePlaces, date)
-    getDateAttendance(setDateAttendanceNames, date)
+    getDateAttendance(setDateAttendanceNames, date, userAccountId)
   }
   },[props.open])
 
+  useEffect(() => {
+    let check = false;
+    dateAttendanceNames.forEach(function(name){
+      if (name.accountId == userAccountId.accountId){
+        check = true;
+      }
+    })
+
+    if ( check ){
+      dispatch(changeAttendCheck(true));
+      dispatch(changeEditMode(true));
+    } else {
+      dispatch(changeAttendCheck(false));
+      dispatch(changeEditMode(false));
+    }
+
+  },[dateAttendanceNames])
+
 
   let dataAttendanceFunction = () => {
-    getDateAttendance(setDateAttendanceNames, date, editMode)
+    getDateAttendance(setDateAttendanceNames, date, userAccountId)
   }
 
   const handleClick = (i) => {
@@ -126,7 +145,6 @@ function Popup(props) {
         <Button variant="outlined"
           onClick={() => {
             dispatch(changePopUpOn(true));
-            dispatch(changeEditMode(true));
             dispatch(changeCalendarClick(false));
             navigate('/registration', {state: {clickdate: date}} );
             props.setOpen(false);
@@ -175,7 +193,7 @@ function Popup(props) {
                       setDateAttendanceNames={setDateAttendanceNames}
                       date={date}
                       j={j}
-                      key={i}
+                      key={j}
                       />)
                   }
                 }
@@ -235,6 +253,7 @@ function Popup(props) {
               setDatePlaces={setDatePlaces}
               setDateAttendanceNames={setDateAttendanceNames}
               date={date}
+              userAccountId={userAccountId}
               /> : null
             }
 
@@ -260,6 +279,7 @@ export default Popup;
 function PlaceDeleteAlert(props){
 
   let locationId = props.deleteLocatinId
+  let userAccountId = props.userAccountId
 
   const handlePlaceDeleteAlertClose = () => {
     props.setPlaceDeleteOpen(false);
@@ -282,7 +302,7 @@ function PlaceDeleteAlert(props){
         <Button 
         onClick={async()=>{
           await deletePlace(locationId);
-          await getDateAttendance(props.setDateAttendanceNames, props.date, null);
+          await getDateAttendance(props.setDateAttendanceNames, props.date, userAccountId);
           handlePlaceDeleteAlertClose();
           getPlaces(props.setDatePlaces, props.date);
         }}

@@ -89,7 +89,7 @@ function AttendRegistration(){
 		if ( editMode ) {
 			setEditModeSelect(true);
 			async function attanceUserData(){
-				let attanceList = await getDateAttendance(null,date,editMode);
+				let attanceList = await getDateAttendance(null,date,userAccountId);
 				let userData = attanceList.find(lists => lists.accountId == userAccountId.accountId)
 				console.log(userData)
 				setLocationId(userData.locationId)
@@ -114,7 +114,6 @@ function AttendRegistration(){
 	async function postAttendance(){
 		// 수정모드일때 
 		if ( editMode ){
-			console.log(editMode)
 
 			if ( alignment == null || mealAlignment == null ){
 				setAlertOpen(true)
@@ -124,10 +123,8 @@ function AttendRegistration(){
 				if(changeAtndn.data.success == 'ok'){
 					if ( popUpOn ) {
 						dispatch(changePopUpOn(false));
-						dispatch(changeEditMode(false));
 						navigate('/calendar')
 					} else {
-						dispatch(changeEditMode(false));
 						navigate('/main');
 					}
 				} 
@@ -139,7 +136,7 @@ function AttendRegistration(){
 			if(locationId == null || mealStatus == null ){
 				setAlertOpen(true)
 			} else {
-
+				console.log(popUpOn)
 				let entry = await postDateAttendance(date, locationId, mealStatus);
 
 
@@ -320,7 +317,6 @@ function AttendRegistration(){
 						>출석수정하기</Button>
 						<Button sx={{ width: '150px' }} size='large' 
 							onClick={()=>{
-								dispatch(changeEditMode(false));
 								if( popUpOn ){
 									dispatch(changePopUpOn(false));
 									navigate('/calendar');

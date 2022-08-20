@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -12,9 +12,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import { grey } from '@mui/material/colors';
 import { getToday } from '../module/getToday';
-import axios from "axios";
-import { useEffect } from "react";
-import { listSubheaderClasses } from '@mui/material';
+import { changePopUpOn } from '../redux/feature/popUpOn'
 
 
 
@@ -23,6 +21,7 @@ import { listSubheaderClasses } from '@mui/material';
 
 function NavbarBottom() {
 
+  let dispatch = useDispatch();
   let navigate = useNavigate();
   let reduxState = useSelector((state) => {
     return state;
@@ -49,7 +48,9 @@ function NavbarBottom() {
   } else {
     plusButton = <StyledFab color="inherit" aria-label="add" 
     style={{ backgroundColor: '#f8eb76', color: '#fbfbf9' }}
-    onClick={()=>{navigate('/registration', {state: {clickdate: _date}}) }}
+    onClick={()=>{
+      dispatch(changePopUpOn(false));
+      navigate('/registration', {state: {clickdate: _date}}) }}
   >
     <AddIcon sx={{ fontSize: 38 }}/>
   </StyledFab>

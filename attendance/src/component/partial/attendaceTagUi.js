@@ -28,6 +28,8 @@ import { changeCalendarClick } from '../../redux/feature/calendarClick'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getDateAttendance } from '../../module/user'
+import { getPlaces } from '../../module/places'
+
 
 
 export default function AttendanceTagUi(props) {
@@ -40,6 +42,7 @@ export default function AttendanceTagUi(props) {
   });
   let editMode = reduxState.editMode
   let calendarClick = reduxState.calendarClick
+  let userAccountId = reduxState.userAccountId
 
 
   // 유저정보 변수들
@@ -98,10 +101,8 @@ export default function AttendanceTagUi(props) {
         if ( calendarClick ){
           dispatch(changePopUpOn(true));
           dispatch(changeCalendarClick(false));
-          dispatch(changeEditMode(true));
           navigate('/registration', {state: {clickdate: props.date}})
         } else {
-          dispatch(changeEditMode(true));
           navigate('/registration', {state: {clickdate: props.date}})
         }
       }}  >
@@ -125,7 +126,8 @@ export default function AttendanceTagUi(props) {
         <Button 
         onClick={async()=>{
           await postAttendanceCancel(attendanceId);
-          await getDateAttendance(props.setDateAttendanceNames, props.date, editMode);
+          await getPlaces(props.setTodayPlaces);
+          await getDateAttendance(props.setDateAttendanceNames, props.date, userAccountId);
           handleClose()
         }}
         autoFocus>

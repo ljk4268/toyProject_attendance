@@ -14,6 +14,7 @@ import { getDateAttendance } from '../module/user'
 import { userAcId } from '../redux/feature/userAccountId'
 import AttendanceTagUi from './partial/attendaceTagUi';
 import { changeAttendCheck } from '../redux/feature/attendCheck'
+import { changeEditMode } from '../redux/feature/editMode'
 
 
 //mui
@@ -79,7 +80,7 @@ function MainPage() {
   // 오늘 날짜의 출석리스트 가져오기 
   // 모듈화 >> state변경함수를 파라미터로 주면서 성공함. 이게 되네?
   useEffect(() => {
-    getDateAttendance(setDateAttendanceNames, date);
+    getDateAttendance(setDateAttendanceNames, date, userAccountId);
     getPlaces(setTodayPlaces, date);
   },[])
 
@@ -88,7 +89,6 @@ function MainPage() {
   // 리액트의 생명주기가 끝났다고 생각되면 리덕스 state도 같이 초기화가 됨. 
   useEffect(() => {
     let check = false;
-    
     dateAttendanceNames.forEach(function(name){
       if (name.accountId == userAccountId.accountId){
         check = true;
@@ -97,8 +97,10 @@ function MainPage() {
 
     if ( check ){
       dispatch(changeAttendCheck(true));
+      dispatch(changeEditMode(true));
     } else {
       dispatch(changeAttendCheck(false));
+      dispatch(changeEditMode(false));
     }
 
   },[dateAttendanceNames])
@@ -146,6 +148,7 @@ function MainPage() {
         cancelAlertOpen={cancelAlertOpen}
         setCancelAlertOpen={setCancelAlertOpen}
         setDateAttendanceNames={setDateAttendanceNames}
+        setTodayPlaces={setTodayPlaces}
         date={date}
         j={i}
         key={i}
@@ -252,6 +255,7 @@ function MainPage() {
         deleteLocatinId={deleteLocatinId}
         setTodayPlaces={setTodayPlaces}
         setDateAttendanceNames={setDateAttendanceNames}
+        userAccountId={userAccountId}
         date={date}
         /> : null
       }
@@ -267,6 +271,8 @@ export default MainPage;
 function PlaceDeleteAlert(props){
 
   let locationId = props.deleteLocatinId
+  let userAccountId = props.userAccountId
+
 
   const handlePlaceDeleteAlertClose = () => {
     props.setPlaceDeleteOpen(false);
@@ -289,9 +295,9 @@ function PlaceDeleteAlert(props){
         <Button 
         onClick={async()=>{
           await deletePlace(locationId);
-          await getDateAttendance(props.setDateAttendanceNames, props.date, null);
+          await getPlaces(props.setTodayPlaces);
+          await getDateAttendance(props.setDateAttendanceNames, props.date, userAccountId);
           handlePlaceDeleteAlertClose();
-          getPlaces(props.setTodayPlaces);
         }}
         autoFocus>
           네
