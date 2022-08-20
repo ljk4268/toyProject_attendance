@@ -40,7 +40,7 @@ function PlaceInput(props){
         onClick={
           async ()=>{
             await postPlaces(props.date);
-            await getPlaces(props.setTodayPlaces, props.date);
+            await getPlaces(props.setDatePlaces, props.date);
             document.getElementById("places").value = null;
           }
         }>등록</Button>

@@ -40,7 +40,6 @@ export default function AttendanceTagUi(props) {
   let reduxState = useSelector((state) => {
     return state;
   });
-  let editMode = reduxState.editMode
   let calendarClick = reduxState.calendarClick
   let userAccountId = reduxState.userAccountId
 
@@ -126,7 +125,7 @@ export default function AttendanceTagUi(props) {
         <Button 
         onClick={async()=>{
           await postAttendanceCancel(attendanceId);
-          await getPlaces(props.setTodayPlaces);
+          await getPlaces(props.setDatePlaces, props.date);
           await getDateAttendance(props.setDateAttendanceNames, props.date, userAccountId);
           handleClose()
         }}

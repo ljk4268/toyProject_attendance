@@ -101,13 +101,18 @@ body {
   transform: translate(-50%, -50%);
 }
 
+.css-z81eeg-MuiSvgIcon-root{
+  margin-right: 0.4em;
+}
 
 .css-18lrjg1-MuiCircularProgress-root{
   display: block !important;
 }
-.css-1t1j96h-MuiPaper-root-MuiDialog-paper{
-  width: 80vw;
+
+.css-mxt2yf-MuiListItemText-root{
+  margin-right: 8px;
 }
+
 
 /* 주말 색깔 지정 */
 .fc-day-sat {
@@ -373,7 +378,6 @@ a {
   .fc .fc-toolbar-title{
     font-size: 2em;
   }
-
 
 }
 

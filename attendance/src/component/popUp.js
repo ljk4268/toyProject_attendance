@@ -39,7 +39,6 @@ function Popup(props) {
     return state;
   });
 
-  let editMode = reduxState.editMode;
   let userAccountId = reduxState.userAccountId;
 
   let navigate = useNavigate();
@@ -47,11 +46,15 @@ function Popup(props) {
   let dispatch = useDispatch();
 
   const date = props.date;
-  let [dateAttendanceNames, setDateAttendanceNames] = useState([1]);
-  let [datePlaces, setDatePlaces] = useState([]);
-  let [cancelAlertOpen, setCancelAlertOpen] = useState(false);
-  let [placeDeleteOpen, setPlaceDeleteOpen] = useState(false);
-  let [deleteLocatinId, setDeleteLocatinId] = useState(0);
+  const dayArr = date.split('-');
+  const showMonth = Number(dayArr[1]);
+  const showDay = Number(dayArr[2]);
+
+  const [dateAttendanceNames, setDateAttendanceNames] = useState([1]);
+  const [datePlaces, setDatePlaces] = useState([]);
+  const [cancelAlertOpen, setCancelAlertOpen] = useState(false);
+  const [placeDeleteOpen, setPlaceDeleteOpen] = useState(false);
+  const [deleteLocatinId, setDeleteLocatinId] = useState(0);
 
 
   // 해당날짜 출석인원 및 모임장소 가지고오기
@@ -107,6 +110,7 @@ function Popup(props) {
         cancelAlertOpen={cancelAlertOpen}
         setCancelAlertOpen={setCancelAlertOpen}
         setDateAttendanceNames={setDateAttendanceNames}
+        setDatePlaces={setDatePlaces}
         date={date}
         j={i}
         key={i}
@@ -169,7 +173,7 @@ function Popup(props) {
   return (
     <>
       <Dialog open={props.open}>
-        <DialogTitle>자기계발하는 사람 누구누구?!</DialogTitle>
+        <DialogTitle sx={{textAlign: 'center'}}>{showMonth}월 {showDay}일 공부하는 사람 누구누구?</DialogTitle>
 
 
          {/* 출석등록한 사람들 리스트 */}
@@ -191,6 +195,7 @@ function Popup(props) {
                       cancelAlertOpen={cancelAlertOpen}
                       setCancelAlertOpen={setCancelAlertOpen}
                       setDateAttendanceNames={setDateAttendanceNames}
+                      setDatePlaces={setDatePlaces}
                       date={date}
                       j={j}
                       key={j}
@@ -202,9 +207,9 @@ function Popup(props) {
                   <List key={i} sx={{ background: '#fafafa', pt: 0, mt: 1, borderRadius: '5px' }}>
 
                     <ListItemButton onClick={() => { handleClick(i); }} sx={{ pt: 2 }}>
-                      <ListItemIcon>
+                      {/* <ListItemIcon> */}
                         <PlaceIcon sx={{ color: blue[400] }} />
-                      </ListItemIcon>
+                      {/* </ListItemIcon> */}
                       <ListItemText primary={place.locationName} sx={{ fontWeight:'bold', textAlign: 'left' }} />
 
                       {
@@ -302,9 +307,9 @@ function PlaceDeleteAlert(props){
         <Button 
         onClick={async()=>{
           await deletePlace(locationId);
+          await getPlaces(props.setDatePlaces, props.date);
           await getDateAttendance(props.setDateAttendanceNames, props.date, userAccountId);
           handlePlaceDeleteAlertClose();
-          getPlaces(props.setDatePlaces, props.date);
         }}
         autoFocus>
           네
