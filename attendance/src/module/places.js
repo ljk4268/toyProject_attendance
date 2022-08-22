@@ -20,7 +20,7 @@ export async function postPlaces(date) {
   );
 }
 
-// 서버에 등록한 장소 가지고 오기 ( 22.08.02 - 03 )
+// 서버에 등록한 장소 가지고 오기 
 export async function getPlaces(setDatePlaces, _date) {
   const datePlaces = await axios.post(
     process.env.REACT_APP_API_ROOT + "/loc/list",

@@ -15,7 +15,6 @@ import {
   getDateAttendance,
   postAttendanceUpdate,
 } from "../module/user";
-import { changeEditMode } from "../redux/feature/editMode";
 import { changePopUpOn } from "../redux/feature/popUpOn";
 
 //mui라이브러리
@@ -36,8 +35,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 
 function AttendRegistration() {
-  const location = useLocation();
+
   // 팝업창에서 날짜 클릭하고 출석등록 누르면 전달받는 날짜.
+  const location = useLocation();
   const popUpDate = location.state.clickdate;
 
   const userInfo = useSelector((state) => {
@@ -52,9 +52,7 @@ function AttendRegistration() {
   const popUpOn = useSelector((state) => {
     return state.popUpOn;
   });
-  const attendCheck = useSelector((state) => {
-    return state.attendCheck;
-  });
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -68,27 +66,25 @@ function AttendRegistration() {
   const [locationId, setLocationId] = useState(null);
   const [attendanceId, setAttendanceId] = useState(null);
   const [mealStatus, setMealStatus] = useState(null);
-  const [editModeSelect, setEditModeSelect] = useState(false);
   const today = getToday();
   const [date, setDate] = useState(today);
+  const user = userInfo.nickname;
 
   let dayOfWeek = week[new Date(date).getDay()];
-  let user = userInfo.nickname;
 
   useEffect(() => {
     if (popUpOn) {
       setDate(popUpDate);
-      dayOfWeek = week[new Date(popUpOn).getDay()];
     }
+    console.log('언제실행되니?')
     getPlaces(setDatePlaces, date);
+
     if (editMode) {
-      setEditModeSelect(true);
       async function attanceUserData() {
         let attanceList = await getDateAttendance(null, date, userAccountId);
         let userData = attanceList.find(
           (lists) => lists.accountId == userAccountId.accountId
         );
-        console.log(userData);
         setLocationId(userData.locationId);
         setAttendanceId(userData.attendanceId);
         setMealAlignment(userData.mealStatus);
@@ -102,7 +98,11 @@ function AttendRegistration() {
     }
   }, [popUpOn, date]);
 
+
   // 함수
+  /**
+   * 서버에 해당날짜 출석등록 또는 출석 update를 요청하는 함수
+   */
   async function postAttendance() {
     // 수정모드일때
     if (editMode) {
@@ -147,6 +147,10 @@ function AttendRegistration() {
     }
   }
 
+  /**
+   * 모임장소 등록하는 Input태그 밑에 쓰여지는 input태그의 용도에 대한 설명
+   * @returns 변수 helperText에 담긴 내용을 리턴해준다.
+   */
   function MyFormHelperText() {
     const { focused } = useFormControl() || {};
 
@@ -157,6 +161,12 @@ function AttendRegistration() {
     return <FormHelperText>{helperText}</FormHelperText>;
   }
 
+  /**
+   * 모임장소 리스트의 value가 바뀌면서 value값으로 모임장소 선택이 고정되고 locationId도 바꿔준다. 
+   * 사용자가 모임장소를 아무것도 선택하지 않으면 locationId를 null로 바꿔 등록 혹은 수정할 때 알림창이 나오도록 한다. 
+   * @param event : 클릭된 요소를 찾기 위함.
+   * @param newAlignment : 클릭한 모임장소의 이름이 나옴.
+   */
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
 
@@ -167,8 +177,13 @@ function AttendRegistration() {
     }
   };
 
+  /**
+   * 식사여부의 value가 바뀌면서 value값으로 식사여부 선택이 고정되고 mealStatus도 바꿔준다. 
+   * * 사용자가 모임장소를 아무것도 선택하지 않으면 mealStatus를 null로 바꿔 등록 혹은 수정할 때 알림창이 나오도록 한다. 
+   * @param event : 클릭된 요소를 찾기 위함.
+   * @param newMealAlignment : 클릭한 식사여부의 이름이 나옴.
+   */
   const mealHandleAlignment = (event, newMealAlignment) => {
-    // 이벤트버블링 ! target과 currentTarget의 차이
     setMealAlignment(newMealAlignment);
 
     if (newMealAlignment != null) {
@@ -178,13 +193,15 @@ function AttendRegistration() {
     }
   };
 
+  /**
+   * 알림창이 켜져있는경우 해당 함수를 실행하면 알림창이 꺼진다.
+   */
   const handleClose = () => {
     setAlertOpen(false);
     setWarningWindow(false);
   };
 
   // const로 리팩토링 >> 태그를 변수화한거임.
-
   const showPlaces = (
     <div className="showPlaces">
       <ToggleButtonGroup
@@ -231,7 +248,6 @@ function AttendRegistration() {
       <ToggleButtonGroup
         orientation="vertical"
         value={mealAlignment}
-        // defaultValue=""
         color="primary"
         exclusive
         onChange={mealHandleAlignment}
@@ -300,7 +316,7 @@ function AttendRegistration() {
         },
       }}
     >
-      {editModeSelect == true ? (
+      {editMode == true ? (
         <ButtonGroup variant="outlined" aria-label="outlined button group">
           <Button sx={{ width: "150px" }} size="large" onClick={postAttendance}>
             출석수정하기
@@ -355,8 +371,9 @@ function AttendRegistration() {
       <NavbarTop />
       <MainLogo />
 
-      {editModeSelect == false ? (
+      {editMode == false ? (
         <div>
+          {/* editMode가 false 일 때 보여지는 UI */}
           <p className="userHi"> {user} 님, 출석등록을 하시겠습니까? </p>
 
           <div className="main-bottom">
