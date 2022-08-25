@@ -52,9 +52,12 @@ function MainPage() {
 
   let user = reduxState.user.nickname;
   let userAccountId = reduxState.userAccountId;
-  let editMode = reduxState.editMode;
 
   useEffect(() => {
+    /**
+     * 서버와 통신 후 session에 남아있는 사용자정보 유무에 따라 페이지가 다르게 이동된다.
+     * @returns 메인페이지 혹은 로그인페이지로 이동
+     */
     async function getUserInfo() {
       const session = await axios.post(
         process.env.REACT_APP_API_ROOT + "/session"
@@ -70,9 +73,8 @@ function MainPage() {
   }, []);
 
   // 오늘 날짜의 출석리스트 가져오기
-  // 모듈화 >> state변경함수를 파라미터로 주면서 성공함. 이게 되네?
   useEffect(() => {
-    getDateAttendance(setDateAttendanceNames, date, userAccountId);
+    getDateAttendance(setDateAttendanceNames, date );
     getPlaces(setDatePlaces, date);
   }, []);
 
@@ -81,6 +83,15 @@ function MainPage() {
   // 리액트의 생명주기가 끝났다고 생각되면 리덕스 state도 같이 초기화가 됨.
   useEffect(() => {
     let check = false;
+
+    if (dateAttendanceNames.length != 0) {
+      setNotificationMessage(false);
+    }
+
+    if (dateAttendanceNames == 0) {
+      setNotificationMessage(true);
+    }
+
     dateAttendanceNames.forEach(function (name) {
       if (name.accountId == userAccountId.accountId) {
         check = true;
@@ -100,27 +111,35 @@ function MainPage() {
   // 서버에서 빈배열을 받은거랑 내가 초기화 했을 때 빈배열인거랑 헷갈리지 않으려고
   // 1이라는 요소가 들어간 배열로 초기화를 해둠.
 
-  useEffect(() => {
-    if (dateAttendanceNames.length != 0) {
-      setNotificationMessage(false);
-    }
+  // useEffect(() => {
+  //   if (dateAttendanceNames.length != 0) {
+  //     setNotificationMessage(false);
+  //   }
 
-    if (dateAttendanceNames == 0) {
-      setNotificationMessage(true);
-    }
-  }, [dateAttendanceNames]);
+  //   if (dateAttendanceNames == 0) {
+  //     setNotificationMessage(true);
+  //   }
+  // }, [dateAttendanceNames]);
 
   // mui 함수들
+  /**
+   * 등록된장소의 해당 토글버튼을 누르면 해당장소의 open 값이 변경되면서 모임장소에 출석등록한 사람들의 리스트가 보이고 안보이고가 결정된다.
+   * @param  i 어떤 장소가 클릭되었는지 확인하기 위함 
+   */
   const handleClick = (i) => {
     let newPlaces = [...datePlaces];
     newPlaces[i].open = !newPlaces[i].open;
     setDatePlaces(newPlaces);
   };
 
+  /**
+   * 등록된 장소를 삭제하려는 경우 알림메세지가 나오도록 만들어주는 함수.
+   */
   const handlePlaceDeleteAlert = () => {
     setPlaceDeleteOpen(true);
   };
 
+  
   let AttendNameList = [];
 
   dateAttendanceNames.map((name, i) => {

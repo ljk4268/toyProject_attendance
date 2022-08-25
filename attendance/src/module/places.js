@@ -21,6 +21,11 @@ export async function postPlaces(date) {
 }
 
 // 서버에 등록한 장소 가지고 오기 
+/**
+ * 해당 날짜에 등록된 모임장소를 서버에서 받아와 state변경함수로 모임장소 리스트 변경해준다.
+ * @param setDatePlaces : 해당날짜에 등록된 모임장소 변경함수
+ * @param _date : 날짜
+ */
 export async function getPlaces(setDatePlaces, _date) {
   const datePlaces = await axios.post(
     process.env.REACT_APP_API_ROOT + "/loc/list",
@@ -33,7 +38,6 @@ export async function getPlaces(setDatePlaces, _date) {
 
   let listArray = [];
 
-  // locationId , locationName , official
   locationLists.forEach((locationList) => {
     listArray.push({
       locationId: locationList.locationId,

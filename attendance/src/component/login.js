@@ -15,7 +15,6 @@ function Login(){
     async function getUserInfo(){
       
       const session = await axios.post(process.env.REACT_APP_API_ROOT + '/session')
-      console.log(session)
       
       if(session.data.success === 'ok') {
         return navigate('/main')

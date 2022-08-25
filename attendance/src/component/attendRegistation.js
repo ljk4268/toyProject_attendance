@@ -76,7 +76,7 @@ function AttendRegistration() {
     if (popUpOn) {
       setDate(popUpDate);
     }
-    console.log('언제실행되니?')
+    
     getPlaces(setDatePlaces, date);
 
     if (editMode) {
