@@ -1,17 +1,27 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import Popup from "./popUp";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+
 import { changObj } from "../redux/feature/attendList";
 import { changeMonth } from "../redux/feature/month";
 import { changeCalendarClick } from "../redux/feature/calendarClick";
+import { changeAttendCheck } from "../redux/feature/attendCheck";
+import { changeEditMode } from "../redux/feature/editMode";
+
 import { saveAttendList } from "../module/attendList";
+import { getToday } from "../module/getToday";
 import NavbarTop from "../component/navbarTop";
 import NavbarBottom from "../component/navbarBottom";
+import Popup from "./popUp";
+
+
 
 function CalendarPage() {
+  const todayDate = getToday();
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState("");
   const [month, setMonth] = useState("");
@@ -24,6 +34,7 @@ function CalendarPage() {
 
 
   let $attListObj = reduxState.$attListObj;
+  let userAccountId = reduxState.userAccountId;
   let $eventAttList = [];
   let dispatch = useDispatch();
 
@@ -34,8 +45,34 @@ function CalendarPage() {
     $eventAttList.push(tempObj);
   }
 
-  useEffect(() => {
+  useEffect(()=>{
+    async function checkAttendance(){
+      let check = false;
 
+      const lists = await axios.post(process.env.REACT_APP_API_ROOT + '/atndn/list-on-date',{
+        attendanceDate: todayDate
+      });
+      let todayAttendanceLists = lists.data.attendanceList;
+
+      todayAttendanceLists.forEach(function (name) {
+        if (name.accountId == userAccountId.accountId) {
+          check = true;
+        }
+      });
+
+      if (check) {
+        dispatch(changeAttendCheck(true));
+        dispatch(changeEditMode(true));
+      } else {
+        dispatch(changeAttendCheck(false));
+        dispatch(changeEditMode(false));
+      }
+
+    }
+    checkAttendance()
+  },[])
+
+  useEffect(() => {
     async function fetchData() {
       if( month != ''){
         let attListArray = await saveAttendList(year, month);
@@ -51,6 +88,7 @@ function CalendarPage() {
 
     dispatch(changeMonth({ year: year, month: month }));
   }, [month,open]);
+
 
   const handleDateClick = (e) => {
     dispatch(changeCalendarClick(true))

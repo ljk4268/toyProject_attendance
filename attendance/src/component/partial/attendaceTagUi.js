@@ -22,7 +22,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 
 //함수
 import { postAttendanceCancel } from '../../module/user';
-import { changeEditMode } from '../../redux/feature/editMode'
 import { changePopUpOn } from '../../redux/feature/popUpOn'
 import { changeCalendarClick } from '../../redux/feature/calendarClick'
 import { useDispatch, useSelector } from 'react-redux';

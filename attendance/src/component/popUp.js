@@ -62,26 +62,8 @@ function Popup(props) {
     if ( date != ''){
     getPlaces(setDatePlaces, date)
     getDateAttendance(setDateAttendanceNames, date, userAccountId)
-  }
-  },[props.open])
-
-  useEffect(() => {
-    let check = false;
-    dateAttendanceNames.forEach(function(name){
-      if (name.accountId == userAccountId.accountId){
-        check = true;
-      }
-    })
-
-    if ( check ){
-      dispatch(changeAttendCheck(true));
-      dispatch(changeEditMode(true));
-    } else {
-      dispatch(changeAttendCheck(false));
-      dispatch(changeEditMode(false));
     }
-
-  },[dateAttendanceNames])
+  },[props.open])
 
 
   let dataAttendanceFunction = () => {

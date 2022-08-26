@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +17,8 @@ import {
   postAttendanceUpdate,
 } from "../module/user";
 import { changePopUpOn } from "../redux/feature/popUpOn";
+import { changeAttendCheck } from "../redux/feature/attendCheck";
+import { changeEditMode } from "../redux/feature/editMode";
 
 //mui라이브러리
 import * as React from "react";
@@ -52,6 +55,9 @@ function AttendRegistration() {
   const popUpOn = useSelector((state) => {
     return state.popUpOn;
   });
+  const attendCheck = useSelector((state) => {
+    return state.attendCheck;
+  });
 
 
   const navigate = useNavigate();
@@ -71,6 +77,7 @@ function AttendRegistration() {
   const user = userInfo.nickname;
 
   let dayOfWeek = week[new Date(date).getDay()];
+
 
   useEffect(() => {
     if (popUpOn) {

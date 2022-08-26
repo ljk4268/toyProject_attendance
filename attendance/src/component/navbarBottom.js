@@ -42,19 +42,6 @@ function NavbarBottom() {
     right: 0,
     margin: '0 auto',
   });
-
-  if ( attendCheck ) {
-    plusButton = null;
-  } else {
-    plusButton = <StyledFab color="inherit" aria-label="add" 
-    style={{ backgroundColor: '#f8eb76', color: '#fbfbf9' }}
-    onClick={()=>{
-      dispatch(changePopUpOn(false));
-      navigate('/registration', {state: {clickdate: _date}}) }}
-  >
-    <AddIcon sx={{ fontSize: 38 }}/>
-  </StyledFab>
-  }
   
   
 
@@ -67,7 +54,14 @@ function NavbarBottom() {
               <HomeOutlinedIcon sx={{ fontSize: 30, color: grey[600] }}/>
             </IconButton>
 
-            {plusButton}
+            <StyledFab color="inherit" aria-label="add" 
+              style={{ backgroundColor: '#f8eb76', color: '#fbfbf9' }}
+              onClick={()=>{
+                dispatch(changePopUpOn(false));
+                navigate('/registration', {state: {clickdate: _date}}) }}
+            >
+              <AddIcon sx={{ fontSize: 38 }}/>
+            </StyledFab>
 
             <Box sx={{ flexGrow: 0.4 }} />
 
