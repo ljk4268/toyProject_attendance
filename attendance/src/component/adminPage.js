@@ -46,7 +46,7 @@ function AdiminPage(){
       <Typography className="month-arrow">8월</Typography>
       <ArrowForwardIosIcon/>
     </div>
-    <div style={{ height: 450, width: '90%', margin: '0 auto' }}>
+    <div style={{ height: 400, width: '90%', margin: '0 auto', paddingBottom: '20%'}}>
       <DataGrid
         rows={rows}
         columns={columns}
