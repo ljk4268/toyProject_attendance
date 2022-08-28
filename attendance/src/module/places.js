@@ -33,7 +33,6 @@ export async function getPlaces(setDatePlaces, _date) {
       attendanceDate: _date,
     }
   );
-
   const locationLists = datePlaces.data.locationList;
 
   let listArray = [];
@@ -49,6 +48,7 @@ export async function getPlaces(setDatePlaces, _date) {
   });
 
   setDatePlaces(listArray);
+  
 }
 
 // 서버에 등록된 장소 삭제하기

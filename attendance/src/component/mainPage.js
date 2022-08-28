@@ -189,6 +189,7 @@ function MainPage() {
                     cancelAlertOpen={cancelAlertOpen}
                     setCancelAlertOpen={setCancelAlertOpen}
                     setDateAttendanceNames={setDateAttendanceNames}
+                    setDatePlaces={setDatePlaces}
                     date={date}
                     j={j}
                     key={j}

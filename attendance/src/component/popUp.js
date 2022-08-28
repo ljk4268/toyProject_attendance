@@ -88,7 +88,6 @@ function Popup(props) {
       AttendNameList.push(<AttendanceTagUi 
         dateAttendanceNames={name} 
         userAccountId={userAccountId}
-        dataAttendanceFunction={dataAttendanceFunction}
         cancelAlertOpen={cancelAlertOpen}
         setCancelAlertOpen={setCancelAlertOpen}
         setDateAttendanceNames={setDateAttendanceNames}

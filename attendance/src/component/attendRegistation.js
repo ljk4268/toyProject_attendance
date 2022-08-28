@@ -348,7 +348,7 @@ function AttendRegistration() {
           <Button
             sx={{ width: "150px" }}
             size="large"
-            onClick={() => {
+            onClick={() => {  
               postAttendance();
             }}
           >

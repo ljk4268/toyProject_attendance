@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -14,11 +16,14 @@ import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
 import Fade from '@mui/material/Fade';
 import { blue } from "@mui/material/colors";
+import { useNavigate } from 'react-router-dom';
 
 
 
 
 function NavbarTop() {
+
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [sideBarAnchorEl, setSideBarAnchorEl] = React.useState(null);
@@ -80,13 +85,15 @@ function NavbarTop() {
       <Divider />
       <MenuItem>
         <ListItemIcon>
-          <Logout fontSize="small" sx={{ color: blue[400] }}/>
+          <NotificationsActiveIcon fontSize="small" sx={{ color: blue[400] }}/>
         </ListItemIcon>
         공지사항
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={() => {
+        navigate("/adminpage");
+      }}>
         <ListItemIcon>
-          <Logout fontSize="small" sx={{ color: blue[400] }}/>
+          <BadgeOutlinedIcon fontSize="small" sx={{ color: blue[400] }}/>
         </ListItemIcon>
         관리자페이지
       </MenuItem>
@@ -130,19 +137,6 @@ const sideBarMenu = <Menu
       {/* 상단 navbar */}
         <AppBar  position="fixed" className='navbar'>
           <Toolbar style={{ backgroundColor: "#fbfbf9", color: "#000" }} >
-            {/* <IconButton 
-              edge="start" 
-              color="inherit" 
-              aria-label="menu" 
-              sx={{ mr: 2 }}
-              id="fade-button"
-              aria-controls={sideBarOpen ? 'fade-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={sideBarOpen ? 'true' : undefined}
-              onClick={sideBarHandleClick}
-            >
-              <MenuIcon />
-            </IconButton> */}
             <Typography color="inherit" align="center" component="div" sx={{ flexGrow: 1, fontSize: '17px', fontWeight: '500' }} >
             시작이 반
             </Typography>

@@ -67,7 +67,6 @@ export async function postDateAttendance(_seletedDate, _locationId, _mealStatus)
 
 // 사용자가 delete버튼 누르면 출석 취소하기. 
 export async function postAttendanceCancel(_attendanceId){
-
   const cancelAttendance = await axios.post(process.env.REACT_APP_API_ROOT+ "/atndn/cancel", {
     attendanceId: _attendanceId
   });

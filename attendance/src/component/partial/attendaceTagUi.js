@@ -70,6 +70,7 @@ export default function AttendanceTagUi(props) {
   };
 
   const handleClose = () => {
+    console.log('dfdfdf')
     props.setCancelAlertOpen(false);
   };
 
@@ -125,8 +126,8 @@ export default function AttendanceTagUi(props) {
         onClick={async()=>{
           await postAttendanceCancel(attendanceId);
           await getPlaces(props.setDatePlaces, props.date);
-          await getDateAttendance(props.setDateAttendanceNames, props.date, userAccountId);
-          handleClose()
+          await getDateAttendance(props.setDateAttendanceNames, props.date);
+          handleClose();
         }}
         autoFocus>
           네

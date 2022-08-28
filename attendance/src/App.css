@@ -220,6 +220,15 @@ a {
   box-sizing: border-box;
 }
 
+.adminArrow{
+  padding-bottom: 5%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 5vw;
+
+}
+
+
 .main-bottom {
   /* background-color: palegoldenrod; */
   margin: 0 5vw 0vw 5vw;
