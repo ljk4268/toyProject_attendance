@@ -8,7 +8,6 @@ import NavbarTop from "../component/navbarTop";
 import MainLogo from "../component/mianLogo";
 import PlaceInput from "../component/placeInput";
 import { getPlaces } from "../module/places";
-import { getToday } from "../module/getToday";
 
 // 함수
 import {
@@ -17,8 +16,6 @@ import {
   postAttendanceUpdate,
 } from "../module/user";
 import { changePopUpOn } from "../redux/feature/popUpOn";
-import { changeAttendCheck } from "../redux/feature/attendCheck";
-import { changeEditMode } from "../redux/feature/editMode";
 
 //mui라이브러리
 import * as React from "react";
@@ -46,19 +43,12 @@ function AttendRegistration() {
   const userInfo = useSelector((state) => {
     return state.user;
   });
-  const editMode = useSelector((state) => {
-    return state.editMode;
-  });
   const userAccountId = useSelector((state) => {
     return state.userAccountId;
   });
   const popUpOn = useSelector((state) => {
     return state.popUpOn;
   });
-  const attendCheck = useSelector((state) => {
-    return state.attendCheck;
-  });
-
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -72,20 +62,44 @@ function AttendRegistration() {
   const [locationId, setLocationId] = useState(null);
   const [attendanceId, setAttendanceId] = useState(null);
   const [mealStatus, setMealStatus] = useState(null);
-  const today = getToday();
-  const [date, setDate] = useState(today);
+  const [date, setDate] = useState(popUpDate);
+  const [editMode, setEditMode] = useState(false);
   const user = userInfo.nickname;
 
   let dayOfWeek = week[new Date(date).getDay()];
 
-
   useEffect(() => {
-    if (popUpOn) {
-      setDate(popUpDate);
-    }
     
     getPlaces(setDatePlaces, date);
 
+    async function checkAttendance(){
+      let check = false;
+
+      const lists = await axios.post(process.env.REACT_APP_API_ROOT + '/atndn/list-on-date',{
+        attendanceDate: date
+      });
+
+      let todayAttendanceLists = lists.data.attendanceList;
+
+      todayAttendanceLists.forEach(function (name) {
+        if (name.accountId == userAccountId.accountId) {
+          check = true;
+        }
+      });
+
+      if (check) {
+        setEditMode(true);
+      } else {
+        setEditMode(false);
+      }
+
+    }
+    checkAttendance()
+
+  }, [popUpOn, date]);
+
+
+  useEffect(()=>{
     if (editMode) {
       async function attanceUserData() {
         let attanceList = await getDateAttendance(null, date, userAccountId);
@@ -103,7 +117,7 @@ function AttendRegistration() {
       }
       attanceUserData();
     }
-  }, [popUpOn, date]);
+  },[editMode])
 
 
   // 함수

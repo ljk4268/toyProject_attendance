@@ -1,3 +1,4 @@
+import axios from "axios";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -8,7 +9,7 @@ import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
 import { blue } from '@mui/material/colors';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
+
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -25,10 +26,8 @@ import { getPlaces, deletePlace } from '../module/places'
 import { getDateAttendance } from '../module/user'
 import AttendanceTagUi from './partial/attendaceTagUi';
 import { useNavigate } from "react-router-dom";
-import { changeEditMode } from '../redux/feature/editMode'
 import { changePopUpOn } from '../redux/feature/popUpOn'
 import { changeCalendarClick } from '../redux/feature/calendarClick'
-import { changeAttendCheck } from '../redux/feature/attendCheck'
 
 
 
@@ -57,6 +56,7 @@ function Popup(props) {
   const [deleteLocatinId, setDeleteLocatinId] = useState(0);
 
 
+ 
   // 해당날짜 출석인원 및 모임장소 가지고오기
   useEffect(()=>{
     if ( date != ''){

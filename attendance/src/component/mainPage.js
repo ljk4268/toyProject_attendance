@@ -12,8 +12,6 @@ import { getToday } from "../module/getToday";
 import { getDateAttendance } from "../module/user";
 import { userAcId } from "../redux/feature/userAccountId";
 import AttendanceTagUi from "./partial/attendaceTagUi";
-import { changeAttendCheck } from "../redux/feature/attendCheck";
-import { changeEditMode } from "../redux/feature/editMode";
 import { userCountUpdate } from "../redux/feature/userAttendanceCount";
 
 //mui
@@ -83,7 +81,6 @@ function MainPage() {
   // 하지만 서버에 있는 자신을 포함한 데이터가 존재하면 언제나 변경을 수행할 수 있음.
   // 리액트의 생명주기가 끝났다고 생각되면 리덕스 state도 같이 초기화가 됨.
   useEffect(() => {
-    let check = false;
 
     if (dateAttendanceNames.length != 0) {
       setNotificationMessage(false);
@@ -91,20 +88,6 @@ function MainPage() {
 
     if (dateAttendanceNames == 0) {
       setNotificationMessage(true);
-    }
-
-    dateAttendanceNames.forEach(function (name) {
-      if (name.accountId == userAccountId.accountId) {
-        check = true;
-      }
-    });
-
-    if (check) {
-      dispatch(changeAttendCheck(true));
-      dispatch(changeEditMode(true));
-    } else {
-      dispatch(changeAttendCheck(false));
-      dispatch(changeEditMode(false));
     }
 
     async function getUserAttendanceCount(){

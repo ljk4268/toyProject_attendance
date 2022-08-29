@@ -6,10 +6,8 @@ import MonthReducer from './feature/month';
 import AttendListReducer from './feature/attendList';
 import AttendanceNamesReducer from './feature/attendanceNames';
 import UserAccountIdReducer from './feature/userAccountId';
-import EditModedReducer from './feature/editMode';
 import PopUpOnReducer from './feature/popUpOn';
 import CalendarClickReducer from './feature/calendarClick';
-import AttendCheckReducer from './feature/attendCheck';
 import UserAttendanceCountReducer from './feature/userAttendanceCount';
 
 import storage from 'redux-persist/lib/storage';
@@ -29,10 +27,8 @@ const reducer = combineReducers({
   $attListObj: AttendListReducer,
   $attNames: AttendanceNamesReducer,
   userAccountId:UserAccountIdReducer,
-  editMode:EditModedReducer,
   popUpOn:PopUpOnReducer,
   calendarClick:CalendarClickReducer,
-  attendCheck:AttendCheckReducer,
   userAttendanceCount:UserAttendanceCountReducer
 });
 

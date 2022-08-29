@@ -9,20 +9,19 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { changObj } from "../redux/feature/attendList";
 import { changeMonth } from "../redux/feature/month";
 import { changeCalendarClick } from "../redux/feature/calendarClick";
-import { changeAttendCheck } from "../redux/feature/attendCheck";
-import { changeEditMode } from "../redux/feature/editMode";
 import { userCountUpdate } from "../redux/feature/userAttendanceCount";
+import { userAcId } from "../redux/feature/userAccountId";
+
 
 import { saveAttendList } from "../module/attendList";
-import { getToday } from "../module/getToday";
 import NavbarTop from "../component/navbarTop";
 import NavbarBottom from "../component/navbarBottom";
 import Popup from "./popUp";
+import { useNavigate } from "react-router-dom";
 
 
 
 function CalendarPage() {
-  const todayDate = getToday();
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState("");
   const [month, setMonth] = useState("");
@@ -35,9 +34,8 @@ function CalendarPage() {
 
 
   const $attListObj = reduxState.$attListObj;
-  const userAccountId = reduxState.userAccountId;
-  const userAttendanceCount = reduxState.userAttendanceCount;
   let $eventAttList = [];
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   for (var key in $attListObj) {
@@ -46,6 +44,27 @@ function CalendarPage() {
     tempObj["start"] = key;
     $eventAttList.push(tempObj);
   }
+
+
+  useEffect(() => {
+    /**
+     * 서버와 통신 후 session에 남아있는 사용자정보 유무에 따라 페이지가 다르게 이동된다.
+     * @returns 메인페이지 혹은 로그인페이지로 이동
+     */
+    async function getUserInfo() {
+      const session = await axios.post(
+        process.env.REACT_APP_API_ROOT + "/session"
+      );
+
+      if (session.data.success === "ok") {
+        dispatch(userAcId(session.data.attendanceUser.accountId));
+        return navigate("/calendar");
+      }
+      return navigate("/");
+    }
+    getUserInfo();
+  }, []);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -76,31 +95,6 @@ function CalendarPage() {
 
     }
     getUserAttendanceCount()
-
-    async function checkAttendance(){
-      let check = false;
-
-      const lists = await axios.post(process.env.REACT_APP_API_ROOT + '/atndn/list-on-date',{
-        attendanceDate: todayDate
-      });
-      let todayAttendanceLists = lists.data.attendanceList;
-
-      todayAttendanceLists.forEach(function (name) {
-        if (name.accountId == userAccountId.accountId) {
-          check = true;
-        }
-      });
-
-      if (check) {
-        dispatch(changeAttendCheck(true));
-        dispatch(changeEditMode(true));
-      } else {
-        dispatch(changeAttendCheck(false));
-        dispatch(changeEditMode(false));
-      }
-
-    }
-    checkAttendance()
 
   }, [month,open]);
 
