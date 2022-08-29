@@ -70,7 +70,6 @@ export default function AttendanceTagUi(props) {
   };
 
   const handleClose = () => {
-    console.log('dfdfdf')
     props.setCancelAlertOpen(false);
   };
 

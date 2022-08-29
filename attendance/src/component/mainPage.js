@@ -14,6 +14,7 @@ import { userAcId } from "../redux/feature/userAccountId";
 import AttendanceTagUi from "./partial/attendaceTagUi";
 import { changeAttendCheck } from "../redux/feature/attendCheck";
 import { changeEditMode } from "../redux/feature/editMode";
+import { userCountUpdate } from "../redux/feature/userAttendanceCount";
 
 //mui
 import List from "@mui/material/List";
@@ -105,6 +106,21 @@ function MainPage() {
       dispatch(changeAttendCheck(false));
       dispatch(changeEditMode(false));
     }
+
+    async function getUserAttendanceCount(){
+      const session = await axios.get(
+        process.env.REACT_APP_API_ROOT + "/atndn/my-attendance-count"
+      );
+
+      if(session.data.success === "ok"){
+        dispatch(userCountUpdate(session.data.myAttendance))
+      } else {
+        dispatch(userCountUpdate('error'))
+      }
+
+    }
+    getUserAttendanceCount()
+    
   }, [dateAttendanceNames]);
 
   // 출석 등록한 사람이 없을 때 서버에서 빈배열을 보내줌.

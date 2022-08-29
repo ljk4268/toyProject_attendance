@@ -16,7 +16,7 @@ import Typography from '@mui/material/Typography';
 function AdiminPage(){
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 30 },
+    // { field: 'id', headerName: 'ID', width: 30 },
     { field: 'name', headerName: '이름', width: 150 },
     { field: 'attendanceCount', headerName: '출석횟수', width: 150 }
   ];

@@ -11,6 +11,7 @@ import { changeMonth } from "../redux/feature/month";
 import { changeCalendarClick } from "../redux/feature/calendarClick";
 import { changeAttendCheck } from "../redux/feature/attendCheck";
 import { changeEditMode } from "../redux/feature/editMode";
+import { userCountUpdate } from "../redux/feature/userAttendanceCount";
 
 import { saveAttendList } from "../module/attendList";
 import { getToday } from "../module/getToday";
@@ -28,15 +29,16 @@ function CalendarPage() {
   const [year, setYear] = useState("");
 
   
-  let reduxState = useSelector((state) => {
+  const reduxState = useSelector((state) => {
     return state;
   });
 
 
-  let $attListObj = reduxState.$attListObj;
-  let userAccountId = reduxState.userAccountId;
+  const $attListObj = reduxState.$attListObj;
+  const userAccountId = reduxState.userAccountId;
+  const userAttendanceCount = reduxState.userAttendanceCount;
   let $eventAttList = [];
-  let dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   for (var key in $attListObj) {
     let tempObj = {};
@@ -45,7 +47,36 @@ function CalendarPage() {
     $eventAttList.push(tempObj);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
+    async function fetchData() {
+      if( month != ''){
+        let attListArray = await saveAttendList(year, month);
+        if (Object.keys(attListArray).length !== 0){
+          dispatch(changObj(attListArray));
+        }
+      }
+    }
+    
+    if( open == false){
+      fetchData();
+    }
+
+    dispatch(changeMonth({ year: year, month: month }));
+
+    async function getUserAttendanceCount(){
+      const session = await axios.get(
+        process.env.REACT_APP_API_ROOT + "/atndn/my-attendance-count"
+      );
+
+      if(session.data.success === "ok"){
+        dispatch(userCountUpdate(session.data.myAttendance))
+      } else {
+        dispatch(userCountUpdate('error'))
+      }
+
+    }
+    getUserAttendanceCount()
+
     async function checkAttendance(){
       let check = false;
 
@@ -70,23 +101,7 @@ function CalendarPage() {
 
     }
     checkAttendance()
-  },[])
 
-  useEffect(() => {
-    async function fetchData() {
-      if( month != ''){
-        let attListArray = await saveAttendList(year, month);
-        if (Object.keys(attListArray).length !== 0){
-          dispatch(changObj(attListArray));
-        }
-      }
-    }
-    
-    if( open == false){
-      fetchData();
-    }
-
-    dispatch(changeMonth({ year: year, month: month }));
   }, [month,open]);
 
 

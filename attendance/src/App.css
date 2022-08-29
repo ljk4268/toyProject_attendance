@@ -5,6 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Dongle&family=Playfair+Display&family=Source+Sans+Pro&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dongle&family=Fuzzy+Bubbles&family=Playfair+Display&family=Source+Sans+Pro&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dongle&family=Fuzzy+Bubbles&family=Grape+Nuts&family=Playfair+Display&family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@800&display=swap');
 
 
 /* #root{
@@ -130,6 +131,11 @@ body {
 
 #logo-main2{
   display: inline-block;
+}
+
+.in-main {
+  font-family: 'Nanum Myeongjo', serif !important;
+  font-size: 10vw !important;
 }
 
 .login-page {
@@ -327,9 +333,13 @@ a {
     max-height: 80px;
   }
 
+  .in-main {
+    font-family: 'Nanum Myeongjo', serif !important;
+    font-size: 8vw !important;
+    font-weight: 800 !important;
+  }
 
   .main-top{
-    /* background-color: bisque; */
     height: 60%;
     padding: 5vw 0 62px 5vw;
   }

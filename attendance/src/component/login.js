@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 function Login(){
   
-  const serverUrl = 'http://3.36.247.2'
-  // const serverUrl = 'http://localhost:3000'
+  // const serverUrl = 'http://3.36.247.2'
+  const serverUrl = 'http://localhost:3000'
 
   let navigate = useNavigate();
 
@@ -29,7 +29,16 @@ function Login(){
     <>
       <div className="login-page">
           <div className="login-logo">
-            <MainLogo/>
+            <div className="main">
+              <div id="main-logos"className="main-top">
+                <div>
+                  <div id="logo-main" className="greeting in-main">
+                  Well Begun is
+                  </div>
+                  <div id="logo-main2" className="greeting2 in-main">Half Done !</div>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="login-line">
             간편 로그인하기

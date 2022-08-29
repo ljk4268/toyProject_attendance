@@ -10,6 +10,7 @@ import EditModedReducer from './feature/editMode';
 import PopUpOnReducer from './feature/popUpOn';
 import CalendarClickReducer from './feature/calendarClick';
 import AttendCheckReducer from './feature/attendCheck';
+import UserAttendanceCountReducer from './feature/userAttendanceCount';
 
 import storage from 'redux-persist/lib/storage';
 import {persistReducer} from 'redux-persist';
@@ -31,7 +32,8 @@ const reducer = combineReducers({
   editMode:EditModedReducer,
   popUpOn:PopUpOnReducer,
   calendarClick:CalendarClickReducer,
-  attendCheck:AttendCheckReducer
+  attendCheck:AttendCheckReducer,
+  userAttendanceCount:UserAttendanceCountReducer
 });
 
 

@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
@@ -17,6 +16,7 @@ import Logout from '@mui/icons-material/Logout';
 import Fade from '@mui/material/Fade';
 import { blue } from "@mui/material/colors";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 
@@ -24,6 +24,12 @@ import { useNavigate } from 'react-router-dom';
 function NavbarTop() {
 
   const navigate = useNavigate();
+  const reduxState = useSelector((state) => {
+    return state;
+  });
+
+  const user = reduxState.user.nickname;
+  const userAttendanceCount = reduxState.userAttendanceCount;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [sideBarAnchorEl, setSideBarAnchorEl] = React.useState(null);
@@ -80,7 +86,7 @@ function NavbarTop() {
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
     >
       <MenuItem>
-        <Typography variant="inherit">이자경님, 이번달 출석횟수는 1번 입니다.</Typography>
+        <Typography variant="inherit">{user}님, 이번달 출석횟수는 {userAttendanceCount}번 입니다.</Typography>
       </MenuItem>
       <Divider />
       <MenuItem>
