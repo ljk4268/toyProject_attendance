@@ -17,6 +17,7 @@ import Fade from '@mui/material/Fade';
 import { blue } from "@mui/material/colors";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { signOut } from '../module/user'
 
 
 
@@ -103,7 +104,7 @@ function NavbarTop() {
         </ListItemIcon>
         관리자페이지
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={()=>{signOut(navigate)}}>
         <ListItemIcon>
           <Logout fontSize="small" sx={{ color: blue[400] }}/>
         </ListItemIcon>

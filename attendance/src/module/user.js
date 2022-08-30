@@ -1,9 +1,5 @@
 import axios from "axios";
-import { getToday } from './getToday'
 
-
-
-let todayDate = getToday();
 
 // 오늘 날짜의 출석리스트 가져오기 
 /**
@@ -88,5 +84,17 @@ export async function postAttendanceUpdate(_attendanceDate,_locationId,_mealStat
   });
 
 return updateAtndn
+
+}
+
+/**
+ * 로그아웃 버튼을 누르면 서버와 통신 후 로그아웃 시켜주면서 로그인페이지로 이동하게 된다.
+ * @param navigate : useNavigate()함수를 전달받는다.
+ */
+export async function signOut(navigate){
+
+  const sign_out = await axios.post(process.env.REACT_APP_API_ROOT + "/sign-out")
+
+    navigate('/')
 
 }

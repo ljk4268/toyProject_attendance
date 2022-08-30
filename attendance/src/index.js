@@ -15,7 +15,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store} basename={process.env.PUBLIC_URL}>
     <PersistGate loading={null} persistor={persistor}>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <BrowserRouter>
           <App />
       </BrowserRouter>
     </PersistGate>
