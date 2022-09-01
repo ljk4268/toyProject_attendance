@@ -1,6 +1,8 @@
 import NavbarTop from "../component/navbarTop";
 import NavbarBottom from "../component/navbarBottom";
 import MainLogo from "../component/mianLogo";
+import {getToday} from ".././module/getToday";
+import {attendanceStatus} from ".././module/user";
 
 // mui라이브러리
 import * as React from 'react';
@@ -8,47 +10,86 @@ import { DataGrid } from '@mui/x-data-grid';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Typography from '@mui/material/Typography';
-
-
-
+import { useState } from "react";
+import { useEffect } from "react";
+import { dateFnsLocalizer } from "react-big-calendar";
 
 
 function AdiminPage(){
 
-  const columns = [
-    // { field: 'id', headerName: 'ID', width: 30 },
-    { field: 'name', headerName: '이름', width: 150 },
-    { field: 'attendanceCount', headerName: '출석횟수', width: 150 }
-  ];
+  const today = getToday().split("-");
+  const [todayDate, SetTodayDate] = useState();
+  const [year, SetYear] = useState();
+  const [month, SetMonth] = useState();
+  const [statusRows, SetStatusRows] = useState([]);
+  let date = new Date();
 
-  const rows = [
-    { id: 1, attendanceCount: '1', name: '김익형'},
-    { id: 2, attendanceCount: '1', name: '오창현'},
-    { id: 3, attendanceCount: '1', name: '이자경'},
-    { id: 4, attendanceCount: '1', name: '김승훈'},
-    { id: 5, attendanceCount: '1', name: '정예성'},
-    { id: 6, attendanceCount: '1', name: '윤지혜'},
-    { id: 7, attendanceCount: '1', name: '윤경택'},
-    { id: 8, attendanceCount: '1', name: '류선길'},
-    { id: 9, attendanceCount: '1', name: '장효진'},
-    { id: 10, attendanceCount: '1', name: '모지혜'}
+  function oneMonthCalculation(num){
+  
+    let sel_month = num; 
+    todayDate.setMonth(todayDate.getMonth() + sel_month ); 
+    SetTodayDate(todayDate)
+    
+    let func_year   = todayDate.getFullYear();
+    let func_month   = ('0' + (todayDate.getMonth() +  1 )).slice(-2);
+
+    SetYear(func_year);
+    SetMonth(func_month);
+
+  }
+
+
+  useEffect(()=>{
+    SetTodayDate(date)
+    SetYear(today[0]);
+    SetMonth(today[1]);
+  },[])
+
+  useEffect(()=>{
+    async function attendStatusMonth() {
+      let attStatus = await attendanceStatus(year, month);
+      let attStatusArr = attStatus.data.attendanceList;
+      let newStatusRows = [];
+
+      attStatusArr.map( key =>{
+        let attStatusObj = {};
+        attStatusObj.id = key.accountId;
+        attStatusObj.nickname = key.nickname;
+        attStatusObj.regDate = key.regDate;
+        attStatusObj.attendanceAccount = key.attendanceAccount;
+        newStatusRows.push(attStatusObj);
+      })
+
+      SetStatusRows(newStatusRows);
+
+    }
+    attendStatusMonth();
+  },[year, month])
+
+
+
+  const columns = [
+    { field: 'nickname', headerName: '이름', width: 100 },
+    { field: 'regDate', headerName: '가입날짜', type: 'number', width: 120 },
+    { field: 'attendanceAccount', headerName: '출석횟수', type: 'number',width: 120 },
     
   ];
+
 
   return(
     <>
     <NavbarTop/>
     <NavbarBottom/>
     <MainLogo/>
-    <p className="userHi"> 관리자페이지 뚜딱뚜딱 만드는 중!</p>
+    <p className="userHi"> 관리자페이지 update.2022.09.01</p>
     <div className="adminArrow">
-      <ArrowBackIosIcon/>
-      <Typography className="month-arrow">8월</Typography>
-      <ArrowForwardIosIcon/>
+      <ArrowBackIosIcon onClick={()=>{oneMonthCalculation(-1)}}/>
+      <Typography className="month-arrow">{month}월</Typography>
+      <ArrowForwardIosIcon onClick={()=>{oneMonthCalculation(+1)}}/>
     </div>
     <div style={{ height: 400, width: '90%', margin: '0 auto', paddingBottom: '20%'}}>
       <DataGrid
-        rows={rows}
+        rows={statusRows}
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}

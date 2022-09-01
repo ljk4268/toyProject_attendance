@@ -98,3 +98,15 @@ export async function signOut(navigate){
     navigate('/')
 
 }
+
+
+export async function attendanceStatus(_year, _month){
+
+  const attStatus = await axios.post(process.env.REACT_APP_API_ROOT + "/atndn/attendance-status-on-month", {
+    month: _month,
+    year: _year
+  });
+
+  return attStatus;
+
+}
