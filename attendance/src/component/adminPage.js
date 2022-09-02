@@ -17,12 +17,12 @@ import { dateFnsLocalizer } from "react-big-calendar";
 
 function AdiminPage(){
 
-  const today = getToday().split("-");
-  const [todayDate, SetTodayDate] = useState();
-  const [year, SetYear] = useState();
-  const [month, SetMonth] = useState();
-  const [statusRows, SetStatusRows] = useState([]);
   let date = new Date();
+  const today = getToday().split("-");
+  const [todayDate, SetTodayDate] = useState(date);
+  const [year, SetYear] = useState(today[0]);
+  const [month, SetMonth] = useState(today[1]);
+  const [statusRows, SetStatusRows] = useState([]);
 
   function oneMonthCalculation(num){
   
@@ -38,12 +38,6 @@ function AdiminPage(){
 
   }
 
-
-  useEffect(()=>{
-    SetTodayDate(date)
-    SetYear(today[0]);
-    SetMonth(today[1]);
-  },[])
 
   useEffect(()=>{
     async function attendStatusMonth() {
@@ -63,7 +57,7 @@ function AdiminPage(){
       SetStatusRows(newStatusRows);
 
     }
-    attendStatusMonth();
+      attendStatusMonth();
   },[year, month])
 
 

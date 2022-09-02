@@ -33,9 +33,12 @@ body {
 }
 
 
+/* fullcalendar  */
+
 .fc {
   margin: auto 2%;
 }
+
 .fc .fc-col-header-cell-cushion {
   display: block;
   padding: 3px 4px;
@@ -292,9 +295,6 @@ a {
 .css-1d6a3hl-MuiPaper-root-MuiAppBar-root {
   right: auto !important;
 }
-
-/* 관리자페이지 */
-
 
 @media screen and (min-width : 768px) { 
 
