@@ -11,9 +11,9 @@ import { Margin } from '@mui/icons-material';
 
 function Kakao(){
   let navigate = useNavigate();
-  let dispatch = useDispatch()
-  // const serverUrl = 'http://3.36.247.2'
-  const serverUrl = 'http://localhost:3000'
+  let dispatch = useDispatch();
+  // const serverUrl = 'http://3.36.247.2';
+  const serverUrl = 'http://localhost:3000';
 
   useEffect(()=>{
     async function kakaoToken(){
@@ -51,9 +51,13 @@ function Kakao(){
     const session = await axios.post(process.env.REACT_APP_API_ROOT + '/session')
 
     if(session.data.success === 'ok') {
-
-      dispatch(userDate({kakaoId: _kakaoId, nickname: _nickname, email: _email}))
-
+      dispatch(userDate({
+        kakaoId: _kakaoId, 
+        nickname: _nickname, 
+        email: _email,
+        adminStatus: session.data.attendanceUser.adminStatus
+      }))
+      
       return navigate('/main')
 
     }

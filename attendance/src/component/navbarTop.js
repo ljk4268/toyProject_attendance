@@ -30,6 +30,7 @@ function NavbarTop() {
   });
 
   const user = reduxState.user.nickname;
+  const userAdminStatus = reduxState.user.adminStatus;
   const userAttendanceCount = reduxState.userAttendanceCount;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -51,7 +52,7 @@ function NavbarTop() {
     setSideBarAnchorEl(null);
   };
 
-  const alertMenu = <Menu
+  let alertMenu = <Menu
       anchorEl={anchorEl}
       id="account-menu"
       open={alertOpen}
@@ -96,14 +97,19 @@ function NavbarTop() {
         </ListItemIcon>
         공지사항
       </MenuItem>
-      <MenuItem onClick={() => {
-        navigate("/adminpage");
-      }}>
-        <ListItemIcon>
-          <BadgeOutlinedIcon fontSize="small" sx={{ color: blue[400] }}/>
-        </ListItemIcon>
-        관리자페이지
-      </MenuItem>
+
+      { 
+        userAdminStatus == 'Y' ? <MenuItem onClick={() => {
+          navigate("/adminpage");
+        }}>
+          <ListItemIcon>
+            <BadgeOutlinedIcon fontSize="small" sx={{ color: blue[400] }}/>
+          </ListItemIcon>
+          관리자페이지
+        </MenuItem> : null 
+      }
+      
+
       <MenuItem onClick={()=>{signOut(navigate)}}>
         <ListItemIcon>
           <Logout fontSize="small" sx={{ color: blue[400] }}/>
@@ -111,31 +117,9 @@ function NavbarTop() {
         Logout
       </MenuItem>
     </Menu>
+    
 
-const sideBarMenu = <Menu
-      id="fade-menu"
-      MenuListProps={{
-        'aria-labelledby': 'fade-button',
-      }}
-      anchorEl={sideBarAnchorEl}
-      open={sideBarOpen}
-      onClose={sideBarHandleClose}
-      TransitionComponent={Fade}
-      
-      >
-      <MenuItem onClick={sideBarHandleClose}>
-        <ListItemIcon>
-          <Logout fontSize="small" />
-        </ListItemIcon>
-        <Typography variant="inherit">공지사항</Typography>
-      </MenuItem>
-      <MenuItem onClick={sideBarHandleClose}>
-        <ListItemIcon>
-          <Logout fontSize="small" />
-        </ListItemIcon>
-        <Typography variant="inherit">관리자페이지</Typography>
-      </MenuItem>
-    </Menu>
+
 
   return (
     <>      
