@@ -1,3 +1,6 @@
+import axios from "axios";
+import { userDate }from '../redux/feature/user'
+
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -13,17 +16,17 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
-import Fade from '@mui/material/Fade';
 import { blue } from "@mui/material/colors";
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from '../module/user'
+import { useEffect } from 'react';
 
 
 
 
 function NavbarTop() {
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const reduxState = useSelector((state) => {
     return state;
@@ -143,7 +146,7 @@ function NavbarTop() {
                 sx={{ ml: -4 }}
               >
                 
-                  <InsertEmoticonOutlinedIcon />
+                  <InsertEmoticonOutlinedIcon sx={{ color: blue[400] }}/>
                 
               </IconButton>
             </Tooltip>

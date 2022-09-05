@@ -99,7 +99,12 @@ export async function signOut(navigate){
 
 }
 
-
+/**
+ * 해당연도와 월(달)에 출석체크한 사람들 리스트
+ * @param _year : 연도
+ * @param _month : 월(달)
+ * @returns 해당연도와 월(달)에 출석체크한 사람들 리스트
+ */
 export async function attendanceStatus(_year, _month){
 
   const attStatus = await axios.post(process.env.REACT_APP_API_ROOT + "/atndn/attendance-status-on-month", {

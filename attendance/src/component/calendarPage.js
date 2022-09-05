@@ -110,6 +110,11 @@ function CalendarPage() {
       <NavbarTop />
       <NavbarBottom />
       <FullCalendar
+        headerToolbar={{
+          start:'title',
+          center:'',
+          end: 'prev next'
+        }}
         height={"auto"}
         datesSet={(arg) => {
           let argTitle = arg.view.title.split(" ");

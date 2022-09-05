@@ -3,17 +3,14 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { userDate }from '../redux/feature/user'
-import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
-
 import Box from '@mui/material/Box';
-import { Margin } from '@mui/icons-material';
 
 function Kakao(){
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  // const serverUrl = 'http://3.36.247.2';
-  const serverUrl = 'http://localhost:3000';
+  const serverUrl = 'http://3.36.247.2';
+  // const serverUrl = 'http://localhost:3000';
 
   useEffect(()=>{
     async function kakaoToken(){

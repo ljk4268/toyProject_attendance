@@ -2,16 +2,11 @@ import MainPage from './component/mainPage'
 import AttendRegistration from './component/attendRegistation'
 import CalendarPage from './component/calendarPage'
 import AdiminPage from './component/adminPage'
+import SystemAdiminPage from './component/systemAdmin'
 import Login from './component/login'
 import Kakao from './component/kakao'
-
 import {Routes, Route} from 'react-router-dom'
-
-
-
 import './App.css';
-
-
 
 function App() {
 
@@ -37,6 +32,9 @@ function App() {
 
             {/* 관리자페이지 */}
             <Route path="/adminpage" element={<AdiminPage/>}/>
+
+            {/* 시스템관리자페이지 */}
+            <Route path="/systemadminpage" element={<SystemAdiminPage/>}/>
             
           </Routes>
     </div>
