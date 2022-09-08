@@ -208,7 +208,6 @@ a {
 
 .greeting {
   font-size: 10vw;
-  /* font-family: 'Grape Nuts', serif; */
   font-family: 'Nanum Myeongjo', serif;
   font-weight: 700;
   box-shadow: inset 0 -15px 0 rgb(255, 253, 129);
@@ -217,7 +216,6 @@ a {
 }
 .greeting2{
   font-size: 10vw;
-  /* font-family: 'Grape Nuts', serif; */
   font-family: 'Nanum Myeongjo', serif;
   font-weight: 700;
   box-shadow: inset 0 -15px 0 rgb(255, 253, 129);
@@ -314,9 +312,9 @@ a {
     border-right: 1px solid rgb(192, 189, 189);
   }
 
-  #main-logos{
+  /* #main-logos{
     padding-left: 10%;
-  }
+  } */
   .login-page {
     padding-top: 0%;
   }
@@ -356,14 +354,13 @@ a {
   
   .greeting {
     font-size: 40px;
-    font-family: 'Grape Nuts', serif;
+
     font-weight: 700;
     box-shadow: inset 0 -35% 0 rgb(251, 249, 115);
   
   }
   .greeting2{
     font-size: 40px;
-    font-family: 'Grape Nuts', serif;
     font-weight: 700;
     box-shadow: inset 0 -35% 0 rgb(251, 249, 115);
     display: inline-block;
@@ -405,7 +402,14 @@ a {
   }
 
   .fc .fc-toolbar-title{
-    font-size: 2em;
+    font-size: 1.8em;
+  }
+
+  .fc-col-header-cell-cushion{
+    font-size: 1.2em;
+  }
+  .fc .fc-daygrid-day-number{
+    font-size: 1em;
   }
 
 }
@@ -413,5 +417,11 @@ a {
 @media screen and (max-width : 768px){
   .css-w54wyp{
     padding-bottom: 80px !important;
+  }
+  .fc-col-header-cell-cushion{
+    font-size: 3vw;
+  }
+  .fc .fc-daygrid-day-number{
+    font-size: 2vw;
   }
 }

@@ -14,11 +14,6 @@ import { grey, blue } from '@mui/material/colors';
 import { getToday } from '../module/getToday';
 import { changePopUpOn } from '../redux/feature/popUpOn'
 
-
-
-
-
-
 function NavbarBottom() {
 
   let dispatch = useDispatch();

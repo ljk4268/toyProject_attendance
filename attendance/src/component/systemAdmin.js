@@ -80,7 +80,7 @@ function SystemAdiminPage(){
   
 
   const columns = [
-    { id: 'name', label: 'Name', minWidth: 50 },
+    { id: 'name', label: 'Name', minWidth: 50, align: 'center' },
     {
       id: 'adminStatus',
       label: '관리자여부',
@@ -93,18 +93,6 @@ function SystemAdiminPage(){
       minWidth: 80,
       align: 'center',
     },
-    {
-      id: 'activeAccount',
-      label: '사용자활성화여부',
-      minWidth: 80,
-      align: 'center',
-    },
-    {
-      id: 'activeAccountRegistration',
-      label: '사용자활성화등록',
-      minWidth: 80,
-      align: 'center',
-    },
   ];
   
 
@@ -113,8 +101,8 @@ function SystemAdiminPage(){
     <NavbarTop/>
     <NavbarBottom/>
     <MainLogo/>
-    <p className="userHi"> 시스템관리자페이지 update.2022.09.05</p>
-    <div style={{ height: 400, width: '90%', margin: '0 auto', paddingBottom: '15%'}}>
+    <p className="userHi"> 시스템관리자페이지 update.2022.09.08</p>
+    <div style={{ height: 400, width: '99%', margin: '0 auto', paddingBottom: '15%'}}>
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
