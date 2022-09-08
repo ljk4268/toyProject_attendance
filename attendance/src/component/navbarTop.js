@@ -20,7 +20,12 @@ import { blue } from "@mui/material/colors";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from '../module/user'
-import { useEffect } from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 
@@ -40,6 +45,17 @@ function NavbarTop() {
   const [sideBarAnchorEl, setSideBarAnchorEl] = React.useState(null);
   const alertOpen = Boolean(anchorEl);
   const sideBarOpen = Boolean(sideBarAnchorEl);
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClickClose = () => {
+    setOpen(false);
+  };
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -94,7 +110,7 @@ function NavbarTop() {
         <Typography variant="inherit">{user}님, 이번달 출석횟수는 {userAttendanceCount}번 입니다.</Typography>
       </MenuItem>
       <Divider />
-      <MenuItem>
+      <MenuItem onClick={handleClickOpen}>
         <ListItemIcon>
           <NotificationsActiveIcon fontSize="small" sx={{ color: blue[400] }}/>
         </ListItemIcon>
@@ -154,6 +170,24 @@ function NavbarTop() {
         </AppBar>
       </Box> 
       {alertMenu}
+
+      <div>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"공지사항은 준비중 ! (찡긋)"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleClickClose} autoFocus>
+            확인
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   </>
   );
 

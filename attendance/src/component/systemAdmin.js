@@ -99,7 +99,6 @@ function SystemAdiminPage(){
   return (
   <>
     <NavbarTop/>
-    <NavbarBottom/>
     <MainLogo/>
     <p className="userHi"> 시스템관리자페이지 update.2022.09.08</p>
     <div style={{ height: 400, width: '99%', margin: '0 auto', paddingBottom: '15%'}}>
