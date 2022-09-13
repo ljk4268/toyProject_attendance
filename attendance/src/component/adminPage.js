@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import NavbarTop from "../component/navbarTop";
 import NavbarBottom from "../component/navbarBottom";
 import MainLogo from "../component/mianLogo";
@@ -8,7 +10,6 @@ import { useEffect } from "react";
 
 // mui라이브러리
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Typography from '@mui/material/Typography';
@@ -20,6 +21,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import Button from '@mui/material/Button';
+import { keys } from "@mui/system";
+
 
 
 
@@ -31,10 +35,11 @@ function AdiminPage(){
   const [todayDate, SetTodayDate] = useState(date);
   const [year, SetYear] = useState(today[0]);
   const [month, SetMonth] = useState(today[1]);
+  const [check, setCheck] = useState(false);
   const [statusRows, SetStatusRows] = useState([]);
 
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(50);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -60,12 +65,25 @@ function AdiminPage(){
 
   }
 
+  async function permitActive(_accountId){
+    const permitInfo = await axios.post(process.env.REACT_APP_API_ROOT + "/active-account", {
+      accountId: _accountId
+    });
+    if(permitInfo.data.success == 'ok') setCheck(!check)
+  }
+
 
   useEffect(()=>{
     async function attendStatusMonth() {
       let attStatus = await attendanceStatus(year, month);
       let attStatusArr = attStatus.data.attendanceList;
+
+      let activeAll = await axios.get(process.env.REACT_APP_API_ROOT + "/active-all");
+      let activeAllArr = activeAll.data.accountInfo;
       let newStatusRows = [];
+      let activeButton = null;
+      let activeButtonText = null;
+
 
       attStatusArr.map( key =>{
         let attStatusObj = {};
@@ -73,6 +91,18 @@ function AdiminPage(){
         attStatusObj.nickname = key.nickname;
         attStatusObj.regDate = key.regDate;
         attStatusObj.attendanceAccount = key.attendanceAccount;
+        activeButtonText = key.adminStatus == 'Y' ? '등록' : '해제'
+        activeButton = <Button variant="outlined"
+        onClick={async()=>{permitActive(key.accountId)}}
+        >{activeButtonText}</Button>
+        attStatusObj.activeAccountRegistration = activeButton
+        
+        activeAllArr.map( activekey =>{
+          if(activekey.accountId == attStatusObj.id){
+            attStatusObj.activeAccount = activekey.useYn
+          }
+        })
+
         newStatusRows.push(attStatusObj);
         newStatusRows.sort(function(a,b){
           return a.attendanceAccount - b.attendanceAccount;
@@ -83,21 +113,21 @@ function AdiminPage(){
 
     }
       attendStatusMonth();
-  },[year, month])
+  },[year, month, check])
 
 
   const columns = [
     { id: 'nickname', label: 'Name', minWidth: 50 },
-    {
-      id: 'regDate',
-      label: '가입날짜',
-      minWidth: 80,
-      align: 'center',
-    },
+    // {
+    //   id: 'regDate',
+    //   label: '가입날짜',
+    //   minWidth: 80,
+    //   align: 'center',
+    // },
     {
       id: 'attendanceAccount',
       label: '출석횟수',
-      minWidth: 80,
+      minWidth: 50,
       align: 'center',
     },
     {
@@ -108,12 +138,11 @@ function AdiminPage(){
     },
     {
       id: 'activeAccountRegistration',
-      label: '사용자활성화등록',
+      label: '사용자활성화해제',
       minWidth: 80,
       align: 'center',
     },
   ];
-
 
 
   return(
@@ -121,13 +150,13 @@ function AdiminPage(){
     <NavbarTop/>
     <NavbarBottom/>
     <MainLogo/>
-    <p className="userHi"> 관리자페이지 update.2022.09.08</p>
+    <p className="userHi">관리자페이지!</p>
     <div className="adminArrow">
       <ArrowBackIosIcon onClick={()=>{oneMonthCalculation(-1)}}/>
       <Typography className="month-arrow">{month}월</Typography>
       <ArrowForwardIosIcon onClick={()=>{oneMonthCalculation(+1)}}/>
     </div>
-    <div style={{ height: 400, width: '99%', margin: '0 auto', paddingBottom: '15%'}}>
+    <div style={{height: 500, width: '99%', margin: '0 auto', paddingBottom: '25%'}}>
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
@@ -167,7 +196,7 @@ function AdiminPage(){
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[50, 100]}
         component="div"
         count={statusRows.length}
         rowsPerPage={rowsPerPage}
