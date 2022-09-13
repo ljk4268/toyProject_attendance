@@ -225,10 +225,19 @@ a {
 .userHi {
   text-align: left;
   padding-left: 5vw;
+  padding-bottom: 2%;
+  margin: 0;
+  font-weight: 500;
+  font-size: 3.7vw;
+  box-sizing: border-box;
+}
+.userHi2 {
+  text-align: left;
+  padding-left: 5vw;
   padding-bottom: 10%;
   margin: 0;
   font-weight: 500;
-  font-size: 3.5vw;
+  font-size: 3.7vw;
   box-sizing: border-box;
 }
 
@@ -296,6 +305,11 @@ a {
 .css-11b3ww9-MuiPaper-root-MuiAppBar-root,
 .css-1d6a3hl-MuiPaper-root-MuiAppBar-root {
   right: auto !important;
+}
+
+.inactive-container{
+  padding-top: 5% ;
+  padding-bottom: 30% ;
 }
 
 @media screen and (min-width : 768px) { 
@@ -374,8 +388,13 @@ a {
   }
 
   .userHi {
-    font-size: 13px;
+    font-size: 1.3vw;
+    padding-bottom: 1%;
+  }
+
+  .userHi2 {
     padding-bottom: 7%;
+    font-size: 1.3vw;
   }
   
   .todayList {

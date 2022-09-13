@@ -2,6 +2,7 @@ import MainPage from './component/mainPage'
 import AttendRegistration from './component/attendRegistation'
 import CalendarPage from './component/calendarPage'
 import AdiminPage from './component/adminPage'
+import InactiveUserPage from './component/inactivePage'
 import SystemAdiminPage from './component/systemAdmin'
 import Login from './component/login'
 import Kakao from './component/kakao'
@@ -35,6 +36,9 @@ function App() {
 
             {/* 시스템관리자페이지 */}
             <Route path="/systemadminpage" element={<SystemAdiminPage/>}/>
+
+             {/* 비활성화사용자목록페이지 */}
+              <Route path="/inactive-user-page" element={<InactiveUserPage/>}/>
             
           </Routes>
     </div>

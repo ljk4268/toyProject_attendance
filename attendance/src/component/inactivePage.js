@@ -22,24 +22,23 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
-import { useNavigate, useNavigationType } from "react-router-dom";
 
 
 
 
-function AdiminPage(){
+function InactiveUserPage(){
 
   let date = new Date();
-  const navigate = useNavigate()
-
   const today = getToday().split("-");
   const [todayDate, SetTodayDate] = useState(date);
   const [year, SetYear] = useState(today[0]);
   const [month, SetMonth] = useState(today[1]);
   const [check, setCheck] = useState(false);
   const [statusRows, SetStatusRows] = useState([]);
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(50);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -90,11 +89,11 @@ function AdiminPage(){
         attStatusObj.nickname = key.nickname;
         attStatusObj.regDate = key.regDate;
         attStatusObj.attendanceAccount = key.attendanceAccount;
-        activeButtonText = key.adminStatus == 'Y' ? '등록' : '해제'
-        activeButton = <Button variant="outlined"
-        onClick={async()=>{permitActive(key.accountId)}}
-        >{activeButtonText}</Button>
-        attStatusObj.activeAccountRegistration = activeButton
+        // activeButtonText = key.adminStatus == 'Y' ? '등록' : '해제'
+        // activeButton = <Button variant="outlined"
+        // onClick={async()=>{permitActive(key.accountId)}}
+        // >{activeButtonText}</Button>
+        // attStatusObj.activeAccountRegistration = activeButton
         
         activeAllArr.map( activekey =>{
           if(activekey.accountId == attStatusObj.id){
@@ -149,7 +148,7 @@ function AdiminPage(){
     <NavbarTop/>
     <NavbarBottom/>
     <MainLogo/>
-    <p className="userHi">관리자페이지 입니다.</p>
+    <p className="userHi">비활성화 사용자 목록 페이지입니다. 업데이트 중 22.09.13</p>
     <div className="adminArrow">
       <ArrowBackIosIcon onClick={()=>{oneMonthCalculation(-1)}}/>
       <Typography className="month-arrow">{month}월</Typography>
@@ -204,17 +203,10 @@ function AdiminPage(){
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
-    <div className="inactive-container">
-      <Button 
-      variant="contained" 
-      fullWidth
-      onClick={()=>{navigate('/inactive-user-page')}}
-      >비활성 사용자 목록 보러가기</Button>
-    </div>
     
     </div>
     </>
   )
 }
 
-export default AdiminPage;
+export default InactiveUserPage;

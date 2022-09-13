@@ -11,13 +11,14 @@ import { getPlaces, deletePlace } from "../module/places";
 import { getToday } from "../module/getToday";
 import { getDateAttendance } from "../module/user";
 import { userAcId } from "../redux/feature/userAccountId";
+import { userDate } from "../redux/feature/user";
 import AttendanceTagUi from "./partial/attendaceTagUi";
 import { userCountUpdate } from "../redux/feature/userAttendanceCount";
 
 //mui
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
-import { blue } from "@mui/material/colors";
+import { blue,pink } from "@mui/material/colors";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Collapse from "@mui/material/Collapse";
@@ -31,6 +32,9 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import TextField from '@mui/material/TextField';
+import DialogTitle from '@mui/material/DialogTitle';
 
 //함수
 function MainPage() {
@@ -41,6 +45,15 @@ function MainPage() {
   const [cancelAlertOpen, setCancelAlertOpen] = useState(false);
   const [placeDeleteOpen, setPlaceDeleteOpen] = useState(false);
   const [deleteLocatinId, setDeleteLocatinId] = useState(0);
+  const [nicknameEditopen, setNicknameEditOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setNicknameEditOpen(true);
+  };
+
+  const handleClose = () => {
+    setNicknameEditOpen(false);
+  };
 
   let reduxState = useSelector((state) => {
     return state;
@@ -61,9 +74,14 @@ function MainPage() {
       const session = await axios.post(
         process.env.REACT_APP_API_ROOT + "/session"
       );
-
       if (session.data.success === "ok") {
         dispatch(userAcId(session.data.attendanceUser.accountId));
+        dispatch(userDate({
+          kakaoId: session.data.attendanceUser.kakaoId,
+          nickname: session.data.attendanceUser.nickname,
+          adminStatus: session.data.attendanceUser.adminStatus,
+          accountId: session.data.attendanceUser.accountId,
+        }));
         return navigate("/main");
       }
       return navigate("/");
@@ -158,14 +176,18 @@ function MainPage() {
       );
     }
   });
-
   return (
     <>
       <NavbarTop />
       <NavbarBottom />
       <MainLogo />
 
-      <p className="userHi"> {user} 님, 반가워요!! </p>
+      <p className="userHi">{user}님 <AutoFixHighIcon
+      fontSize="small"
+      sx={{ color: pink[400] }}
+      onClick={()=>{handleClickOpen()}}
+      ></AutoFixHighIcon></p>
+      <p className="userHi2">반가워요!!</p>
 
       <div className="main-bottom">
         <p className="todayList">오늘 공부하는 사람!</p>
@@ -272,6 +294,22 @@ function MainPage() {
             date={date}
           />
         ) : null}
+
+        {
+          nicknameEditopen == true ? (
+          <NicknameEditAlert
+            nicknameEditopen = {nicknameEditopen}
+            setNicknameEditOpen = {setNicknameEditOpen}
+            handleClickOpen={handleClickOpen}
+            handleClose = {handleClose}
+            user={user}
+            userAccountId={userAccountId}
+            dispatch={dispatch}
+            navigate={navigate}
+            setDateAttendanceNames={setDateAttendanceNames}
+            date={date}
+          />  
+          ) : null}
       </div>
     </>
   );
@@ -319,4 +357,56 @@ function PlaceDeleteAlert(props) {
       </DialogActions>
     </Dialog>
   );
+}
+
+function NicknameEditAlert(props){
+  let label = "20자이내로 설정해주세요!"
+  return(
+    <div>
+      <Dialog open={props.nicknameEditopen} onClose={props.handleClose}>
+        <DialogTitle>닉네임 변경</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            닉네임은 본인이름으로 설정해주시기 바랍니다.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="nicknameinput"
+            label={label}
+            type="email"
+            fullWidth
+            variant="standard"
+            autoComplete="off"
+            // autoComplete는 알게된거니까 따로 정리하기
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleClose}>취소</Button>
+          <Button onClick={async()=>{
+            let edit_nickname = document.getElementById('nicknameinput').value
+            let profile = await axios.post(
+              process.env.REACT_APP_API_ROOT + "/profile",
+              {
+                accountId: props.userAccountId.accountId,
+                nickname: edit_nickname
+              }
+            );
+            if(profile.data.success == 'ok'){
+              props.dispatch(userDate({
+                kakaoId: profile.data.account.kakaoId,
+                nickname: profile.data.account.nickname,
+                adminStatus: profile.data.account.adminStatus,
+                accountId: profile.data.account.accountId,
+              }));
+              getDateAttendance(props.setDateAttendanceNames, props.date)
+              props.navigate("/main");
+            }
+            props.handleClose();
+            }
+          }>변경하기</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  )
 }
