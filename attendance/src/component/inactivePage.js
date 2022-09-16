@@ -3,8 +3,6 @@ import axios from "axios";
 import NavbarTop from "../component/navbarTop";
 import NavbarBottom from "../component/navbarBottom";
 import MainLogo from "../component/mianLogo";
-import {getToday} from ".././module/getToday";
-import {attendanceStatus} from ".././module/user";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -28,14 +26,8 @@ import Button from '@mui/material/Button';
 
 function InactiveUserPage(){
 
-  let date = new Date();
-  const today = getToday().split("-");
-  const [todayDate, SetTodayDate] = useState(date);
-  const [year, SetYear] = useState(today[0]);
-  const [month, SetMonth] = useState(today[1]);
   const [check, setCheck] = useState(false);
   const [statusRows, SetStatusRows] = useState([]);
-
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(50);
 
@@ -48,21 +40,6 @@ function InactiveUserPage(){
     setPage(0);
   };
 
-
-  function oneMonthCalculation(num){
-  
-    let sel_month = num; 
-    todayDate.setMonth(todayDate.getMonth() + sel_month ); 
-    SetTodayDate(todayDate)
-    
-    let func_year   = todayDate.getFullYear();
-    let func_month   = ('0' + (todayDate.getMonth() +  1 )).slice(-2);
-
-    SetYear(func_year);
-    SetMonth(func_month);
-
-  }
-
   async function permitActive(_accountId){
     const permitInfo = await axios.post(process.env.REACT_APP_API_ROOT + "/active-account", {
       accountId: _accountId
@@ -72,61 +49,42 @@ function InactiveUserPage(){
 
 
   useEffect(()=>{
-    async function attendStatusMonth() {
-      let attStatus = await attendanceStatus(year, month);
-      let attStatusArr = attStatus.data.attendanceList;
-
-      let activeAll = await axios.get(process.env.REACT_APP_API_ROOT + "/active-all");
-      let activeAllArr = activeAll.data.accountInfo;
+    async function inactiveUsers() {
+      let inactiveAll = await axios.get(process.env.REACT_APP_API_ROOT + "/inactive-all");
+      let inactiveAllArr = inactiveAll.data.accountInfo
       let newStatusRows = [];
       let activeButton = null;
-      let activeButtonText = null;
 
-
-      attStatusArr.map( key =>{
+      inactiveAllArr.map(key =>{
         let attStatusObj = {};
-        attStatusObj.id = key.accountId;
+        attStatusObj.accountId = key.accountId;
         attStatusObj.nickname = key.nickname;
-        attStatusObj.regDate = key.regDate;
-        attStatusObj.attendanceAccount = key.attendanceAccount;
-        // activeButtonText = key.adminStatus == 'Y' ? '등록' : '해제'
-        // activeButton = <Button variant="outlined"
-        // onClick={async()=>{permitActive(key.accountId)}}
-        // >{activeButtonText}</Button>
-        // attStatusObj.activeAccountRegistration = activeButton
-        
-        activeAllArr.map( activekey =>{
-          if(activekey.accountId == attStatusObj.id){
-            attStatusObj.activeAccount = activekey.useYn
-          }
-        })
+        attStatusObj.activeAccount = key.useYn;
 
+        activeButton = <Button variant="outlined"
+        onClick={async()=>{permitActive(key.accountId)}}
+        >등록</Button>
+        attStatusObj.activeAccountRegistration = activeButton
         newStatusRows.push(attStatusObj);
-        newStatusRows.sort(function(a,b){
-          return a.attendanceAccount - b.attendanceAccount;
-        })
       })
 
-      SetStatusRows(newStatusRows);
+      newStatusRows.sort(function(a, b) {
+        return a.nickname < b.nickname ? -1 : a.nickname > b.nickname ? 1 : 0;
+      })
+
+      SetStatusRows(newStatusRows)
 
     }
-      attendStatusMonth();
-  },[year, month, check])
+    inactiveUsers();
+  },[check])
 
 
   const columns = [
-    { id: 'nickname', label: 'Name', minWidth: 50 },
-    // {
-    //   id: 'regDate',
-    //   label: '가입날짜',
-    //   minWidth: 80,
-    //   align: 'center',
-    // },
-    {
-      id: 'attendanceAccount',
-      label: '출석횟수',
+    { 
+      id: 'nickname', 
+      label: 'Name', 
       minWidth: 50,
-      align: 'center',
+      align: 'center' 
     },
     {
       id: 'activeAccount',
@@ -136,7 +94,7 @@ function InactiveUserPage(){
     },
     {
       id: 'activeAccountRegistration',
-      label: '사용자활성화해제',
+      label: '사용자활성화',
       minWidth: 80,
       align: 'center',
     },
@@ -148,12 +106,11 @@ function InactiveUserPage(){
     <NavbarTop/>
     <NavbarBottom/>
     <MainLogo/>
-    <p className="userHi">비활성화 사용자 목록 페이지입니다. 업데이트 중 22.09.13</p>
-    <div className="adminArrow">
-      <ArrowBackIosIcon onClick={()=>{oneMonthCalculation(-1)}}/>
-      <Typography className="month-arrow">{month}월</Typography>
-      <ArrowForwardIosIcon onClick={()=>{oneMonthCalculation(+1)}}/>
-    </div>
+    <p className="userHi">비활성화 사용자 목록 페이지!</p>
+    <p className="userHi">  </p>
+    <p className="userHi">비활성화 사용자들은 시작이반 출석부를 이용하지 못합니다. </p>
+    <p className="userHi"><strong>[등록]</strong>버튼을 눌러 사용자 활성화 시키면 이용할 수 있게 됩니다. </p>
+    <div className="adminArrow"></div>
     <div style={{height: 500, width: '99%', margin: '0 auto', paddingBottom: '25%'}}>
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -176,7 +133,7 @@ function InactiveUserPage(){
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.accountId}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (

@@ -4,6 +4,7 @@ import CalendarPage from './component/calendarPage'
 import AdiminPage from './component/adminPage'
 import InactiveUserPage from './component/inactivePage'
 import SystemAdiminPage from './component/systemAdmin'
+import NoticePage from './component/noticePage'
 import Login from './component/login'
 import Kakao from './component/kakao'
 import {Routes, Route} from 'react-router-dom'
@@ -40,6 +41,8 @@ function App() {
              {/* 비활성화사용자목록페이지 */}
               <Route path="/inactive-user-page" element={<InactiveUserPage/>}/>
             
+              {/* 공지사항페이지 */}
+            <Route path="/noticepage" element={<NoticePage/>}/>
           </Routes>
     </div>
   );

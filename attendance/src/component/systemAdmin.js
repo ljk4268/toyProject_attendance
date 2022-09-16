@@ -1,8 +1,9 @@
 import axios from "axios";
 
 import NavbarTop from "../component/navbarTop";
-import NavbarBottom from "../component/navbarBottom";
 import MainLogo from "../component/mianLogo";
+import InactiveUserPage from './inactivePage';
+
 
 // mui 라이브러리
 import * as React from 'react';
@@ -17,13 +18,15 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { useEffect } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function SystemAdiminPage(){
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [statusRows, setStatusRows] = useState([]);
   const [check, setCheck] = useState(false);
+  const navigate = useNavigate();
 
 
   const handleChangePage = (event, newPage) => {
@@ -83,13 +86,13 @@ function SystemAdiminPage(){
     { id: 'name', label: 'Name', minWidth: 50, align: 'center' },
     {
       id: 'adminStatus',
-      label: '관리자여부',
+      label: '운영진여부',
       minWidth: 80,
       align: 'center',
     },
     {
       id: 'adminRegistration',
-      label: '관리자등록',
+      label: '운영진등록',
       minWidth: 80,
       align: 'center',
     },
@@ -100,7 +103,9 @@ function SystemAdiminPage(){
   <>
     <NavbarTop/>
     <MainLogo/>
-    <p className="userHi"> 시스템관리자페이지 update.2022.09.08</p>
+    <p className="userHi"> 시스템관리자페이지! </p>
+    <p className="userHi"> 운영진 등록이 가능합니다. </p>
+    <div className="adminArrow"></div>
     <div style={{ height: 400, width: '99%', margin: '0 auto', paddingBottom: '15%'}}>
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -141,7 +146,7 @@ function SystemAdiminPage(){
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[50, 100]}
         component="div"
         count={statusRows.length}
         rowsPerPage={rowsPerPage}
@@ -150,7 +155,17 @@ function SystemAdiminPage(){
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
+
+    <div className="inactive-container">
+      <Button 
+      variant="contained" 
+      fullWidth
+      onClick={()=>{navigate('/inactive-user-page')}}
+      >비활성 사용자 목록 보러가기</Button>
     </div>
+
+    </div>
+    
     
   </>
   )

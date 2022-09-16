@@ -23,15 +23,13 @@ import { signOut } from '../module/user'
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 
 
 
 function NavbarTop() {
-  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const reduxState = useSelector((state) => {
     return state;
@@ -40,12 +38,9 @@ function NavbarTop() {
   const user = reduxState.user.nickname;
   const userAdminStatus = reduxState.user.adminStatus;
   const userAttendanceCount = reduxState.userAttendanceCount;
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [sideBarAnchorEl, setSideBarAnchorEl] = React.useState(null);
   const alertOpen = Boolean(anchorEl);
-  const sideBarOpen = Boolean(sideBarAnchorEl);
-
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -64,12 +59,6 @@ function NavbarTop() {
     setAnchorEl(null);
   };
 
-  const sideBarHandleClick = (event) => {
-    setSideBarAnchorEl(event.currentTarget);
-  };
-  const sideBarHandleClose = () => {
-    setSideBarAnchorEl(null);
-  };
 
   let alertMenu = <Menu
       anchorEl={anchorEl}
@@ -110,7 +99,9 @@ function NavbarTop() {
         <Typography variant="inherit">{user}님, 이번달 출석횟수는 {userAttendanceCount}번 입니다.</Typography>
       </MenuItem>
       <Divider />
-      <MenuItem onClick={handleClickOpen}>
+      <MenuItem onClick={()=>{
+        navigate("/noticepage");
+      }}>
         <ListItemIcon>
           <NotificationsActiveIcon fontSize="small" sx={{ color: blue[400] }}/>
         </ListItemIcon>

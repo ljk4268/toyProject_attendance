@@ -149,7 +149,7 @@ function AdiminPage(){
     <NavbarTop/>
     <NavbarBottom/>
     <MainLogo/>
-    <p className="userHi">관리자페이지 입니다.</p>
+    <p className="userHi">관리자페이지!</p>
     <div className="adminArrow">
       <ArrowBackIosIcon onClick={()=>{oneMonthCalculation(-1)}}/>
       <Typography className="month-arrow">{month}월</Typography>

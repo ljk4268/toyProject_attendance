@@ -7,7 +7,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
-import { blue } from '@mui/material/colors';
+import { blue, yellow } from '@mui/material/colors';
 import ListItemButton from '@mui/material/ListItemButton';
 
 import Collapse from '@mui/material/Collapse';
@@ -185,7 +185,7 @@ function Popup(props) {
                 }
 
                 return(
-                  <List key={i} sx={{ background: '#fafafa', pt: 0, mt: 1, borderRadius: '5px' }}>
+                  <List key={i} sx={{ background: yellow[100], pt: 0, mt: 1, borderRadius: '5px' }}>
 
                     <ListItemButton onClick={() => { handleClick(i); }} sx={{ pt: 2 }}>
                       {/* <ListItemIcon> */}

@@ -18,7 +18,7 @@ import { userCountUpdate } from "../redux/feature/userAttendanceCount";
 //mui
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
-import { blue,pink } from "@mui/material/colors";
+import { blue,pink, yellow } from "@mui/material/colors";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Collapse from "@mui/material/Collapse";
@@ -223,7 +223,7 @@ function MainPage() {
               <List
                 key={i}
                 sx={{
-                  background: "#fafafa",
+                  background: yellow[100],
                   pt: 0,
                   mt: 1,
                   borderRadius: "5px",
