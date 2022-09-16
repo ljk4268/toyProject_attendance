@@ -223,7 +223,7 @@ function MainPage() {
               <List
                 key={i}
                 sx={{
-                  background: yellow[100],
+                  background: 'rgb(255, 254, 211)',
                   pt: 0,
                   mt: 1,
                   borderRadius: "5px",

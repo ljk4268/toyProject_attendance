@@ -185,7 +185,7 @@ function Popup(props) {
                 }
 
                 return(
-                  <List key={i} sx={{ background: yellow[100], pt: 0, mt: 1, borderRadius: '5px' }}>
+                  <List key={i} sx={{ background: 'rgb(255, 254, 211)', pt: 0, mt: 1, borderRadius: '5px' }}>
 
                     <ListItemButton onClick={() => { handleClick(i); }} sx={{ pt: 2 }}>
                       {/* <ListItemIcon> */}

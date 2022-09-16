@@ -100,7 +100,8 @@ function NavbarTop() {
       </MenuItem>
       <Divider />
       <MenuItem onClick={()=>{
-        navigate("/noticepage");
+        handleClickOpen();
+        // navigate("/noticepage");
       }}>
         <ListItemIcon>
           <NotificationsActiveIcon fontSize="small" sx={{ color: blue[400] }}/>

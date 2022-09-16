@@ -67,7 +67,7 @@ function Kakao(){
   return(
       <div className="loding">
         <Box>
-            <CircularProgress size='20vw'/>
+            <CircularProgress size='10vw'/>
         </Box>
       </div>
 

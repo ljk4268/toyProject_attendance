@@ -14,6 +14,10 @@ body {
   min-height: 100%;
 }
 
+body > #root > div {
+  height: 100vh;
+  position: relative;
+}
 
 
 .body {
@@ -25,7 +29,6 @@ body {
   height: 100%;
   position: relative;
 }
-
 
 /* fullcalendar  */
 

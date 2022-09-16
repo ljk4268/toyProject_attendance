@@ -108,8 +108,8 @@ function InactiveUserPage(){
     <MainLogo/>
     <p className="userHi">비활성화 사용자 목록 페이지!</p>
     <p className="userHi">  </p>
-    <p className="userHi">비활성화 사용자들은 시작이반 출석부를 이용하지 못합니다. </p>
-    <p className="userHi"><strong>[등록]</strong>버튼을 눌러 사용자 활성화 시키면 이용할 수 있게 됩니다. </p>
+    <p className="userHi">비활성화된 사용자들은 시작이반 출석부를 이용하지 못합니다. </p>
+    <p className="userHi"><strong>[등록]</strong>버튼을 눌러 사용자를 활성화 시키면 이용할 수 있게 됩니다. </p>
     <div className="adminArrow"></div>
     <div style={{height: 500, width: '99%', margin: '0 auto', paddingBottom: '25%'}}>
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
