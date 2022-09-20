@@ -1,7 +1,9 @@
-import axios from "axios";
-import { userDate }from '../redux/feature/user'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { signOut } from '../module/user'
 
-import * as React from 'react';
+//mui라이브러리
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -17,9 +19,6 @@ import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
 import { blue } from "@mui/material/colors";
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { signOut } from '../module/user'
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -34,14 +33,12 @@ function NavbarTop() {
   const reduxState = useSelector((state) => {
     return state;
   });
-
   const user = reduxState.user.nickname;
   const userAdminStatus = reduxState.user.adminStatus;
   const userAttendanceCount = reduxState.userAttendanceCount;
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [sideBarAnchorEl, setSideBarAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const alertOpen = Boolean(anchorEl);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -163,6 +160,7 @@ function NavbarTop() {
       </Box> 
       {alertMenu}
 
+      {/* 공지사항 알림창 */}
       <div>
       <Dialog
         open={open}
@@ -179,7 +177,7 @@ function NavbarTop() {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+      </div>
   </>
   );
 

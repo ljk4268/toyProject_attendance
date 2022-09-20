@@ -18,7 +18,7 @@ import { userCountUpdate } from "../redux/feature/userAttendanceCount";
 //mui
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
-import { blue,pink, yellow } from "@mui/material/colors";
+import { blue,pink } from "@mui/material/colors";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Collapse from "@mui/material/Collapse";
@@ -38,6 +38,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 //함수
 function MainPage() {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const date = getToday();
   const [dateAttendanceNames, setDateAttendanceNames] = useState([1]);
   const [datePlaces, setDatePlaces] = useState([]);
@@ -46,24 +50,13 @@ function MainPage() {
   const [placeDeleteOpen, setPlaceDeleteOpen] = useState(false);
   const [deleteLocatinId, setDeleteLocatinId] = useState(0);
   const [nicknameEditopen, setNicknameEditOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setNicknameEditOpen(true);
-  };
-
-  const handleClose = () => {
-    setNicknameEditOpen(false);
-  };
-
-  let reduxState = useSelector((state) => {
+  
+  const reduxState = useSelector((state) => {
     return state;
   });
+  const user = reduxState.user.nickname;
+  const userAccountId = reduxState.userAccountId;
 
-  let dispatch = useDispatch();
-  let navigate = useNavigate();
-
-  let user = reduxState.user.nickname;
-  let userAccountId = reduxState.userAccountId;
 
   useEffect(() => {
     /**
@@ -82,9 +75,10 @@ function MainPage() {
           adminStatus: session.data.attendanceUser.adminStatus,
           accountId: session.data.attendanceUser.accountId,
         }));
-        return navigate("/main");
+        // return navigate("/main");
+      } else {
+        return navigate("/");
       }
-      return navigate("/");
     }
     getUserInfo();
   }, []);
@@ -95,11 +89,9 @@ function MainPage() {
     getPlaces(setDatePlaces, date);
   }, []);
 
-  // 등록을 한 직후 상태값을 변경하면 그떄 한 번만 변경이 수행됨.
-  // 하지만 서버에 있는 자신을 포함한 데이터가 존재하면 언제나 변경을 수행할 수 있음.
-  // 리액트의 생명주기가 끝났다고 생각되면 리덕스 state도 같이 초기화가 됨.
+// dateAttendanceNames 감시하는 useEffect
   useEffect(() => {
-
+    // dateAttendanceNames 길이 확인하고 조건문에 해당되면 알림창 보이고 안보이고가 결정됨. 
     if (dateAttendanceNames.length != 0) {
       setNotificationMessage(false);
     }
@@ -108,6 +100,11 @@ function MainPage() {
       setNotificationMessage(true);
     }
 
+    /**
+     * 서버와 통신 후 해당 유저의 출석횟수를 받아옴. 
+     * 통신 성공하면 리덕스에 출석횟수 저장함. 
+     * 통신 실패하면 리덕스에 'error'를 저장
+     */
     async function getUserAttendanceCount(){
       const session = await axios.get(
         process.env.REACT_APP_API_ROOT + "/atndn/my-attendance-count"
@@ -124,21 +121,9 @@ function MainPage() {
     
   }, [dateAttendanceNames]);
 
-  // 출석 등록한 사람이 없을 때 서버에서 빈배열을 보내줌.
-  // 서버에서 빈배열을 받은거랑 내가 초기화 했을 때 빈배열인거랑 헷갈리지 않으려고
-  // 1이라는 요소가 들어간 배열로 초기화를 해둠.
-
-  // useEffect(() => {
-  //   if (dateAttendanceNames.length != 0) {
-  //     setNotificationMessage(false);
-  //   }
-
-  //   if (dateAttendanceNames == 0) {
-  //     setNotificationMessage(true);
-  //   }
-  // }, [dateAttendanceNames]);
 
   // mui 함수들
+
   /**
    * 등록된장소의 해당 토글버튼을 누르면 해당장소의 open 값이 변경되면서 모임장소에 출석등록한 사람들의 리스트가 보이고 안보이고가 결정된다.
    * @param  i 어떤 장소가 클릭되었는지 확인하기 위함 
@@ -156,7 +141,15 @@ function MainPage() {
     setPlaceDeleteOpen(true);
   };
 
-  
+  const handleClickOpen = () => {
+    setNicknameEditOpen(true);
+  };
+
+  const handleClose = () => {
+    setNicknameEditOpen(false);
+  };
+
+  //태그변수
   let AttendNameList = [];
 
   dateAttendanceNames.map((name, i) => {
@@ -176,6 +169,8 @@ function MainPage() {
       );
     }
   });
+
+
   return (
     <>
       <NavbarTop />

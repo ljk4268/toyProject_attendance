@@ -1,28 +1,30 @@
-@import '~@fullcalendar/daygrid/main.css';
+@import "~@fullcalendar/daygrid/main.css";
 /* 구글폰트  */
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Dongle&family=Source+Sans+Pro&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Dongle&family=Playfair+Display&family=Source+Sans+Pro&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Dongle&family=Fuzzy+Bubbles&family=Playfair+Display&family=Source+Sans+Pro&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dongle&family=Source+Sans+Pro&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dongle&family=Playfair+Display&family=Source+Sans+Pro&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dongle&family=Fuzzy+Bubbles&family=Playfair+Display&family=Source+Sans+Pro&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700&display=swap");
 
 html {
   height: 100%;
 }
-body {
-  min-height: 100%;
+body { 
+  min-height: 100vh; 
+}
+
+#root {
+  min-height: 100vh;
 }
 
 body > #root > div {
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
 }
 
-
 .body {
   text-align: center;
-  font-family: 'Source Sans Pro', sans-serif ;
+  font-family: "Source Sans Pro", sans-serif;
   box-sizing: border-box;
   max-width: 768px;
   margin: 0 auto;
@@ -39,31 +41,28 @@ body > #root > div {
 .fc .fc-col-header-cell-cushion {
   display: block;
   padding: 3px 4px;
-  /* background-color: #fae100; */
-  
 }
 
 .fc-col-header-cell-cushion {
   font-size: 3vw;
-  font-weight: 500; 
+  font-weight: 500;
   opacity: 0.5;
 }
 
-
 .fc-daygrid-event-dot {
-  border: calc(var(--fc-daygrid-event-dot-width, 8px) / 2) solid var(--fc-event-border-color, red)
+  border: calc(var(--fc-daygrid-event-dot-width, 8px) / 2) solid
+    var(--fc-event-border-color, red);
 }
 
-.fc .fc-toolbar.fc-header-toolbar{
+.fc .fc-toolbar.fc-header-toolbar {
   margin-top: 1.5em;
 }
 
-.fc .fc-toolbar-title{
+.fc .fc-toolbar-title {
   font-size: 5vw;
   font-weight: 400;
   padding-top: 2vw;
 }
-
 
 .fc-h-event {
   position: absolute;
@@ -79,49 +78,48 @@ body > #root > div {
   border: none;
   font-weight: 800;
 }
-.fc-event-main{
+.fc-event-main {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
 }
 .fc-event-title {
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family: "Nanum Gothic", sans-serif;
   color: rgb(41, 39, 39);
 }
 
-.fc .fc-daygrid-day-number{
+.fc .fc-daygrid-day-number {
   font-size: 2vw;
 }
 
 .fc-daygrid-dot-event .fc-event-title {
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family: "Nanum Gothic", sans-serif;
   font-size: 12px;
 }
 
 .fc-daygrid-dot-event .fc-event-time {
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family: "Nanum Gothic", sans-serif;
   font-size: 12px;
 }
 
-.loding{
+.loding {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.css-z81eeg-MuiSvgIcon-root{
+.css-z81eeg-MuiSvgIcon-root {
   margin-right: 0.4em;
 }
 
-.css-18lrjg1-MuiCircularProgress-root{
+.css-18lrjg1-MuiCircularProgress-root {
   display: block !important;
 }
 
-.css-mxt2yf-MuiListItemText-root{
+.css-mxt2yf-MuiListItemText-root {
   margin-right: 8px;
 }
-
 
 /* 주말 색깔 지정 */
 .fc-day-sat {
@@ -131,18 +129,18 @@ body > #root > div {
   color: red;
 }
 
-
-#logo-main, #logo-main2{
+#logo-main,
+#logo-main2 {
   font-size: 45px;
   font-weight: 600;
 }
 
-#logo-main2{
+#logo-main2 {
   display: inline-block;
 }
 
-.in-main{
-  font-family: 'Nanum Myeongjo', serif !important;
+.in-main {
+  font-family: "Nanum Myeongjo", serif !important;
   font-size: 10vw !important;
   font-weight: 800 !important;
 }
@@ -150,22 +148,22 @@ body > #root > div {
 .login-page {
   padding-top: 20%;
 }
-.login-logo{
+.login-logo {
   padding: 10% 15%;
   text-align: center;
 }
 
-.login-line{
+.login-line {
   display: flex;
   flex-basis: 100%;
   align-items: center;
-  color: rgba(0,0,0,0.35);
+  color: rgba(0, 0, 0, 0.35);
   font-size: 14px;
   margin: 8px 0px;
   padding-bottom: 15%;
 }
-.login-line:before{
-  content: '';
+.login-line:before {
+  content: "";
   flex-grow: 1;
   margin: 0px 16px;
   background: rgba(192, 189, 189);
@@ -173,8 +171,8 @@ body > #root > div {
   font-size: 1px;
   line-height: 0px;
 }
-.login-line:after{
-  content: '';
+.login-line:after {
+  content: "";
   flex-grow: 1;
   margin: 0px 16px;
   background: rgba(192, 189, 189);
@@ -199,31 +197,29 @@ a {
   border-radius: 50%;
 }
 
-
-.main-top{
+.main-top {
   /* background-color: bisque; */
   height: 60%;
   padding: 5vw 0 10vw 5vw;
   display: flex;
-  justify-content : space-between;
+  justify-content: space-between;
 }
 
 .greeting {
   font-size: 10vw;
-  font-family: 'Nanum Myeongjo', serif;
+  font-family: "Nanum Myeongjo", serif;
   font-weight: 700;
   box-shadow: inset 0 -15px 0 rgb(255, 253, 129);
   white-space: pre-wrap;
   text-align: right;
 }
-.greeting2{
+.greeting2 {
   font-size: 10vw;
-  font-family: 'Nanum Myeongjo', serif;
+  font-family: "Nanum Myeongjo", serif;
   font-weight: 700;
   box-shadow: inset 0 -15px 0 rgb(255, 253, 129);
   display: inline-block;
 }
-
 
 .userHi {
   text-align: left;
@@ -244,20 +240,16 @@ a {
   box-sizing: border-box;
 }
 
-.adminArrow{
+.adminArrow {
   padding-bottom: 5%;
   display: flex;
   justify-content: flex-end;
   padding-right: 5vw;
-
 }
 
-
 .main-bottom {
-  /* background-color: palegoldenrod; */
   margin: 0 5vw 0vw 5vw;
   padding-bottom: 20vw;
-  
 }
 
 .todayList {
@@ -268,27 +260,22 @@ a {
   font-size: 4vw;
 }
 
-
-/* .MuiFormLabel-root.Mui-focused {
-  color: red !important;
-} */
 .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
   border-color: rgb(207, 207, 205) !important;
 }
 
-
 /* 출석등록페이지 CSS */
-.select{
+.select {
   font-size: 3vw;
   font-weight: 400;
   color: red;
 }
 
-.calendarIcon{
+.calendarIcon {
   vertical-align: middle;
 }
 .css-1gjgmky-MuiToggleButtonGroup-root {
-  width: 100% ;
+  width: 100%;
   display: block !important;
 }
 
@@ -296,7 +283,7 @@ a {
   padding-left: 5px;
 }
 
-.showPlaces{
+.showPlaces {
   margin-top: 4%;
 }
 
@@ -310,40 +297,33 @@ a {
   right: auto !important;
 }
 
-.inactive-container{
-  padding-top: 5% ;
-  padding-bottom: 30% ;
+.inactive-container {
+  padding-top: 5%;
 }
 
-@media screen and (min-width : 768px) { 
+/* 미디어쿼리 */
+@media screen and (min-width: 768px) {
 
-  html {
-    height: 100%;
-  }
   body {
     width: 768px;
-    min-height: 100%;
     margin: 0 auto;
     border-left: 1px solid rgb(192, 189, 189);
     border-right: 1px solid rgb(192, 189, 189);
   }
 
-  /* #main-logos{
-    padding-left: 10%;
-  } */
   .login-page {
     padding-top: 0%;
   }
-  .login-logo{
+  .login-logo {
     padding: 10% 20%;
     padding-top: 2%;
     text-align: center;
   }
-  .login-line{
+  .login-line {
     display: flex;
     flex-basis: 100%;
     align-items: center;
-    color: rgba(0,0,0,0.35);
+    color: rgba(0, 0, 0, 0.35);
     font-size: 14px;
     margin: 8px 0px;
     padding-bottom: 10%;
@@ -356,37 +336,35 @@ a {
     max-height: 80px;
   }
 
-
-  .main-top{
+  .main-top {
     height: 60%;
     padding: 5vw 0 62px 5vw;
   }
 
-  .in-main{
-    font-family: 'Nanum Myeongjo', serif !important;
-    font-size: 65px !important;
+  .in-main {
+    font-family: "Nanum Myeongjo", serif !important;
+    font-size: 60px !important;
     font-weight: 800 !important;
   }
-  
+
   .greeting {
     font-size: 40px;
-
     font-weight: 700;
     box-shadow: inset 0 -35% 0 rgb(251, 249, 115);
-  
   }
-  .greeting2{
+  .greeting2 {
     font-size: 40px;
     font-weight: 700;
     box-shadow: inset 0 -35% 0 rgb(251, 249, 115);
     display: inline-block;
   }
 
-  #logo-main, #logo-main2{
+  #logo-main,
+  #logo-main2 {
     font-size: 70px;
     font-weight: 600;
   }
-  #logo-main2{
+  #logo-main2 {
     display: inline-block;
   }
 
@@ -399,7 +377,7 @@ a {
     padding-bottom: 7%;
     font-size: 1.3vw;
   }
-  
+
   .todayList {
     padding-bottom: 10px;
     font-weight: 400;
@@ -407,42 +385,46 @@ a {
   }
 
   .navbar {
-    /* position: sticky; */
     max-width: 768px;
     right: auto !important;
   }
-  .css-w54wyp{
+  .css-w54wyp {
     padding-bottom: 10% !important;
   }
   .fc {
     max-width: 700px !important;
     margin: auto;
     padding-bottom: 20%;
-    
-
   }
 
-  .fc .fc-toolbar-title{
+  .fc .fc-toolbar-title {
     font-size: 1.8em;
   }
 
-  .fc-col-header-cell-cushion{
+  .fc-col-header-cell-cushion {
     font-size: 1.2em;
   }
-  .fc .fc-daygrid-day-number{
+  .fc .fc-daygrid-day-number {
     font-size: 1em;
   }
 
+  .circularprogress {
+    width: 5vw !important;
+    height: 5vw !important;
+  }
 }
 
-@media screen and (max-width : 768px){
-  .css-w54wyp{
+@media screen and (max-width: 768px) {
+  .css-w54wyp {
     padding-bottom: 80px !important;
   }
-  .fc-col-header-cell-cushion{
+  .fc-col-header-cell-cushion {
     font-size: 3vw;
   }
-  .fc .fc-daygrid-day-number{
+  .fc .fc-daygrid-day-number {
     font-size: 2vw;
+  }
+  .inactive-container {
+    padding-bottom: 30vw;
   }
 }

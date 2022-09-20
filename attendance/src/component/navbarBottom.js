@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -10,24 +10,15 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
-import { grey, blue } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 import { getToday } from '../module/getToday';
 import { changePopUpOn } from '../redux/feature/popUpOn'
 
 function NavbarBottom() {
 
-  let dispatch = useDispatch();
-  let navigate = useNavigate();
-  let reduxState = useSelector((state) => {
-    return state;
-  });
-  let attendCheck = reduxState.attendCheck;
-
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   let _date = getToday();
-
-
-  let plusButton = null;;
 
   const StyledFab = styled(Fab)({
     position: 'absolute',
