@@ -56,6 +56,7 @@ function MainPage() {
   });
   const user = reduxState.user.nickname;
   const userAccountId = reduxState.userAccountId;
+  const userAdminStatus = reduxState.user.adminStatus;
 
 
   useEffect(() => {
@@ -238,7 +239,7 @@ function MainPage() {
                     sx={{ fontWeight: "bold" }}
                   />
 
-                  {place.accountId == userAccountId.accountId ? (
+                  {place.accountId == userAccountId.accountId || userAdminStatus == 'Y' ? (
                     <IconButton
                       edge="start"
                       aria-label="delete"

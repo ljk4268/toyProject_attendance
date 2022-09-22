@@ -39,6 +39,8 @@ function Popup(props) {
   });
 
   let userAccountId = reduxState.userAccountId;
+  const userAdminStatus = reduxState.user.adminStatus;
+
 
   let navigate = useNavigate();
 
@@ -194,7 +196,7 @@ function Popup(props) {
                       <ListItemText primary={place.locationName} sx={{ fontWeight:'bold', textAlign: 'left' }} />
 
                       {
-                        place.accountId == userAccountId.accountId ? <IconButton edge="start" aria-label="delete" 
+                        place.accountId == userAccountId.accountId || userAdminStatus == 'Y'? <IconButton edge="start" aria-label="delete" 
                         sx={{marginRight:'10px'}}
                         onClick={(event)=>{
                           event.stopPropagation()
