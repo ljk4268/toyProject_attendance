@@ -142,10 +142,16 @@ function MainPage() {
     setPlaceDeleteOpen(true);
   };
 
+  /**
+   * 닉네임 변경을 원하는 경우 닉네임 변경창이 나오도록 만들어주는 함수.
+   */
   const handleClickOpen = () => {
     setNicknameEditOpen(true);
   };
 
+  /**
+   * 닉네임 변경창에서 변경하기 및 취소를 누르면 닉네임 변경창이 사라지도록 만들어주는 함수
+   */
   const handleClose = () => {
     setNicknameEditOpen(false);
   };

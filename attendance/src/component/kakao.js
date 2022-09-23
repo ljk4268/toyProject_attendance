@@ -9,8 +9,8 @@ import Box from '@mui/material/Box';
 function Kakao(){
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  const serverUrl = 'http://3.36.247.2';
-  // const serverUrl = 'http://localhost:3000';
+  // const serverUrl = 'http://3.36.247.2';
+  const serverUrl = 'http://localhost:3000';
 
   useEffect(()=>{
     async function kakaoToken(){
