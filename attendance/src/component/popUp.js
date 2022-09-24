@@ -34,17 +34,14 @@ import { changeCalendarClick } from '../redux/feature/calendarClick'
 
 function Popup(props) {
 
-  let reduxState = useSelector((state) => {
+  const reduxState = useSelector((state) => {
     return state;
   });
-
-  let userAccountId = reduxState.userAccountId;
+  const userAccountId = reduxState.userAccountId;
   const userAdminStatus = reduxState.user.adminStatus;
 
-
-  let navigate = useNavigate();
-
-  let dispatch = useDispatch();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const date = props.date;
   const dayArr = date.split('-');
@@ -58,7 +55,7 @@ function Popup(props) {
   const [deleteLocatinId, setDeleteLocatinId] = useState(0);
 
 
- 
+
   // 해당날짜 출석인원 및 모임장소 가지고오기
   useEffect(()=>{
     if ( date != ''){
@@ -68,21 +65,27 @@ function Popup(props) {
   },[props.open])
 
 
-  let dataAttendanceFunction = () => {
-    getDateAttendance(setDateAttendanceNames, date, userAccountId)
-  }
-
+  /**
+   * 
+   * i : 몇번째에 등록된 장소인지 알기위한 파라미터
+   * 토글버튼 기능 활성화 함수 
+   * datePlaces[i].open이 false로 되어있는데 true로 변경되면서 장소 클릭하면 해당 모임장소에 등록한 출석리스트가 보임 
+   */
   const handleClick = (i) => {
     let newPlaces = [...datePlaces];
     newPlaces[i].open = !newPlaces[i].open
     setDatePlaces(newPlaces)
   };
 
+  /**
+   * PlaceDeleteAlert 창의 보여짐을 담당
+   */
   const handlePlaceDeleteAlert = () => {
     setPlaceDeleteOpen(true);
   };
 
 
+  // 태그변수
   let AttendNameList = [];
 
   dateAttendanceNames.map((name,i) => {
@@ -174,7 +177,6 @@ function Popup(props) {
                     userInlocation.push(<AttendanceTagUi 
                       dateAttendanceNames={dateAttendanceNames[j]} 
                       userAccountId={userAccountId}
-                      dataAttendanceFunction={dataAttendanceFunction}
                       cancelAlertOpen={cancelAlertOpen}
                       setCancelAlertOpen={setCancelAlertOpen}
                       setDateAttendanceNames={setDateAttendanceNames}
