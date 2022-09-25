@@ -1,23 +1,3 @@
-import axios from "axios";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import List from '@mui/material/List';
-import ListItemText from '@mui/material/ListItemText';
-import { blue, yellow } from '@mui/material/colors';
-import ListItemButton from '@mui/material/ListItemButton';
-
-import Collapse from '@mui/material/Collapse';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import PlaceIcon from '@mui/icons-material/Place';
-import IconButton from '@mui/material/IconButton';
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-
-
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
@@ -28,6 +8,24 @@ import AttendanceTagUi from './partial/attendaceTagUi';
 import { useNavigate } from "react-router-dom";
 import { changePopUpOn } from '../redux/feature/popUpOn'
 import { changeCalendarClick } from '../redux/feature/calendarClick'
+
+// mui 라이브러리 함수
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import List from '@mui/material/List';
+import ListItemText from '@mui/material/ListItemText';
+import { blue } from '@mui/material/colors';
+import ListItemButton from '@mui/material/ListItemButton';
+import Collapse from '@mui/material/Collapse';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import PlaceIcon from '@mui/icons-material/Place';
+import IconButton from '@mui/material/IconButton';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 
 
@@ -77,33 +75,7 @@ function Popup(props) {
     setDatePlaces(newPlaces)
   };
 
-  /**
-   * PlaceDeleteAlert 창의 보여짐을 담당
-   */
-  const handlePlaceDeleteAlert = () => {
-    setPlaceDeleteOpen(true);
-  };
-
-
-  // 태그변수
-  let AttendNameList = [];
-
-  dateAttendanceNames.map((name,i) => {
-    if ( name.locationId === null ){
-      AttendNameList.push(<AttendanceTagUi 
-        dateAttendanceNames={name} 
-        userAccountId={userAccountId}
-        cancelAlertOpen={cancelAlertOpen}
-        setCancelAlertOpen={setCancelAlertOpen}
-        setDateAttendanceNames={setDateAttendanceNames}
-        setDatePlaces={setDatePlaces}
-        date={date}
-        j={i}
-        key={i}
-        />)
-    }
-  })
-
+  // 사용자에게 보여지는 '출석하기' 버튼 관련 
   let atndnButton = <>
         <Button variant="outlined"
           onClick={() => {
@@ -126,10 +98,23 @@ function Popup(props) {
         </Button>
       </>
 
-  dateAttendanceNames.map((name,i) =>{
-    
+  // 혼자할게요 선택한 출석리스트 
+  let AttendNameList = [];
+  dateAttendanceNames.map((name,i) => {
+    if ( name.locationId === null ){
+      AttendNameList.push(<AttendanceTagUi 
+        dateAttendanceNames={name} 
+        userAccountId={userAccountId}
+        cancelAlertOpen={cancelAlertOpen}
+        setCancelAlertOpen={setCancelAlertOpen}
+        setDateAttendanceNames={setDateAttendanceNames}
+        setDatePlaces={setDatePlaces}
+        date={date}
+        j={i}
+        key={i}
+        />)
+    }
     if ( name.accountId == userAccountId.accountId ){
-
       atndnButton = 
       <>
         <Button variant="outlined"
@@ -141,100 +126,91 @@ function Popup(props) {
           }}
         >
               수정하기
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                dispatch(changeCalendarClick(false));
-                props.setOpen(false);
-              }}
-            >
-              취소
-            </Button>
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            dispatch(changeCalendarClick(false));
+            props.setOpen(false);
+          }}
+        >
+          취소
+        </Button>
       </>
-
     } 
+  })
+
+  // 등록된 모임장소 및 해당 모임장소 선택한 출석리스트
+  let showPlace = datePlaces.map(function(place,i){
+    let userInlocation = [];
+
+    for ( let j = 0; j < dateAttendanceNames.length; j++){
+      if( place.locationId == dateAttendanceNames[j].locationId){
+        userInlocation.push(<AttendanceTagUi 
+          dateAttendanceNames={dateAttendanceNames[j]} 
+          userAccountId={userAccountId}
+          cancelAlertOpen={cancelAlertOpen}
+          setCancelAlertOpen={setCancelAlertOpen}
+          setDateAttendanceNames={setDateAttendanceNames}
+          setDatePlaces={setDatePlaces}
+          date={date}
+          j={j}
+          key={j}
+          />)
+        }
+      }
+
+    return(
+      <List key={i} sx={{ background: 'rgb(255, 254, 211)', pt: 0, mt: 1, borderRadius: '5px' }}>
+
+        <ListItemButton onClick={() => { handleClick(i); }} sx={{ pt: 2 }}>
+            <PlaceIcon sx={{ color: blue[400] }} />
+            <ListItemText primary={place.locationName} sx={{ fontWeight:'bold', textAlign: 'left' }} />
+
+          {
+            place.accountId == userAccountId.accountId || userAdminStatus == 'Y'? <IconButton edge="start" aria-label="delete" 
+            sx={{marginRight:'10px'}}
+            onClick={(event)=>{
+              event.stopPropagation()
+              let locationId = place.locationId
+              setDeleteLocatinId(locationId)
+              setPlaceDeleteOpen(true)
+            }}
+            >
+            <CancelOutlinedIcon/>
+          </IconButton> : null
+
+          }
+          {place.open ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+
+        <Collapse in={place.open} timeout="auto" unmountOnExit>
+          {userInlocation}
+        </Collapse>
+
+      </List>
+    )
   })
 
   return (
     <>
       <Dialog open={props.open}>
-        <DialogTitle sx={{textAlign: 'center'}}>{showMonth}월 {showDay}일 공부하는 사람 누구누구?</DialogTitle>
 
+        <DialogTitle sx={{textAlign: 'center'}}>
+          {showMonth}월 {showDay}일 공부하는 사람 누구누구?
+        </DialogTitle>
 
          {/* 출석등록한 사람들 리스트 */}
         <DialogContent>
           <DialogContentText component="div">
 
             {/* 장소리스트 */}
-            {
-
-              datePlaces.map(function(place,i){
-                let userInlocation = [];
-
-                for ( let j = 0; j < dateAttendanceNames.length; j++){
-                  if( place.locationId == dateAttendanceNames[j].locationId){
-                    userInlocation.push(<AttendanceTagUi 
-                      dateAttendanceNames={dateAttendanceNames[j]} 
-                      userAccountId={userAccountId}
-                      cancelAlertOpen={cancelAlertOpen}
-                      setCancelAlertOpen={setCancelAlertOpen}
-                      setDateAttendanceNames={setDateAttendanceNames}
-                      setDatePlaces={setDatePlaces}
-                      date={date}
-                      j={j}
-                      key={j}
-                      />)
-                  }
-                }
-
-                return(
-                  <List key={i} sx={{ background: 'rgb(255, 254, 211)', pt: 0, mt: 1, borderRadius: '5px' }}>
-
-                    <ListItemButton onClick={() => { handleClick(i); }} sx={{ pt: 2 }}>
-                      {/* <ListItemIcon> */}
-                        <PlaceIcon sx={{ color: blue[400] }} />
-                      {/* </ListItemIcon> */}
-                      <ListItemText primary={place.locationName} sx={{ fontWeight:'bold', textAlign: 'left' }} />
-
-                      {
-                        place.accountId == userAccountId.accountId || userAdminStatus == 'Y'? <IconButton edge="start" aria-label="delete" 
-                        sx={{marginRight:'10px'}}
-                        onClick={(event)=>{
-                          event.stopPropagation()
-                          let locationId = place.locationId
-                          setDeleteLocatinId(locationId)
-                          handlePlaceDeleteAlert();
-                        }}
-                        >
-                        <CancelOutlinedIcon/>
-                      </IconButton> 
-
-                      :
-
-                      null
-
-                      }
-                        
-
-                      {place.open ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-
-                    <Collapse in={place.open} timeout="auto" unmountOnExit>
-                    
-                      {userInlocation}
-                      
-                    </Collapse>
-                  </List>
-                )
-
-              })
-
-            }
+            {showPlace}
 
             {/* 해당날짜 출석등록자들 보이는 UI */}
             {AttendNameList}
 
+            {/* 모임장소 삭제 버튼을 누른경우 보여지는 창 */}
             {
               placeDeleteOpen == true ? <PlaceDeleteAlert 
               placeDeleteOpen={placeDeleteOpen}
@@ -246,26 +222,21 @@ function Popup(props) {
               userAccountId={userAccountId}
               /> : null
             }
-
-
           </DialogContentText>
         </DialogContent>
 
-
-
         <DialogActions style={{justifyContent: 'center'}}>
-        
             {atndnButton}
-
         </DialogActions>
+
       </Dialog>
 
     </>
   );
 }
-
 export default Popup;
 
+// 장소삭제버튼 누르면 나오는 컴포넌트
 function PlaceDeleteAlert(props){
 
   let locationId = props.deleteLocatinId
