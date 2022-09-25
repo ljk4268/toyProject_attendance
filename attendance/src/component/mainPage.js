@@ -99,27 +99,7 @@ function MainPage() {
 
     if (dateAttendanceNames == 0) {
       setNotificationMessage(true);
-    }
-
-    /**
-     * 서버와 통신 후 해당 유저의 출석횟수를 받아옴. 
-     * 통신 성공하면 리덕스에 출석횟수 저장함. 
-     * 통신 실패하면 리덕스에 'error'를 저장
-     */
-    async function getUserAttendanceCount(){
-      const session = await axios.get(
-        process.env.REACT_APP_API_ROOT + "/atndn/my-attendance-count"
-      );
-
-      if(session.data.success === "ok"){
-        dispatch(userCountUpdate(session.data.myAttendance))
-      } else {
-        dispatch(userCountUpdate('error'))
-      }
-
-    }
-    getUserAttendanceCount()
-    
+    }   
   }, [dateAttendanceNames]);
 
 
