@@ -35,7 +35,8 @@ function NavbarTop() {
   });
   const user = reduxState.user.nickname;
   const userAdminStatus = reduxState.user.adminStatus;
-  const userAttendanceCount = reduxState.userAttendanceCount;
+  const userOfflineCount = reduxState.userAttendanceCount[0].offlineCount;
+  const userOnlineCount = reduxState.userAttendanceCount[0].onlineCount;
   const [anchorEl, setAnchorEl] = useState(null);
   const alertOpen = Boolean(anchorEl);
   const [open, setOpen] = useState(false);
@@ -93,7 +94,14 @@ function NavbarTop() {
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
     >
       <MenuItem>
-        <Typography variant="inherit">{user}님, 이번달 출석횟수는 {userAttendanceCount}번 입니다.</Typography>
+        <Typography variant="inherit">
+          {user}님, 이번달 출석현황 알려드립니다!
+        </Typography>
+      </MenuItem>
+      <MenuItem>
+        <Typography variant="inherit">
+          Together : <strong>{userOfflineCount}</strong>회 , Alone : <strong>{userOnlineCount}</strong>회
+        </Typography>
       </MenuItem>
       <Divider />
       <MenuItem onClick={()=>{

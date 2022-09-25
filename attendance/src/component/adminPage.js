@@ -76,7 +76,7 @@ function AdiminPage(){
     async function attendStatusMonth() {
       let attStatus = await attendanceStatus(year, month);
       let attStatusArr = attStatus.data.attendanceList;
-
+      
       let activeAll = await axios.get(process.env.REACT_APP_API_ROOT + "/active-all");
       let activeAllArr = activeAll.data.accountInfo;
       let newStatusRows = [];
@@ -89,8 +89,9 @@ function AdiminPage(){
         attStatusObj.id = key.accountId;
         attStatusObj.nickname = key.nickname;
         attStatusObj.regDate = key.regDate;
-        attStatusObj.attendanceAccount = key.attendanceAccount;
-        activeButtonText = key.adminStatus == 'Y' ? '등록' : '해제'
+        attStatusObj.offlineCount = key.offlineCount;
+        attStatusObj.onlineCount = key.onlineCount;
+        activeButtonText = key.adminStatus == 'Y' ? '등록' : '강퇴'
         activeButton = <Button variant="outlined"
         onClick={async()=>{permitActive(key.accountId)}}
         >{activeButtonText}</Button>
@@ -103,9 +104,6 @@ function AdiminPage(){
         })
 
         newStatusRows.push(attStatusObj);
-        newStatusRows.sort(function(a,b){
-          return a.attendanceAccount - b.attendanceAccount;
-        })
       })
 
       SetStatusRows(newStatusRows);
@@ -116,28 +114,22 @@ function AdiminPage(){
 
 
   const columns = [
-    { id: 'nickname', label: 'Name', minWidth: 50 },
-    // {
-    //   id: 'regDate',
-    //   label: '가입날짜',
-    //   minWidth: 80,
-    //   align: 'center',
-    // },
+    { id: 'nickname', label: 'Name', minWidth: 30 },
     {
-      id: 'attendanceAccount',
-      label: '출석횟수',
-      minWidth: 50,
+      id: 'offlineCount',
+      label: '오프라인',
+      minWidth: 60,
       align: 'center',
     },
     {
-      id: 'activeAccount',
-      label: '사용자활성화여부',
-      minWidth: 80,
+      id: 'onlineCount',
+      label: '온라인',
+      minWidth: 60,
       align: 'center',
     },
     {
       id: 'activeAccountRegistration',
-      label: '사용자활성화해제',
+      label: '사용자강퇴',
       minWidth: 80,
       align: 'center',
     },

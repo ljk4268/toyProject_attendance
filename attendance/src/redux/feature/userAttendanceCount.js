@@ -2,7 +2,7 @@ import { createSlice} from '@reduxjs/toolkit';
 
 let userAttendanceCount = createSlice({
   name: 'userAttendanceCount',
-  initialState: 0,
+  initialState: [],
   reducers:{
     userCountUpdate(state, action){
       return state = action.payload;
