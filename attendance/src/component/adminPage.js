@@ -22,7 +22,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
-import { useNavigate, useNavigationType } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -76,7 +76,7 @@ function AdiminPage(){
     async function attendStatusMonth() {
       let attStatus = await attendanceStatus(year, month);
       let attStatusArr = attStatus.data.attendanceList;
-      
+
       let activeAll = await axios.get(process.env.REACT_APP_API_ROOT + "/active-all");
       let activeAllArr = activeAll.data.accountInfo;
       let newStatusRows = [];
@@ -142,6 +142,7 @@ function AdiminPage(){
     <NavbarBottom/>
     <MainLogo/>
     <p className="userHi">관리자페이지!</p>
+    <p className="userHi">오프라인 및 온라인 출석횟수를 확인하실 수 있습니다.</p>
     <div className="adminArrow">
       <ArrowBackIosIcon onClick={()=>{oneMonthCalculation(-1)}}/>
       <Typography className="month-arrow">{month}월</Typography>

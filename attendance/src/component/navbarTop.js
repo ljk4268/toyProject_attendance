@@ -100,7 +100,7 @@ function NavbarTop() {
       </MenuItem>
       <MenuItem>
         <Typography variant="inherit">
-          Together : <strong>{userOfflineCount}</strong>회 , Alone : <strong>{userOnlineCount}</strong>회
+          오프라인모임 : <strong>{userOfflineCount}</strong>회 , 혼자 : <strong>{userOnlineCount}</strong>회
         </Typography>
       </MenuItem>
       <Divider />
