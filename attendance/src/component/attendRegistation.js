@@ -40,6 +40,7 @@ function AttendRegistration() {
   const location = useLocation();
   const popUpDate = location.state.clickdate;
 
+  //redux
   const userInfo = useSelector((state) => {
     return state.user;
   });
@@ -389,13 +390,17 @@ function AttendRegistration() {
 
   return (
     <>
+
       <NavbarTop />
       <MainLogo />
 
-      {editMode == false ? (
         <div>
-          {/* editMode가 false 일 때 보여지는 UI */}
-          <p className="userHi"> {user} 님, 출석등록을 하시겠습니까? </p>
+
+          {
+            editMode == false ? <p className="userHi"> {user} 님, 출석등록을 하시겠습니까? </p> 
+            : 
+            <p className="userHi"> {user} 님, 출석 수정 하시겠습니까? </p>
+          }
 
           <div className="main-bottom">
             <p className="todayList">
@@ -428,45 +433,8 @@ function AttendRegistration() {
           {/* alert 창 */}
           {entryAlert}
           {alreadyAttended}
+          
         </div>
-      ) : (
-        // editMode가 true 일 때 보여지는 UI
-        <div>
-          <p className="userHi"> {user} 님, 출석 수정 하시겠습니까? </p>
-
-          <div className="main-bottom">
-            <p className="todayList">
-              <span className="calendarIcon">
-                <CalendarMonthOutlinedIcon />
-              </span>
-              {date} ({dayOfWeek})
-            </p>
-
-            {/* 모임장소 선택하는 부분  */}
-            <div>
-              <p className="todayList">참석할 모임장소 선택!</p>
-
-              {placeInput}
-
-              {showPlaces}
-            </div>
-
-            <p className="todayList">식사 하실분!</p>
-
-            {/* 식사여부 선택하는 부분  */}
-            {seletedMeal}
-
-            <p className="todayList"></p>
-
-            {/* 출석등록 버튼  */}
-            {attendanceButton}
-          </div>
-
-          {/* alert 창 */}
-          {entryAlert}
-          {alreadyAttended}
-        </div>
-      )}
     </>
   );
 }
