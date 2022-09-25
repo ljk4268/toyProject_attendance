@@ -18,11 +18,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
-import { blue } from "@mui/material/colors";
+import { blue, pink } from "@mui/material/colors";
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 
 
@@ -56,6 +58,20 @@ function NavbarTop() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  let offlineIcon = null;
+  if (userOfflineCount >= 2) {
+    offlineIcon =  <SentimentVerySatisfiedIcon sx={{ color: blue[400], verticalAlign:'middle' }}/>
+  } else {
+    offlineIcon =  <SentimentVeryDissatisfiedIcon sx={{ color: pink[400], verticalAlign:'middle' }}/>
+  }
+
+  let onlineIcon = null;
+  if (userOnlineCount >= 1) {
+    onlineIcon =  <SentimentVerySatisfiedIcon sx={{ color: blue[400], verticalAlign:'middle' }}/>
+  } else {
+    onlineIcon =  <SentimentVeryDissatisfiedIcon sx={{ color: pink[400], verticalAlign:'middle' }}/>
+  }
 
 
   let alertMenu = <Menu
@@ -100,7 +116,12 @@ function NavbarTop() {
       </MenuItem>
       <MenuItem>
         <Typography variant="inherit">
-          오프라인모임 : <strong>{userOfflineCount}</strong>회 , 혼자 : <strong>{userOnlineCount}</strong>회
+          오프라인모임 : <strong>{userOfflineCount}</strong>회 / 2회 {offlineIcon}
+        </Typography>
+      </MenuItem>
+      <MenuItem>
+        <Typography variant="inherit">
+          혼자 : <strong>{userOnlineCount}</strong>회 / 1회 {onlineIcon}
         </Typography>
       </MenuItem>
       <Divider />
@@ -134,7 +155,7 @@ function NavbarTop() {
       </MenuItem>
     </Menu>
     
-
+  
 
 
   return (
