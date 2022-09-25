@@ -11,14 +11,11 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import NoMealsOutlinedIcon from '@mui/icons-material/NoMealsOutlined';
 import RestaurantOutlinedIcon from '@mui/icons-material/RestaurantOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-
-
 
 //함수
 import { postAttendanceCancel } from '../../module/user';
@@ -33,22 +30,21 @@ import { getPlaces } from '../../module/places'
 
 export default function AttendanceTagUi(props) {
 
-  let dispatch = useDispatch();
-  let navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  let reduxState = useSelector((state) => {
+  const reduxState = useSelector((state) => {
     return state;
   });
-  let calendarClick = reduxState.calendarClick
-  let userAccountId = reduxState.userAccountId
+  const calendarClick = reduxState.calendarClick
 
+  // props로 전달받은 유저정보 변수들
+  const name = props.dateAttendanceNames.nickname
+  const meal = props.dateAttendanceNames.mealStatus
+  const locationId = props.dateAttendanceNames.locationId
+  const accountId = props.dateAttendanceNames.accountId
+  const attendanceId = props.dateAttendanceNames.attendanceId
 
-  // 유저정보 변수들
-  let name = props.dateAttendanceNames.nickname
-  let meal = props.dateAttendanceNames.mealStatus
-  let locationId = props.dateAttendanceNames.locationId
-  let accountId = props.dateAttendanceNames.accountId
-  let attendanceId = props.dateAttendanceNames.attendanceId
 
   // 아이콘태그 변수들
   let mealIconTag = null;
@@ -64,7 +60,6 @@ export default function AttendanceTagUi(props) {
   }
 
   // alert창
-
   const handleClickOpen = () => {
     props.setCancelAlertOpen(true);
   };
@@ -84,7 +79,6 @@ export default function AttendanceTagUi(props) {
 
   // 출석 수정 && 취소버튼 && 취소버튼 누를 때 나오는 알림창
   if ( accountId == props.userAccountId.accountId ){
-
     // 출석취소버튼
     cancelIconTag = <IconButton edge="end" aria-label="delete" 
     onClick={handleClickOpen}>
@@ -136,26 +130,27 @@ export default function AttendanceTagUi(props) {
 
   }
 
+  return (
+  <List component="div" disablePadding key={props.j}>
+    <ListItem sx={{pl: paddingLeftValue}}>
+      
+      <ListItemAvatar>
+        <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+        <EmojiPeopleOutlinedIcon />
+        </Avatar>
+      </ListItemAvatar>
 
+      {mealIconTag}
 
+      <ListItemText primary={name} />
+      
+      {editIconTag}
+      {cancelIconTag}
+      {cancelAlert}
 
-  return <List component="div" disablePadding key={props.j}>
-  <ListItem sx={{pl: paddingLeftValue}}>
-    <ListItemAvatar>
-      <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-      <EmojiPeopleOutlinedIcon />
-      </Avatar>
-    </ListItemAvatar>
-
-    {mealIconTag}
-
-    <ListItemText primary={name} />
-    
-    {editIconTag}
-    {cancelIconTag}
-    {cancelAlert}
-
-  </ListItem>
-</List>
+    </ListItem>
+  </List>
+  
+  )
   
 }
