@@ -99,7 +99,21 @@ function MainPage() {
 
     if (dateAttendanceNames == 0) {
       setNotificationMessage(true);
-    }   
+    }
+
+    async function getUserAttendanceCount(){
+      const session = await axios.get(
+        process.env.REACT_APP_API_ROOT + "/atndn/my-attendance-count"
+      );
+      
+      if(session.data.success === "ok"){
+        dispatch(userCountUpdate(session.data.myAttendance))
+      } else {
+        dispatch(userCountUpdate('error'))
+      }
+
+    }
+    getUserAttendanceCount()
   }, [dateAttendanceNames]);
 
 

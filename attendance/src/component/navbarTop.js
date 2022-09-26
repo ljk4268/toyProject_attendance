@@ -1,9 +1,8 @@
-import axios from "axios";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { signOut } from '../module/user'
-import { userCountUpdate } from "../redux/feature/userAttendanceCount";
+
 
 //mui라이브러리
 import AppBar from '@mui/material/AppBar';
@@ -32,17 +31,16 @@ import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDiss
 
 
 function NavbarTop() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const reduxState = useSelector((state) => {
     return state;
   });
   const user = reduxState.user.nickname;
   const userAdminStatus = reduxState.user.adminStatus;
+  const userAttendanceCount = reduxState.userAttendanceCount[0];
   const [anchorEl, setAnchorEl] = useState(null);
   const alertOpen = Boolean(anchorEl);
   const [open, setOpen] = useState(false);
-  const [userAttendanceCount, setUserAttendanceCount] = useState({offlineCount: 0, onlineCount:0 });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -58,24 +56,6 @@ function NavbarTop() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  useEffect(()=>{
-    async function getUserAttendanceCount(){
-      const session = await axios.get(
-        process.env.REACT_APP_API_ROOT + "/atndn/my-attendance-count"
-      );
-      
-      if(session.data.success === "ok"){
-        setUserAttendanceCount(session.data.myAttendance[0])
-        dispatch(userCountUpdate(session.data.myAttendance))
-      } else {
-        dispatch(userCountUpdate('error'))
-      }
-
-    }
-    getUserAttendanceCount()
-
-  },[])
 
   let offlineIcon = null;
   if (userAttendanceCount.offlineCount >= 2) {
@@ -145,7 +125,6 @@ function NavbarTop() {
       <Divider />
       <MenuItem onClick={()=>{
         handleClickOpen();
-        // navigate("/noticepage");
       }}>
         <ListItemIcon>
           <NotificationsActiveIcon fontSize="small" sx={{ color: blue[400] }}/>
