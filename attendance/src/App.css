@@ -44,7 +44,7 @@ body > #root > div {
 }
 
 .fc-col-header-cell-cushion {
-  font-size: 1.1rem;
+  font-size: 0.8rem;
   font-weight: 500;
   opacity: 0.5;
 }
@@ -89,7 +89,7 @@ body > #root > div {
 }
 
 .fc .fc-daygrid-day-number {
-  font-size: 0.9rem;
+  font-size: 0.6rem;
 }
 
 .fc-daygrid-dot-event .fc-event-title {
@@ -101,6 +101,11 @@ body > #root > div {
   font-family: "Nanum Gothic", sans-serif;
   font-size: 12px;
 }
+
+.fc .fc-daygrid-body-natural .fc-daygrid-day-events{
+  margin-bottom: 1em;
+}
+
 
 .loding {
   position: absolute;
@@ -132,7 +137,7 @@ body > #root > div {
 
 #logo-main,
 #logo-main2 {
-  font-size: 45px;
+  font-size: 2.4rem;
   font-weight: 600;
 }
 
@@ -161,10 +166,9 @@ body > #root > div {
   margin-bottom: 10%;
 }
 
-/* .login-logo {
-  padding: 10% 15%;
-  text-align: center;
-} */
+.fc .fc-button{
+  padding: 0.2em 0.35em;
+}
 
 .login-line {
   display: flex;
@@ -237,10 +241,10 @@ a {
 .userHi {
   text-align: left;
   padding-left: 5vw;
-  padding-bottom: 2%;
+  padding-bottom: 1%;
   margin: 0;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.9rem;
   box-sizing: border-box;
 }
 .userHi2 {
@@ -249,7 +253,7 @@ a {
   padding-bottom: 10%;
   margin: 0;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.9rem;
   box-sizing: border-box;
 }
 
@@ -388,7 +392,7 @@ a {
 
   #logo-main,
   #logo-main2 {
-    font-size: 70px;
+    font-size: 2.7rem;
     font-weight: 600;
   }
   #logo-main2 {
@@ -397,18 +401,18 @@ a {
 
   .userHi {
     padding-bottom: 1%;
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .userHi2 {
     padding-bottom: 7%;
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .todayList {
     padding-bottom: 10px;
     font-weight: 500;
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .navbar {
@@ -426,6 +430,12 @@ a {
 
   .fc .fc-toolbar-title {
     font-size: 1.8rem;
+  }
+  .fc .fc-daygrid-day-number {
+    font-size: 0.8rem;
+  }
+  .fc-col-header-cell-cushion {
+    font-size: 1rem;
   }
 
   .circularprogress {
