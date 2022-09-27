@@ -1,18 +1,18 @@
 import { useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { ConstructionSharp } from '@mui/icons-material';
 
 
 function Login(){
   
-  const serverUrl = 'http://3.36.247.2';
-  // const serverUrl = 'http://localhost:3000';
+  // const serverUrl = 'http://3.36.247.2';
+  const serverUrl = 'http://localhost:3000';
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(()=>{
     async function getUserInfo(){
-      
       const session = await axios.post(process.env.REACT_APP_API_ROOT + '/session')
       if(session.data.success === 'ok') {
         return navigate('/main')
@@ -43,10 +43,7 @@ function Login(){
       >
         <img src={process.env.PUBLIC_URL + '/kakaotalk_logo_icon_147272.png'} 
         className="kakao-login"/>
-        {/* <div className="shadow"
-          onClick={()=>{
-            window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=683a25bcc3f527d02f9db7c483c99196&redirect_uri=${serverUrl}/oauth/kakao/callback&response_type=code`}}>
-        </div> */}
+        
       </div>
     </div>
         
