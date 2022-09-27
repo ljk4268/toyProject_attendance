@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { signOut } from '../module/user'
@@ -19,13 +19,15 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
-import { blue, pink } from "@mui/material/colors";
+import { blue, pink, common } from "@mui/material/colors";
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import Avatar from '@mui/material/Avatar';
 
 
 
@@ -70,6 +72,7 @@ function NavbarTop() {
   } else {
     onlineIcon =  <SentimentVeryDissatisfiedIcon sx={{ color: pink[400], verticalAlign:'middle' }}/>
   }
+
 
 
   let alertMenu = <Menu
@@ -175,9 +178,12 @@ function NavbarTop() {
                 aria-expanded={alertOpen ? 'true' : undefined}
                 color="inherit"
                 sx={{ ml: -4 }}
+                id = "smile-button"
               >
                 
-                  <InsertEmoticonOutlinedIcon sx={{ color: blue[400] }}/>
+                <Avatar sx={{ bgcolor: pink[100], color: pink[400] }}>
+                  <ChatOutlinedIcon />
+                </Avatar>
                 
               </IconButton>
             </Tooltip>

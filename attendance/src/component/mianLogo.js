@@ -2,7 +2,7 @@ function MainLogo(){
 
   return (
     <div className="App">
-      <div id="main-logos"className="main-top">
+      <div className="main-top">
         <div>
           <div id="logo-main" className="greeting">
           Well Begun is

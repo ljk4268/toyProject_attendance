@@ -16,6 +16,7 @@ import AttendanceTagUi from "./partial/attendaceTagUi";
 import { userCountUpdate } from "../redux/feature/userAttendanceCount";
 
 //mui
+import * as React from 'react';
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import { blue,pink } from "@mui/material/colors";
@@ -35,6 +36,18 @@ import DialogContentText from "@mui/material/DialogContentText";
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+
 
 //함수
 function MainPage() {
@@ -50,13 +63,16 @@ function MainPage() {
   const [placeDeleteOpen, setPlaceDeleteOpen] = useState(false);
   const [deleteLocatinId, setDeleteLocatinId] = useState(0);
   const [nicknameEditopen, setNicknameEditOpen] = useState(false);
-  
+
   const reduxState = useSelector((state) => {
     return state;
   });
   const user = reduxState.user.nickname;
   const userAccountId = reduxState.userAccountId;
   const userAdminStatus = reduxState.user.adminStatus;
+
+ 
+
 
 
   useEffect(() => {
@@ -178,13 +194,16 @@ function MainPage() {
       <NavbarBottom />
       <MainLogo />
 
-      <p className="userHi">{user}님 <AutoFixHighIcon
-      fontSize="small"
-      sx={{ color: pink[400] }}
-      onClick={()=>{handleClickOpen()}}
-      ></AutoFixHighIcon></p>
-      <p className="userHi2">반가워요!!</p>
-
+      <p className="userHi">
+        {user}님, <AutoFixHighIcon
+                  fontSize="small"
+                  sx={{ color: pink[400] }}
+                  onClick={()=>{handleClickOpen()}}
+                  ></AutoFixHighIcon>
+      </p>
+      <p className="userHi2">반가워요!</p>
+      
+        
       <div className="main-bottom">
         <p className="todayList">오늘 공부하는 사람!</p>
 

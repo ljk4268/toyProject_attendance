@@ -44,7 +44,7 @@ body > #root > div {
 }
 
 .fc-col-header-cell-cushion {
-  font-size: 3vw;
+  font-size: 1.1rem;
   font-weight: 500;
   opacity: 0.5;
 }
@@ -59,7 +59,7 @@ body > #root > div {
 }
 
 .fc .fc-toolbar-title {
-  font-size: 5vw;
+  font-size: 1.5rem;
   font-weight: 400;
   padding-top: 2vw;
 }
@@ -70,7 +70,7 @@ body > #root > div {
   transform: translateX(-43%);
   width: 3em;
   height: 3em;
-  font-size: 0.6em;
+  font-size: 0.6rem;
   text-align: center;
   background-color: #f8eb76;
   opacity: 70%;
@@ -89,7 +89,7 @@ body > #root > div {
 }
 
 .fc .fc-daygrid-day-number {
-  font-size: 2vw;
+  font-size: 0.9rem;
 }
 
 .fc-daygrid-dot-event .fc-event-title {
@@ -129,6 +129,7 @@ body > #root > div {
   color: red;
 }
 
+
 #logo-main,
 #logo-main2 {
   font-size: 45px;
@@ -139,19 +140,31 @@ body > #root > div {
   display: inline-block;
 }
 
-.in-main {
+/* .in-main {
   font-family: "Nanum Myeongjo", serif !important;
-  font-size: 10vw !important;
+  font-size: 7vw !important;
   font-weight: 800 !important;
-}
+} */
 
 .login-page {
-  padding-top: 20%;
+  text-align:center;
+  position:absolute; 
+  width: 100%;
+  top:50%;
+  transform: translateY(-85%);
 }
-.login-logo {
+
+.login-page-logo {
+  font-family: "Nanum Myeongjo", serif !important;
+  font-size: 9vw;
+  width: 100%;
+  margin-bottom: 10%;
+}
+
+/* .login-logo {
   padding: 10% 15%;
   text-align: center;
-}
+} */
 
 .login-line {
   display: flex;
@@ -227,7 +240,7 @@ a {
   padding-bottom: 2%;
   margin: 0;
   font-weight: 500;
-  font-size: 3.7vw;
+  font-size: 1rem;
   box-sizing: border-box;
 }
 .userHi2 {
@@ -236,7 +249,7 @@ a {
   padding-bottom: 10%;
   margin: 0;
   font-weight: 500;
-  font-size: 3.7vw;
+  font-size: 1rem;
   box-sizing: border-box;
 }
 
@@ -255,9 +268,8 @@ a {
 .todayList {
   border-bottom: 1px solid rgb(192, 189, 189);
   padding-bottom: 10px;
-  text-align: left;
   font-weight: 500;
-  font-size: 4vw;
+  text-align: left;
 }
 
 .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
@@ -301,6 +313,11 @@ a {
   padding-top: 5%;
 }
 
+.attendance-count-container{
+  margin: 0 5vw 0vw 5vw;
+  padding-bottom: 7%
+}
+
 /* 미디어쿼리 */
 @media screen and (min-width: 768px) {
 
@@ -312,8 +329,18 @@ a {
   }
 
   .login-page {
-    padding-top: 0%;
+    width: 100%;
   }
+  .login-page-logo {
+    margin-bottom: 10%;
+  }
+  .login-page-logo-font {
+    font-size: 5vw;
+    font-weight: 700;
+    box-shadow: inset 0 -35% 0 rgb(251, 249, 115);
+    /* display: inline-block; */
+  }
+  
   .login-logo {
     padding: 10% 20%;
     padding-top: 2%;
@@ -369,19 +396,19 @@ a {
   }
 
   .userHi {
-    font-size: 1.3vw;
     padding-bottom: 1%;
+    font-size: 1.1rem;
   }
 
   .userHi2 {
     padding-bottom: 7%;
-    font-size: 1.3vw;
+    font-size: 1.1rem;
   }
 
   .todayList {
     padding-bottom: 10px;
-    font-weight: 400;
-    font-size: 16px;
+    font-weight: 500;
+    font-size: 1.1rem;
   }
 
   .navbar {
@@ -398,14 +425,7 @@ a {
   }
 
   .fc .fc-toolbar-title {
-    font-size: 1.8em;
-  }
-
-  .fc-col-header-cell-cushion {
-    font-size: 1.2em;
-  }
-  .fc .fc-daygrid-day-number {
-    font-size: 1em;
+    font-size: 1.8rem;
   }
 
   .circularprogress {
@@ -417,12 +437,6 @@ a {
 @media screen and (max-width: 768px) {
   .css-w54wyp {
     padding-bottom: 80px !important;
-  }
-  .fc-col-header-cell-cushion {
-    font-size: 3vw;
-  }
-  .fc .fc-daygrid-day-number {
-    font-size: 2vw;
   }
   .inactive-container {
     padding-bottom: 30vw;
