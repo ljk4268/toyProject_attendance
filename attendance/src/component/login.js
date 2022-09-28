@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { ConstructionSharp } from '@mui/icons-material';
+
 
 
 function Login(){
   
-  const serverUrl = 'http://3.36.247.2';
-  // const serverUrl = 'http://localhost:3000';
+  // const serverUrl = 'http://3.36.247.2';
+  const serverUrl = 'http://localhost:3000';
 
   const navigate = useNavigate();
 
@@ -28,10 +28,12 @@ function Login(){
       <div className="login-page">
         <div className="login-page-logo">
           <div className='login-page-logo-font'>
-          Well Begun is
+          {/* Well Begun is */}
+          Study With Me
           </div>
           <div className='login-page-logo-font'>
-            Half Done !
+            {/* Half Done ! */}
+            
           </div>
         </div>
       <div className="login-line">
