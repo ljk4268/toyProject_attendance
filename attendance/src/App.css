@@ -126,6 +126,10 @@ body > #root > div {
   margin-right: 8px;
 }
 
+.css-w54wyp {
+  padding-bottom: 6rem !important;
+}
+
 /* 주말 색깔 지정 */
 .fc-day-sat {
   color: blue;
@@ -422,9 +426,6 @@ a {
     max-width: 768px;
     right: auto !important;
   }
-  .css-w54wyp {
-    padding-bottom: 10% !important;
-  }
   .fc {
     max-width: 700px !important;
     margin: auto;
@@ -448,9 +449,6 @@ a {
 }
 
 @media screen and (min-width: 576px) {
-  .css-w54wyp {
-    padding-bottom: 80px !important;
-  }
   .inactive-container {
     padding-bottom: 30vw;
   }
