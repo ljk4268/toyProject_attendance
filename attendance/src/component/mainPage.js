@@ -82,7 +82,7 @@ function MainPage() {
           adminStatus: session.data.attendanceUser.adminStatus,
           accountId: session.data.attendanceUser.accountId,
         }));
-        return navigate("/main");
+        // return navigate("/main");
       } 
       else {
         return navigate("/");

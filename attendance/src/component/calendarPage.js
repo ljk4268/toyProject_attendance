@@ -58,9 +58,10 @@ function CalendarPage() {
 
       if (session.data.success === "ok") {
         dispatch(userAcId(session.data.attendanceUser.accountId));
-        return navigate("/calendar");
+        // return navigate("/calendar");
+      } else{
+        return navigate("/");
       }
-      return navigate("/");
     }
     getUserInfo();
   }, []);
