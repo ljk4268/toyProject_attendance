@@ -6,18 +6,26 @@ import { useNavigate } from "react-router-dom";
 
 function Login(){
   
-  // const serverUrl = 'http://3.36.247.2';
-  const serverUrl = 'http://localhost:3000';
+  // 실제 서버
+  // const serverUrl = 'https://www.studywithme.p-e.kr';
+
+  // 테스트용 서버
+  const serverUrl = process.env.REACT_APP_HOME_URL;
+
+  // 개발서버
+  // const serverUrl = 'http://localhost:3000';
 
   const navigate = useNavigate();
 
   useEffect(()=>{
     async function getUserInfo(){
       const session = await axios.post(process.env.REACT_APP_API_ROOT + '/session')
+
       if(session.data.success === 'ok') {
         return navigate('/main')
-      } 
-      return navigate('/')
+      } else {
+        return navigate('/')
+      }
 
     }
     getUserInfo()

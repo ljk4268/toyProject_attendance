@@ -36,16 +36,6 @@ import DialogContentText from "@mui/material/DialogContentText";
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 
 
@@ -92,8 +82,9 @@ function MainPage() {
           adminStatus: session.data.attendanceUser.adminStatus,
           accountId: session.data.attendanceUser.accountId,
         }));
-        // return navigate("/main");
-      } else {
+        return navigate("/main");
+      } 
+      else {
         return navigate("/");
       }
     }

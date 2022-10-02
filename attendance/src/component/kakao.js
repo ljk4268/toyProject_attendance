@@ -9,8 +9,12 @@ import Box from '@mui/material/Box';
 function Kakao(){
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  // const serverUrl = 'http://3.36.247.2';
-  const serverUrl = 'http://localhost:3000';
+  // 실제 서버
+  // const serverUrl = 'https://www.studywithme.p-e.kr';
+  // 테스트용 서버
+  const serverUrl = process.env.REACT_APP_HOME_URL;
+  // 개발서버
+  // const serverUrl = 'http://localhost:3000';
 
   useEffect(()=>{
     async function kakaoToken(){

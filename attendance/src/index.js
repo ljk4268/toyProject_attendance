@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import store from './redux/store';
 import {persistStore} from 'redux-persist';
 import {PersistGate} from 'redux-persist/integration/react';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 let persistor = persistStore(store)
 
@@ -15,12 +16,14 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store} basename={process.env.PUBLIC_URL}>
     <PersistGate loading={null} persistor={persistor}>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
           <App/>
       </BrowserRouter>
     </PersistGate>
   </Provider>
 );
+
+serviceWorkerRegistration.register();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
