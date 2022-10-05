@@ -40,6 +40,8 @@ function AdiminPage(){
   const [statusRows, SetStatusRows] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(50);
+
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -50,12 +52,16 @@ function AdiminPage(){
   };
 
 
+  /**
+   * 서버에 year과 month를 전달하기 위해 날짜 변수를 계산하여 지정하는 함수.
+   * @param {num} +1 or -1 을 받아 다음달 혹은 이전달을 계산한다.  
+   */
   function oneMonthCalculation(num){
   
     let sel_month = num; 
     todayDate.setMonth(todayDate.getMonth() + sel_month ); 
     SetTodayDate(todayDate)
-    
+
     let func_year   = todayDate.getFullYear();
     let func_month   = ('0' + (todayDate.getMonth() +  1 )).slice(-2);
 
@@ -64,6 +70,10 @@ function AdiminPage(){
 
   }
 
+  /**
+   * 
+   * @param {_accountId} 사용자의 accountId를 서버에 전달하여 관리자가 맞는지 확인한다.
+   */
   async function permitActive(_accountId){
     const permitInfo = await axios.post(process.env.REACT_APP_API_ROOT + "/active-account", {
       accountId: _accountId
@@ -79,9 +89,9 @@ function AdiminPage(){
 
       let activeAll = await axios.get(process.env.REACT_APP_API_ROOT + "/active-all");
       let activeAllArr = activeAll.data.accountInfo;
+
       let newStatusRows = [];
       let activeButton = null;
-      let activeButtonText = null;
 
 
       attStatusArr.map( key =>{
@@ -91,10 +101,9 @@ function AdiminPage(){
         attStatusObj.regDate = key.regDate;
         attStatusObj.offlineCount = key.offlineCount;
         attStatusObj.onlineCount = key.onlineCount;
-        activeButtonText = key.adminStatus == 'Y' ? '등록' : '강퇴'
         activeButton = <Button variant="outlined"
         onClick={async()=>{permitActive(key.accountId)}}
-        >{activeButtonText}</Button>
+        >강퇴</Button>
         attStatusObj.activeAccountRegistration = activeButton
         
         activeAllArr.map( activekey =>{

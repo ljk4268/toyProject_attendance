@@ -11,6 +11,8 @@ html {
 }
 body { 
   min-height: 100vh; 
+  overflow: visible !important;
+  padding-right: 0 !important;
 }
 
 #root {
@@ -128,6 +130,11 @@ body > #root > div {
 
 .css-w54wyp {
   padding-bottom: 6rem !important;
+}
+
+.css-11b3ww9-MuiPaper-root-MuiAppBar-root,
+.css-1d6a3hl-MuiPaper-root-MuiAppBar-root {
+  padding-right: 0 !important;
 }
 
 /* 주말 색깔 지정 */
@@ -319,6 +326,7 @@ a {
 
 .inactive-container {
   padding-top: 5%;
+  padding-bottom: 7rem;
 }
 
 .attendance-count-container{
@@ -450,7 +458,7 @@ a {
 
 @media screen and (min-width: 576px) {
   .inactive-container {
-    padding-bottom: 30vw;
+    padding-bottom: 10rem;
   }
 
   .login-page-logo {
