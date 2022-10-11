@@ -1,18 +1,15 @@
 
 # 시작이반 출석 WepApp
 ## Description
----
 모임의 `출석체크를 간편하게 하기 위해` 만들어졌습니다. 
 
 `모임장소 등록` 및 `출석 등록` `수정` `삭제`가 가능하며, `개인별 출석현황 체크`, `관리자의 경우 모든 사용자들의 출석현황`을 한 눈에 볼 수 있습니다. 
 
 ## 테스트서버 링크(Links)
----
 [시작이반](https://www.study-test-dev.p-e.kr/ "테스트서버로 이용해보기")
 
 
 
 ## 사용방법
----
 ![IMG_6661](https://user-images.githubusercontent.com/79354149/194974191-276e7497-eeac-4a80-94bb-fac35149de13.JPG)
 ![IMG_6662](https://user-images.githubusercontent.com/79354149/194974194-3d8a5349-aea4-449b-b5db-f37b75bb1fe6.JPG)
