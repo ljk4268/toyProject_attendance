@@ -1,10 +1,28 @@
 
-# 시작이반 출석 WepApp
+# 시작이반 출석 WepApp  
+![시작이반](https://user-images.githubusercontent.com/79354149/195223232-e543ad80-7205-4bbb-ae88-876d51cce07e.jpg)
+
+
 ## Description
 
-제가 활동하고 있는 자기계발 모임의 `출석체크를 간편하게 하기 위해` 백엔드 개발자 1분과 함께 직접 만들었습니다. 
+직접 기획하고 구상하여 구현한, 모임의 `출석체크를 간편하게 하기 위해 만든 프로젝트` 입니다. 
 
 `모임장소 등록` 및 `출석 등록` `수정` `삭제`가 가능하며, `개인별 출석현황 체크`, `관리자의 경우 모든 사용자들의 출석현황`을 한 눈에 볼 수 있습니다. 
+
+### Tech Stack  
+- Javascript(ES6)
+- CSS
+- React
+- Redux Toolkit
+
+### What did I do
+- MUI라이브러리로 UI 구현
+- FullCalendar로 달력 구현
+- 카카오로그인 API 사용
+- Redux 및 state로 상태관리
+- axios로 서버 통신
+- 개발환경에서 프록시(proxy) 구축
+- PWA 적용 + workbox로 서비스워커 customize
 
 ## 테스트서버 링크(Links)
 [시작이반](https://www.study-test-dev.p-e.kr/ "테스트서버로 이용해보기")
@@ -42,7 +60,7 @@
 
 ---
 
-###관리자페이지 기능
+### 관리자페이지 기능
 
 - 관리자가 모든 사용자들의 출석횟수를 확인할 수 있습니다.  
 - 정해진 출석규정을 지키지 못한 사용자의 경우 강퇴할 수 있습니다.  
