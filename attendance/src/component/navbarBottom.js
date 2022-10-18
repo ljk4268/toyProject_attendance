@@ -33,7 +33,7 @@ function NavbarBottom() {
 
   return (
         // {/* 하단 navbar */}
-        <AppBar position="fixed"  sx={{  top:'auto', bottom: 0 }} className="navbar">
+        <AppBar position="fixed"  sx={{  top:'auto', bottom: 0 }} className="navbar" style ={{paddingRight: "0px"}}>
           <Toolbar sx={{  display:'flex', justifyContent:'space-evenly',backgroundColor: '#fff'  }}>
 
             <IconButton aria-label="open drawer" onClick={()=>{navigate('/main')}}>

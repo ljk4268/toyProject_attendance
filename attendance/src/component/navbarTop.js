@@ -163,7 +163,7 @@ function NavbarTop() {
       <Box sx={{ flexGrow: 1, paddingBottom:'25%'}}>
 
       {/* 상단 navbar */}
-        <AppBar  position="fixed" className='navbar'>
+        <AppBar  position="fixed" className='navbar' style ={{paddingRight: "0px"}}>
           <Toolbar style={{ backgroundColor: "#fbfbf9", color: "#000" }} >
             <Typography color="inherit" align="center" component="div" sx={{ flexGrow: 1, fontSize: '17px', fontWeight: '500' }} >
             시작이 반

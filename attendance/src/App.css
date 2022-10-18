@@ -433,6 +433,7 @@ a {
   .navbar {
     max-width: 768px;
     right: auto !important;
+    padding-right: 0px !important;
   }
   .fc {
     max-width: 700px !important;
