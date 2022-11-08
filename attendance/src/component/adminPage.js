@@ -81,6 +81,30 @@ function AdiminPage(){
     if(permitInfo.data.success == 'ok') setCheck(!check)
   }
 
+  const excelDownload = () =>{
+    axios({
+      method: 'POST',
+      url: process.env.REACT_APP_API_ROOT + "/atndn/attendance-excel",
+      responseType: 'blob',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      data: {
+        "year" : year, 
+        "month" : month
+      }
+    })
+    .then( response =>{
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: response.headers['content-type'] }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', '출석현황.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      URL.revokeObjectURL(url);
+    })
+
+  }
 
   useEffect(()=>{
     async function attendStatusMonth() {
@@ -152,6 +176,12 @@ function AdiminPage(){
     <MainLogo/>
     <p className="userHi">관리자페이지!</p>
     <p className="userHi">오프라인 및 온라인 출석횟수를 확인하실 수 있습니다.</p>
+    <p className='userHi'>
+      <Button 
+        variant="outlined"
+        onClick={excelDownload}
+      >익형아 엑셀 다운받어!</Button>
+    </p>
     <div className="adminArrow">
       <ArrowBackIosIcon onClick={()=>{oneMonthCalculation(-1)}}/>
       <Typography className="month-arrow">{month}월</Typography>
@@ -212,6 +242,8 @@ function AdiminPage(){
       fullWidth
       onClick={()=>{navigate('/inactive-user-page')}}
       >비활성 사용자 목록 보러가기</Button>
+      
+
     </div>
     
     </div>
