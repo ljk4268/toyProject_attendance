@@ -5,15 +5,16 @@
 
 ## Description
 
-직접 기획하고 구상하여 구현한, 모임의 `출석체크를 간편하게 하기 위해 만든 프로젝트` 입니다. 
+직접 기획하고 구현한, 모임의 `출석체크를 간편하게 하기 위해 만든 프로젝트` 입니다. 
 
 `모임장소 등록` 및 `출석 등록` `수정` `삭제`가 가능하며, `개인별 출석현황 체크`, `관리자의 경우 모든 사용자들의 출석현황`을 한 눈에 볼 수 있습니다. 
 
 ### Tech Stack  
-- Javascript(ES6)
+- HTML
 - CSS
+- Javascript
 - React
-- Redux Toolkit
+- Redux-Toolkit
 
 ### What did I do
 - MUI라이브러리로 UI 구현
