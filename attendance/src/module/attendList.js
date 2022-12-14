@@ -34,10 +34,6 @@ export async function saveAttendList(calendarYear, calendarMonth){
         attListObj[att.attendanceDate].name.push(att.nickname);
       }
 
-      // 너는 이것을 무조건 잘 기억해야해. 
-      // 깊은복사를 생각하지 못했던 실수였는데 
-      // 어떤 원인이였고 어떻게 해결해야했느닞~~~~ 면접떄!
-
     }
 
   })

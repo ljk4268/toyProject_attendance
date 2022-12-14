@@ -346,7 +346,7 @@ function PlaceDeleteAlert(props) {
       <DialogActions>
         <Button onClick={handlePlaceDeleteAlertClose}>아니요</Button>
         <Button
-          onClick={async () => {
+          onClick={async() => {
             await deletePlace(locationId);
             await getPlaces(props.setDatePlaces, props.date);
             await getDateAttendance(

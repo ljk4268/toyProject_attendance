@@ -10,7 +10,6 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import Menu from '@mui/material/Menu';
@@ -28,8 +27,7 @@ import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfi
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import Avatar from '@mui/material/Avatar';
-
-
+import CheckIcon from '@mui/icons-material/Check';
 
 
 function NavbarTop() {
@@ -73,6 +71,14 @@ function NavbarTop() {
     onlineIcon =  <SentimentVeryDissatisfiedIcon sx={{ color: pink[400], verticalAlign:'middle' }}/>
   }
 
+  const offlineScore = userAttendanceCount.offlineCount * 10;
+  const onlineScore = userAttendanceCount.onlineCount * 2;
+  const totalScore = offlineScore + onlineScore;
+  let scoreIcon = <SentimentVeryDissatisfiedIcon sx={{ color: pink[400], marginRight:'0.4em' }}/>;
+  if ( totalScore >= 20 ){
+    scoreIcon = <SentimentVerySatisfiedIcon sx={{ color: blue[400], marginRight:'0.4em' }}/>
+  }
+
 
 
   let alertMenu = <Menu
@@ -112,17 +118,25 @@ function NavbarTop() {
     >
       <MenuItem>
         <Typography variant="inherit">
-          {user}님, 이번달 출석현황 알려드립니다!
+          {user}님, 4주간 출석점수 알려드립니다!
         </Typography>
       </MenuItem>
       <MenuItem>
-        <Typography variant="inherit">
-          오프라인모임 : <strong>{userAttendanceCount.offlineCount}</strong>회 / 2회 {offlineIcon}
+        {scoreIcon}
+        <Typography align='right'>
+          <strong>총 {totalScore}점 / 20점</strong>
         </Typography>
       </MenuItem>
       <MenuItem>
+        <CheckIcon sx={{ color: blue[400] }} />
         <Typography variant="inherit">
-          혼자 : <strong>{userAttendanceCount.onlineCount}</strong>회 / 1회 {onlineIcon}
+          오프라인(10점) : {userAttendanceCount.offlineCount}회 / 총 {offlineScore}점 
+        </Typography>
+      </MenuItem>
+      <MenuItem>
+        <CheckIcon sx={{ color: blue[400] }} />
+        <Typography variant="inherit">
+          혼자(2점) : {userAttendanceCount.onlineCount}회 / 총 {onlineScore}점 
         </Typography>
       </MenuItem>
       <Divider />

@@ -269,9 +269,9 @@ a {
 }
 
 .adminArrow {
-  padding-bottom: 5%;
+  padding-top: 5%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   padding-right: 5vw;
 }
 
