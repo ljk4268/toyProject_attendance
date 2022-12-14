@@ -60,20 +60,7 @@ function AdiminPage(){
    * @param {num} +1 or -1 을 받아 다음달 혹은 이전달을 계산한다.  
    */
   function moveNumChange(num){
-  
-    // let sel_month = num; 
-    // todayDate.setMonth(todayDate.getMonth() + sel_month ); 
-    // SetTodayDate(todayDate)
-
-    // let func_year   = todayDate.getFullYear();
-    // let func_month   = ('0' + (todayDate.getMonth() +  1 )).slice(-2);
-
-    // SetYear(func_year);
-    // SetMonth(func_month);
-
     setMoveNum(moveNum+num)
-
-
   }
 
   /**
