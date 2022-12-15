@@ -26,16 +26,12 @@ import { useNavigate } from "react-router-dom";
 
 
 
-
 function AdiminPage(){
 
   let date = new Date();
   const navigate = useNavigate()
 
   const today = getToday().split("-");
-  const [todayDate, SetTodayDate] = useState(date);
-  const [year, SetYear] = useState(today[0]);
-  const [month, SetMonth] = useState(today[1]);
   const [check, setCheck] = useState(false);
   const [statusRows, SetStatusRows] = useState([]);
   const [page, setPage] = React.useState(0);
@@ -101,7 +97,7 @@ function AdiminPage(){
 
   useEffect(()=>{
     async function attendStatusMonth() {
-      let attStatus = await attendanceStatus(year, month);
+      let attStatus = await attendanceStatus(startDate, endDate);
       let attStatusArr = attStatus.data.attendanceList;
 
       let activeAll = await axios.get(process.env.REACT_APP_API_ROOT + "/active-all");
@@ -135,8 +131,11 @@ function AdiminPage(){
       SetStatusRows(newStatusRows);
 
     }
+
+    if ( startDate.length != 0 ){
       attendStatusMonth();
-  },[year, month, check])
+    }
+  },[startDate])
 
   useEffect(()=>{
     const getDatePeriod = async () => {

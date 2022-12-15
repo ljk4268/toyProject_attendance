@@ -71,6 +71,7 @@ function CalendarPage() {
     async function fetchData() {
       if( month != ''){
         let attListArray = await saveAttendList(year, month);
+        dispatch(changObj(attListArray));
         if (Object.keys(attListArray).length !== 0){
           dispatch(changObj(attListArray));
         }
